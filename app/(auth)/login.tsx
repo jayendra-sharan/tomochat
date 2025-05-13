@@ -4,7 +4,7 @@ import { Text, TextInput, Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useGetMeQuery, useLoginMutation } from '@/domains/auth/authApi';
-import { storage } from '@/utils/storage';
+import { storage } from '@/services/storage';
 import { AUTH_TOKEN } from '@/constants';
 
 function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {

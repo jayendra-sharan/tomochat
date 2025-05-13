@@ -11,7 +11,7 @@ import { useGetMeQuery } from '@/domains/auth/authApi';
 
 export default function ChatScreen() {
   const { chatId }  = useLocalSearchParams();
-  const { data   } = useGetGroupChatsQuery({groupId: chatId as string });
+  const { data } = useGetGroupChatsQuery({groupId: chatId as string });
   const { data: user } = useGetMeQuery();
 
   const { id } = user || {};

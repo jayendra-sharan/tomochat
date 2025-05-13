@@ -1,5 +1,5 @@
 import Constants from "expo-constants";
-import { storage } from '@/utils/storage';
+import { storage } from '@/services/storage';
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
 
 const GRAPHQL_ENDPOINT = Constants.expoConfig?.extra?.API_URL;

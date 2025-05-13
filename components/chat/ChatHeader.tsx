@@ -4,7 +4,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { IconButton, Switch } from 'react-native-paper';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { setPrivateMode } from '@/redux/slices/chat/chatSlice';
 
 type ChatHeaderProps = {
   name?: string;

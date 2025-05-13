@@ -6,7 +6,7 @@ import {
 import { Text, List, IconButton } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import GroupAvatar from '@/components/common/GroupAvatar';
-import { storage } from '@/utils/storage';
+import { storage } from '@/services/storage';
 import { AUTH_TOKEN } from '@/constants';
 import { useGetGroupsQuery } from '@/domains/chat/chatApi';
 

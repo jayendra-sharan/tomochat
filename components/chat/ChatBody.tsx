@@ -1,9 +1,7 @@
 import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
-import { ChatState, Message } from '@/redux/slices/chat/types';
 import MessageBubble from './MessageBubble';
-import { useSelector } from 'react-redux';
-import { AppState } from '@/redux/types';
+import { Message } from '@/domains/chat/types';
 
 
 type ChatBodyProps = {
