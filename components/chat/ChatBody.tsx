@@ -2,21 +2,29 @@ import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import MessageBubble from './MessageBubble';
 import { Message } from '@/domains/chat/types';
-
+import { TypingIndicatorBubble } from '@/domains/chat/components/TypingIndicatorBubble';
+import useTypingUsers from '@/domains/chat/hooks/useTypingUsers';
 
 type ChatBodyProps = {
   messages: Message[];
   userId: string;
+  roomId: string;
   privateMode?: boolean;
 }
 
-export default function ChatBody({ messages, userId, privateMode = false }: ChatBodyProps) {
+export default function ChatBody({ messages, userId, privateMode = false, roomId }: ChatBodyProps) {
   const scrollRef = useRef<ScrollView>(null);
   const [expandedBubbleId, setExpandedBubbleId] = useState<string>("");
 
+  const { showTypingIndicator, senderNames } = useTypingUsers({
+    roomId,
+    currentUserId: userId,
+  });
+
   useEffect(() => {
-    scrollRef.current?.scrollToEnd({ animated: false });
-  }, [messages.length]);
+    scrollRef.current?.scrollToEnd({ animated: true });
+  }, [messages.length, showTypingIndicator]);
+
 
   return (
     <ScrollView
@@ -35,6 +43,11 @@ export default function ChatBody({ messages, userId, privateMode = false }: Chat
           expandedBubbleId={expandedBubbleId}
           setExpandedBubbleId={setExpandedBubbleId}
         />))}
+        {
+          showTypingIndicator && (
+            <TypingIndicatorBubble key="typing" senderName={senderNames} />
+          )
+        }
     </ScrollView>
   );
 }

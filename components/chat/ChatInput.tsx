@@ -1,14 +1,19 @@
 import { View, StyleSheet } from 'react-native';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { TextInput, IconButton, ActivityIndicator } from 'react-native-paper';
 import { chatApi, useSendMessageMutation } from '@/domains/chat/chatApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useTypingIndicator } from '@/domains/chat/hooks/useTypingIndicator';
+import socket from '@/services/socket/socket';
+import { SocketEvents } from '@/services/socket/socketEvents';
 
 type ChatInputProps = {
   groupId: string;
+  userId: string;
+  displayName: string;
 }
 
-export default function ChatInput({ groupId }: ChatInputProps) {
+export default function ChatInput({ groupId, userId, displayName }: ChatInputProps) {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -18,8 +23,24 @@ export default function ChatInput({ groupId }: ChatInputProps) {
 
   const messageBackup = useRef<string>("");
 
+  const handleTypingStart = useCallback(() => {
+    console.log("START typing");
+    socket.emit(SocketEvents.START_TYPING, { roomId: groupId, userId, displayName })
+  }, [groupId, userId]);
+
+  const handleTypingStop = useCallback(() => {
+    console.log("STOP typing");
+    socket.emit(SocketEvents.STOP_TYPING, {roomId: groupId, userId, displayName})
+  }, [groupId, userId])
+
+  const triggerTyping = useTypingIndicator({
+    onTypingStart: handleTypingStart,
+    onTypingStop: handleTypingStop
+  })
+
   const handleChangeText = (text: string) => {
     setMessage(text);
+    triggerTyping(text);
   }
 
   const handleSend = async () => {

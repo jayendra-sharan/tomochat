@@ -2,7 +2,8 @@ import Constants from "expo-constants";
 import { storage } from '@/services/storage';
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
 
-const GRAPHQL_ENDPOINT = Constants.expoConfig?.extra?.API_URL;
+const API_URL = Constants.expoConfig?.extra?.API_URL;
+const GRAPHQL_ENDPOINT = `${API_URL}/graphql`;
 
 export async function gqlFetch<T = any>(query: string, variables?: Record<string, any>): Promise<T> {
   const token = await storage.getItem('token');

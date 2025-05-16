@@ -1,5 +1,4 @@
 import { useGetMeQuery } from '@/domains/auth/authApi';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';

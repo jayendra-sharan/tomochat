@@ -2,34 +2,27 @@ import { View, StyleSheet } from 'react-native';
 import ChatHeader from '@/components/chat/ChatHeader';
 import ChatBody from '@/components/chat/ChatBody';
 import ChatInput from '@/components/chat/ChatInput';
-import { useEffect } from 'react';
-import { useLocalSearchParams } from 'expo-router';
-import socket from '@/services/socket';
-import { SocketEvents } from '@/services/constants';
 import { useGetGroupChatsQuery } from '@/domains/chat/chatApi';
-import { useGetMeQuery } from '@/domains/auth/authApi';
+import { useSingleQueryParam } from '@/services/router/useSingleQueryParam';
+import { useRequireUser } from '@/domains/auth/hocs/useRequireUser';
+import { User } from '@/domains/auth/types';
+import { useChatRoom } from '@/services/socket/hooks/useChatRoom';
 
-export default function ChatScreen() {
-  const { chatId }  = useLocalSearchParams();
+type ChatScreenProps = {
+  user: User
+}
+
+function ChatScreen({ user }: ChatScreenProps) {
+  const chatId   = useSingleQueryParam("chatId");
   const { data } = useGetGroupChatsQuery({groupId: chatId as string });
-  const { data: user } = useGetMeQuery();
+  const { id, displayName } = user;
 
-  const { id } = user || {};
+  if (!chatId) {
+    throw Error("Something went wrong, chat id not found");
+  }
+
   const { messages, name } = data || {};
-
-  useEffect(() => {
-    socket.emit(SocketEvents.JOIN_ROOM, {
-      groupId: chatId,
-      userId: id
-    });
-
-    return () => {
-      socket.emit(SocketEvents.LEAVE_ROOM, {
-        userId: id,
-        groupId: chatId,
-      });
-    }
-  }, []);
+  useChatRoom({ userId: id, roomId: chatId });
 
   const privateMode = false;
   return (
@@ -39,13 +32,14 @@ export default function ChatScreen() {
         { (messages && messages.length) && (
             <ChatBody
               userId={id ?? ""}
+              roomId={chatId}
               messages={messages}
               privateMode={privateMode}
             />
           )}
         
       </View>
-      <ChatInput groupId={chatId as string} />
+      <ChatInput displayName={displayName} userId={id ?? ""} groupId={chatId as string} />
     </View>
   );
 }
@@ -61,3 +55,5 @@ const styles = StyleSheet.create({
     overflow: 'auto',
   } as any,
 });
+
+export default useRequireUser(ChatScreen);
