@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import { useCallback, useRef, useState } from 'react';
-import { TextInput, IconButton, ActivityIndicator } from 'react-native-paper';
+import { TextInput, IconButton, ActivityIndicator, useTheme } from 'react-native-paper';
 import { chatApi, useSendMessageMutation } from '@/domains/chat/chatApi';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useTypingIndicator } from '@/domains/chat/hooks/useTypingIndicator';
@@ -11,61 +11,55 @@ type ChatInputProps = {
   groupId: string;
   userId: string;
   displayName: string;
-}
+};
 
 export default function ChatInput({ groupId, userId, displayName }: ChatInputProps) {
+  const theme = useTheme();
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  
   const [sendMessage] = useSendMessageMutation();
 
   const messageBackup = useRef<string>("");
 
   const handleTypingStart = useCallback(() => {
     console.log("START typing");
-    socket.emit(SocketEvents.START_TYPING, { roomId: groupId, userId, displayName })
+    socket.emit(SocketEvents.START_TYPING, { roomId: groupId, userId, displayName });
   }, [groupId, userId]);
 
   const handleTypingStop = useCallback(() => {
     console.log("STOP typing");
-    socket.emit(SocketEvents.STOP_TYPING, {roomId: groupId, userId, displayName})
-  }, [groupId, userId])
+    socket.emit(SocketEvents.STOP_TYPING, { roomId: groupId, userId, displayName });
+  }, [groupId, userId]);
 
   const triggerTyping = useTypingIndicator({
     onTypingStart: handleTypingStart,
-    onTypingStop: handleTypingStop
-  })
+    onTypingStop: handleTypingStop,
+  });
 
   const handleChangeText = (text: string) => {
     setMessage(text);
     triggerTyping(text);
-  }
+  };
 
   const handleSend = async () => {
     try {
       if (!message.trim()) return;
       setIsLoading(true);
-      const res = await sendMessage({ groupId, content: message }).unwrap();
-      console.log("Send message response", res);
-      dispatch(
-        chatApi.util.updateQueryData('getGroupChats', { groupId }, (draft) => {
-          draft.messages.push(res);
-        })
-      )
+      await sendMessage({ groupId, content: message }).unwrap();
       messageBackup.current = message;
       setMessage("");
     } catch (err) {
       setMessage(messageBackup.current);
-      throw new Error("error in sending message"); // handle this
+      throw new Error("error in sending message");
     } finally {
       setIsLoading(false);
     }
   };
 
-return (
-    <View style={styles.container}>
+  return (
+    <View style={[styles.container, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}>
       <TextInput
         mode="outlined"
         value={message}
@@ -79,14 +73,14 @@ return (
       <View style={{ width: 40, justifyContent: 'center' }}>
         {
           isLoading
-          ? <ActivityIndicator animating size={24} />
-          : <IconButton
-              icon="send"
-              size={24}
-              onPress={handleSend}
-              style={styles.button}
-              disabled={!message.trim()}
-            />
+            ? <ActivityIndicator animating size={24} />
+            : <IconButton
+                icon="send"
+                size={24}
+                onPress={handleSend}
+                style={styles.button}
+                disabled={!message.trim()}
+              />
         }
       </View>
     </View>
@@ -99,8 +93,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8,
     borderTopWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
   },
   input: {
     flex: 1,

@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Platform } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export default function WebWrapper({ children }: { children: React.ReactNode }) {
   const isWeb = Platform.OS === 'web';
+  const theme = useTheme();
 
   if (!isWeb) return <>{children}</>;
 
@@ -14,12 +16,12 @@ export default function WebWrapper({ children }: { children: React.ReactNode }) 
         marginLeft: 'auto',
         marginRight: 'auto',
         minHeight: '100vh',
-        backgroundColor: '#f3f4f6',
+        backgroundColor: theme.colors.background,
         borderLeftWidth: 1,
         borderRightWidth: 1,
-        borderColor: "#ccc",
+        borderColor: theme.colors.outline,
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
       } as any}
     >
       {children}

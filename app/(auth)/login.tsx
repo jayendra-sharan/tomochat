@@ -1,19 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Image } from 'react-native';
-import { Text, TextInput, Button } from 'react-native-paper';
+import { View, Image, StyleSheet } from 'react-native';
+import { Text, TextInput, Button, useTheme } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useGetMeQuery, useLoginMutation } from '@/domains/auth/authApi';
 import { storage } from '@/services/storage';
 import { AUTH_TOKEN } from '@/constants';
-
-function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
-  let timeout: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), delay);
-  };
-}
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -22,6 +13,7 @@ export default function LoginScreen() {
   const [login] = useLoginMutation();
   const { data: user } = useGetMeQuery();
   
+  const theme = useTheme();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -78,9 +70,11 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={{ flex: 1, padding: 24, justifyContent: 'center' }}>
-      <View style={{ display: 'flex', justifyContent: "center", flexDirection: "row", marginBottom: 40 }}>
-        <Image source={require("@/assets/images/logo.png")} />
+    <View style={styles.container}>
+      <View style={styles.logoWrapper}>
+        <Image
+          style={styles.logo}
+          source={require("@/assets/images/logo.png")} />
       </View>
 
       <TextInput
@@ -92,10 +86,15 @@ export default function LoginScreen() {
         }}
         error={!!errors.username}
         autoCapitalize="none"
+        style={styles.input}
       />
-      <View style={{ minHeight: 20, justifyContent: 'flex-start', marginBottom: 12 }}>
+      <View style={styles.errorWrapper}>
         {errors.username ? (
-          <Text style={{ color: 'red' }}>{errors.username}</Text>
+          <Text
+            style={[styles.errorText, { color: theme.colors.error }]}
+          >
+            {errors.username}
+          </Text>
         ) : null}
       </View>
 
@@ -108,10 +107,13 @@ export default function LoginScreen() {
         }}
         error={!!errors.password}
         secureTextEntry
+        style={styles.input}
       />
-      <View style={{ minHeight: 20, justifyContent: 'flex-start', marginBottom: 12 }}>
+      <View style={styles.errorWrapper}>
         {errors.password ? (
-          <Text style={{ color: 'red' }}>{errors.password}</Text>
+          <Text style={[styles.errorText, { color: theme.colors.error }]}>
+            {errors.password}
+          </Text>
         ) : null}
       </View>
 
@@ -120,9 +122,47 @@ export default function LoginScreen() {
         onPress={handleLogin}
         loading={loading}
         disabled={loading || !!errors.username || !!errors.password}
+        labelStyle={styles.buttonLabel}
       >
         {loading ? 'Please wait...' : 'Login'}
       </Button>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+    backgroundColor: '#FAFAFA', // theme.colors.background (manually pulled for RNW SSR)
+  },
+  logoWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 40,
+  },
+  logo: {
+    resizeMode: 'contain',
+    height: 48,
+    width: 160,
+  },
+  input: {
+    marginBottom: 8,
+  },
+  errorWrapper: {
+    minHeight: 20,
+    marginBottom: 12,
+    justifyContent: 'flex-start',
+  },
+  errorText: {
+    fontSize: 13,
+  },
+  button: {
+    marginTop: 16,
+    borderRadius: 8,
+  },
+  buttonLabel: {
+    fontWeight: '600',
+  },
+});

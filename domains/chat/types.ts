@@ -24,12 +24,11 @@ export type Suggestion = {
   issues: [string];
 }
 
-
 export type Message = {
   id: string;
   content: string;
   sender: Sender;
-  suggestion: Suggestion;
+  suggestion: Suggestion | null;
   createdAt: string;
 }
 
@@ -55,4 +54,15 @@ export type SendMessageResponse = {
   createdAt: string;
   suggestion: Suggestion;
   sender: Sender;
+}
+
+export type CreateChatRequest = {
+  name: string;
+  language: string;
+}
+
+export type CreateChatResponse = {
+  name: string;
+  id: string;
+  inviteLink: string;
 }

@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { Text, RadioButton } from 'react-native-paper';
+import { Text, RadioButton, useTheme } from 'react-native-paper';
 
 export default function ToggleSwitch({
   labelOn = 'On',
@@ -12,6 +12,8 @@ export default function ToggleSwitch({
   value: boolean;
   onChange: (val: boolean) => void;
 }) {
+  const theme = useTheme();
+
   return (
     <View style={styles.container}>
       <View style={styles.option}>
@@ -20,7 +22,9 @@ export default function ToggleSwitch({
           status={!value ? 'checked' : 'unchecked'}
           onPress={() => onChange(false)}
         />
-        <Text onPress={() => onChange(false)}>{labelOff}</Text>
+        <Text onPress={() => onChange(false)} style={{ color: theme.colors.onSurface }}>
+          {labelOff}
+        </Text>
       </View>
       <View style={styles.option}>
         <RadioButton
@@ -28,7 +32,9 @@ export default function ToggleSwitch({
           status={value ? 'checked' : 'unchecked'}
           onPress={() => onChange(true)}
         />
-        <Text onPress={() => onChange(true)}>{labelOn}</Text>
+        <Text onPress={() => onChange(true)} style={{ color: theme.colors.onSurface }}>
+          {labelOn}
+        </Text>
       </View>
     </View>
   );

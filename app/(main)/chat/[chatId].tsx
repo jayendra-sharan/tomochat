@@ -1,12 +1,15 @@
 import { View, StyleSheet } from 'react-native';
-import ChatHeader from '@/components/chat/ChatHeader';
-import ChatBody from '@/components/chat/ChatBody';
-import ChatInput from '@/components/chat/ChatInput';
+import ChatHeader from '@/domains/chat/components/ChatHeader';
+import ChatBody from '@/domains/chat/components/ChatBody';
+import ChatInput from '@/domains/chat/components/ChatInput';
 import { useGetGroupChatsQuery } from '@/domains/chat/chatApi';
 import { useSingleQueryParam } from '@/services/router/useSingleQueryParam';
 import { useRequireUser } from '@/domains/auth/hocs/useRequireUser';
 import { User } from '@/domains/auth/types';
 import { useChatRoom } from '@/services/socket/hooks/useChatRoom';
+import useNewMessageEvent from '@/domains/chat/hooks/useNewMessageEvent';
+import { useSelector } from 'react-redux';
+import { ChatState } from '@/domains/chat/chatSlice';
 
 type ChatScreenProps = {
   user: User
@@ -23,8 +26,10 @@ function ChatScreen({ user }: ChatScreenProps) {
 
   const { messages, name } = data || {};
   useChatRoom({ userId: id, roomId: chatId });
+  useNewMessageEvent(chatId);
 
-  const privateMode = false;
+  const privateMode = useSelector(({ chat }: { chat: ChatState}) => chat.isPrivate);
+
   return (
     <View style={styles.container}>
       <ChatHeader name={name} privateMode={privateMode} />

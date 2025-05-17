@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import socket from "@/services/socket/socket";
 import { SocketEvents } from "@/services/socket/socketEvents";
-import { TypingUser } from "@/domains/shared/types/chat";
+import { TypingUserPayload } from "@/domains/shared/types/socketEvents";
 
 export default function useTypingUsers({
   roomId,
   currentUserId
 }: { roomId?: string, currentUserId: string}) {
-  const [typingUserIds, setTypingUserIds] = useState<TypingUser[]>([]);
+  const [typingUserIds, setTypingUserIds] = useState<TypingUserPayload[]>([]);
 
   useEffect(() => {
     if (!roomId) return;
-    const handleTypingStarted = ({ userId, roomId: incomingRoomId, displayName}: TypingUser) => {
+    const handleTypingStarted = ({ userId, roomId: incomingRoomId, displayName}: TypingUserPayload) => {
       if (userId === currentUserId || incomingRoomId !== roomId) return;
       setTypingUserIds(prev => {
         const isDuplicate = prev.some(user => user.userId == userId);
@@ -24,7 +24,7 @@ export default function useTypingUsers({
       });
     }
 
-    const handleTypingStopped = ({ userId, roomId: incomingRoomId, displayName}: TypingUser) => {
+    const handleTypingStopped = ({ userId, roomId: incomingRoomId, displayName}: TypingUserPayload) => {
       if (incomingRoomId !== roomId) return;
       
       console.log("typing user stopped", displayName)
