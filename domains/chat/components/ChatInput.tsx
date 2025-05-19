@@ -1,21 +1,32 @@
-import { View, StyleSheet } from 'react-native';
-import { useCallback, useRef, useState } from 'react';
-import { TextInput, IconButton, ActivityIndicator, useTheme } from 'react-native-paper';
-import { chatApi, useSendMessageMutation } from '@/domains/chat/chatApi';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { useTypingIndicator } from '@/domains/chat/hooks/useTypingIndicator';
-import socket from '@/services/socket/socket';
-import { SocketEvents } from '@/services/socket/socketEvents';
+import { View, StyleSheet } from "react-native";
+import { useCallback, useRef, useState } from "react";
+import {
+  TextInput,
+  IconButton,
+  ActivityIndicator,
+  useTheme,
+} from "react-native-paper";
+import { chatApi, useSendMessageMutation } from "@/domains/chat/chatApi";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useTypingIndicator } from "@/domains/chat/hooks/useTypingIndicator";
+import socket from "@/services/socket/socket";
+import { SocketEvents } from "@/services/socket/socketEvents";
 
 type ChatInputProps = {
   groupId: string;
   userId: string;
   displayName: string;
+  isPrivate: boolean;
 };
 
-export default function ChatInput({ groupId, userId, displayName }: ChatInputProps) {
+export default function ChatInput({
+  groupId,
+  userId,
+  displayName,
+  isPrivate,
+}: ChatInputProps) {
   const theme = useTheme();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -24,13 +35,19 @@ export default function ChatInput({ groupId, userId, displayName }: ChatInputPro
   const messageBackup = useRef<string>("");
 
   const handleTypingStart = useCallback(() => {
-    console.log("START typing");
-    socket.emit(SocketEvents.START_TYPING, { roomId: groupId, userId, displayName });
+    socket.emit(SocketEvents.START_TYPING, {
+      roomId: groupId,
+      userId,
+      displayName,
+    });
   }, [groupId, userId]);
 
   const handleTypingStop = useCallback(() => {
-    console.log("STOP typing");
-    socket.emit(SocketEvents.STOP_TYPING, { roomId: groupId, userId, displayName });
+    socket.emit(SocketEvents.STOP_TYPING, {
+      roomId: groupId,
+      userId,
+      displayName,
+    });
   }, [groupId, userId]);
 
   const triggerTyping = useTypingIndicator({
@@ -47,7 +64,11 @@ export default function ChatInput({ groupId, userId, displayName }: ChatInputPro
     try {
       if (!message.trim()) return;
       setIsLoading(true);
-      await sendMessage({ groupId, content: message }).unwrap();
+      await sendMessage({
+        groupId,
+        content: message,
+        isPrivate: true,
+      }).unwrap();
       messageBackup.current = message;
       setMessage("");
     } catch (err) {
@@ -59,7 +80,15 @@ export default function ChatInput({ groupId, userId, displayName }: ChatInputPro
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.outline,
+        },
+      ]}
+    >
       <TextInput
         mode="outlined"
         value={message}
@@ -70,18 +99,18 @@ export default function ChatInput({ groupId, userId, displayName }: ChatInputPro
         numberOfLines={1}
         returnKeyType="default"
       />
-      <View style={{ width: 40, justifyContent: 'center' }}>
-        {
-          isLoading
-            ? <ActivityIndicator animating size={24} />
-            : <IconButton
-                icon="send"
-                size={24}
-                onPress={handleSend}
-                style={styles.button}
-                disabled={!message.trim()}
-              />
-        }
+      <View style={{ width: 40, justifyContent: "center" }}>
+        {isLoading ? (
+          <ActivityIndicator animating size={24} />
+        ) : (
+          <IconButton
+            icon="send"
+            size={24}
+            onPress={handleSend}
+            style={styles.button}
+            disabled={!message.trim()}
+          />
+        )}
       </View>
     </View>
   );
@@ -89,8 +118,8 @@ export default function ChatInput({ groupId, userId, displayName }: ChatInputPro
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 8,
     borderTopWidth: 1,
   },
@@ -99,6 +128,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   button: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });

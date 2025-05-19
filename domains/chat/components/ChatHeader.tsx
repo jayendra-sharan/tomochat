@@ -1,48 +1,113 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import { IconButton, Switch, useTheme } from 'react-native-paper';
-import { useAppDispatch } from '@/hooks/useAppDispatch';
-import { setPrivateMode } from '../chatSlice';
+import React, { useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { IconButton, Menu, Switch, useTheme } from "react-native-paper";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { setPrivateMode } from "../chatSlice";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useCopyToClipboard } from "../hoc/useCopyToClipboard";
+import { useFeatureFlag } from "@/redux/FeatureProvider";
 
 type ChatHeaderProps = {
   name?: string;
   privateMode?: boolean;
+  inviteId: string;
+  copyToClipboard?: (inviteId: string) => Promise<void>;
 };
 
-export default function ChatHeader({ name, privateMode = false }: ChatHeaderProps) {
+function ChatHeader({
+  name,
+  privateMode = false,
+  copyToClipboard,
+  inviteId,
+}: ChatHeaderProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const theme = useTheme();
+  const theme = useAppTheme();
+  const { enablePrivateMessaging } = useFeatureFlag();
+
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const closeMenu = () => setMenuVisible(false);
+  const openMenu = () => setMenuVisible(true);
+
+  const handleAction = async (action: string) => {
+    console.log("Action: ", action);
+    // @todos fix this condition - if props coming from hoc, how to fix type error.
+    copyToClipboard && (await copyToClipboard(inviteId));
+    closeMenu();
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
       <View style={styles.leftContainer}>
         <IconButton
           icon="chevron-left"
-          size={28}
+          size={24}
+          style={{ width: 30, height: 30 }}
           onPress={() => router.push("/(main)/dashboard")}
         />
-        <View style={[styles.groupDetails, { borderColor: theme.colors.outline }]}>
-          <Text style={[styles.title, { color: theme.colors.onSurface }]}>
+        <View
+          style={[styles.groupDetails, { borderColor: theme.colors.outline }]}
+        >
+          <Text
+            style={[
+              styles.title,
+              { color: theme.colors.onSurface, fontSize: theme.fontSizes.body },
+            ]}
+          >
             {name}
           </Text>
-          <Text style={[styles.subtext, { color: theme.colors.onSurfaceVariant }]}>
+          <Text
+            style={[
+              styles.subtext,
+              {
+                color: theme.colors.onSurfaceVariant,
+                fontSize: theme.fontSizes.secondary,
+              },
+            ]}
+          >
             status
           </Text>
         </View>
       </View>
 
       <View style={styles.rightContainer}>
-        <View style={styles.privateMode}>
-          <Text style={[{ marginRight: 12, color: theme.colors.onSurface }]}>Private Mode</Text>
-          <Switch
-            value={privateMode}
-            onValueChange={() => {
-              dispatch(setPrivateMode(!privateMode));
-            }}
+        {enablePrivateMessaging && (
+          <View style={styles.privateMode}>
+            <IconButton
+              icon="incognito"
+              size={16}
+              style={{ backgroundColor: privateMode ? "darkgrey" : "" }}
+              onPress={() => {
+                dispatch(setPrivateMode(!privateMode));
+              }}
+            />
+          </View>
+        )}
+
+        <Menu
+          visible={menuVisible}
+          onDismiss={closeMenu}
+          anchor={
+            <IconButton icon="dots-vertical" size={20} onPress={openMenu} />
+          }
+        >
+          <Menu.Item
+            onPress={() => handleAction("copy")}
+            title="Copy Room Link"
           />
-        </View>
+          <Menu.Item onPress={() => handleAction("mute")} title="Mute" />
+          <Menu.Item
+            onPress={() => handleAction("mute")}
+            title="@todos Lock Group"
+          />
+          <Menu.Item
+            onPress={() => handleAction("delete")}
+            title="Delete Chat"
+          />
+          <Menu.Item onPress={() => handleAction("leave")} title="Leave Chat" />
+        </Menu>
       </View>
     </View>
   );
@@ -50,33 +115,38 @@ export default function ChatHeader({ name, privateMode = false }: ChatHeaderProp
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingEnd: 20,
-    paddingVertical: 8,
+    paddingVertical: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f4f5f6",
   },
   leftContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   groupDetails: {
-    paddingVertical: 12,
-    borderBottomWidth: 1,
+    paddingVertical: 2,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   subtext: {
     fontSize: 14,
     marginTop: 4,
   },
   rightContainer: {
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   privateMode: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
+
+export default useCopyToClipboard(ChatHeader);

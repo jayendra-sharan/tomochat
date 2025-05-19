@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Button, TextInput, HelperText, RadioButton, Text } from 'react-native-paper';
-import { useCreateChatMutation } from '@/services/chatService';
+import { useCreateChatMutation } from '@/domains/chat/chatApi';
+import { useRouter } from 'expo-router';
 // import { useAppTheme } from '@/hooks/useAppTheme';
 
 const LANGUAGES = [
@@ -9,18 +10,24 @@ const LANGUAGES = [
   { label: 'Dutch', value: 'NL' },
 ];
 
-export const CreateChatPage = () => {
+export default function CreateChatPage() {
   // const theme = useAppTheme();
   const [groupName, setGroupName] = useState('');
   const [language, setLanguage] = useState('EN');
+
+  const router = useRouter();
   const [createChat, { isLoading }] = useCreateChatMutation();
 
   const isGroupNameValid = /^[a-zA-Z0-9\s,&-]+$/.test(groupName);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!isGroupNameValid || !groupName.trim()) return;
-
-    createChat({ name: groupName.trim(), language });
+    try {
+      const { inviteLink } = await createChat({ name: groupName.trim(), language }).unwrap();
+      router.push(`/(main)/create-chat/success?invite_id=${inviteLink}`);
+    } catch (error) {
+      console.log("Error in creating group");
+    }
   };
 
   return (

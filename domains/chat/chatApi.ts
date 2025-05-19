@@ -10,11 +10,12 @@ export const chatApi = createApi({
   reducerPath: "chatApi",
   baseQuery: gqlBaseQuery(),
   endpoints: (builder) => ({
-    createChat: builder.query<CreateChatResponse, CreateChatRequest>({
+    createChat: builder.mutation<CreateChatResponse, CreateChatRequest>({
       query: (input) => ({
         document: CREATE_CHAT,
         variables: { input }
       }),
+      transformResponse: (res: any) => res.createRoom
     }),
     getGroups: builder.query<Group[], void>({
       query: () => ({
@@ -39,4 +40,4 @@ export const chatApi = createApi({
   })
 })
 
-export const { useGetGroupsQuery, useGetGroupChatsQuery, useSendMessageMutation } = chatApi;
+export const { useGetGroupsQuery, useGetGroupChatsQuery, useSendMessageMutation, useCreateChatMutation } = chatApi;

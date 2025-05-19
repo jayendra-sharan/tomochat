@@ -10,7 +10,6 @@ export interface AuthState {
   user: User;
 }
 
-
 export interface LoginInput {
   email: string;
   password: string;
@@ -19,4 +18,19 @@ export interface LoginInput {
 export interface LoginResponse {
   token: string;
   user: User;
+}
+
+export interface RegisterUser {
+  displayName: string;
+  email: string;
+  password: string;
+  rePassword: string;
+}
+
+export type RegisterUserInput = Omit<RegisterUser, "rePassword">;
+
+export interface RegisterUserResponse {
+  displayName: string;
+  id: string;
+  email: string;
 }

@@ -1,86 +1,60 @@
-import React from 'react';
-import {
-  View,
-  Image,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
-import { Text, List, IconButton, useTheme } from 'react-native-paper';
-import { useRouter } from 'expo-router';
-import GroupAvatar from '@/domains/shared/components/GroupAvatar';
-import { storage } from '@/services/storage';
-import { AUTH_TOKEN } from '@/constants';
-import { useGetGroupsQuery } from '@/domains/chat/chatApi';
+import React, { useCallback } from "react";
+import { View, FlatList, StyleSheet, Platform } from "react-native";
+import { Text, List, IconButton } from "react-native-paper";
+import { useRouter } from "expo-router";
+import GroupAvatar from "@/domains/shared/components/GroupAvatar";
+import { storage } from "@/services/storage";
+import { AUTH_TOKEN } from "@/constants";
+import { useGetGroupsQuery } from "@/domains/chat/chatApi";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import LoadingScreen from "@/domains/shared/components/LoadingScreen";
+import { Group } from "@/domains/chat/types";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { resetStore } from "@/redux/store";
+import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
+import Rooms from "@/domains/rooms/components/Rooms";
+import { Room } from "@/domains/shared/types";
 
-export default function DashboardScreen() {
-  const theme = useTheme();
+function DashboardPage() {
+  const theme = useAppTheme();
   const router = useRouter();
-  const { data: groups, isLoading } = useGetGroupsQuery();
+  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     storage.removeItem(AUTH_TOKEN);
+    dispatch(resetStore());
     setTimeout(() => {
       router.push("/(auth)/login");
     }, 500);
   };
 
-  const renderItem = ({ item }: any) => {
-    const members = item.members.map((m: any) => m.user.displayName).join(", ");
-    return (
-      <List.Item
-        style={styles.listItem}
-        title={item.name}
-        description={members}
-        onPress={() => router.push(`/(main)/chat/${item.id}`)}
-        left={() => <GroupAvatar groupName={item.name} />}
-      />
-    );
-  };
-
-  if (isLoading || !groups?.length) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Image source={require("@/assets/images/logo.png")} />
-      </View>
-    );
-  }
+  // @todo add invite link to room chat page to avoid url param.
+  const enterChat = useCallback((room: Room) => {
+    router.push(`/(main)/chat/${room.id}?invite_id=${room.inviteLink}`);
+  }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text
-        variant="headlineMedium"
-        style={[styles.header, { color: theme.colors.onSurface }]}
-      >
-        Dashboard
-      </Text>
-
-      <View style={styles.listWrapper}>
-        <FlatList
-          data={groups}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-        />
+    <View style={styles.page}>
+      <View style={styles.scrollable}>
+        <Rooms enterChat={enterChat} />
       </View>
 
-      <View style={[styles.bottomBar, { borderTopColor: theme.colors.outline, backgroundColor: theme.colors.surface }]}>
-        <IconButton
-          icon="account"
-          size={24}
-          containerColor="transparent"
-          onPress={() => console.log('Pressed')}
-        />
+      <View
+        style={[
+          styles.bottomBar,
+          {
+            backgroundColor: theme.colors.surface,
+            borderTopColor: theme.colors.outline,
+          },
+        ]}
+      >
+        <IconButton icon="account" size={24} onPress={() => {}} />
         <IconButton
           icon="plus"
           size={24}
-          containerColor="transparent"
-          onPress={() => console.log('Pressed')}
+          onPress={() => router.push("/(main)/create-chat")}
         />
-        <IconButton
-          icon="logout"
-          size={24}
-          containerColor="transparent"
-          onPress={handleLogout}
-        />
+        <IconButton icon="logout" size={24} onPress={handleLogout} />
       </View>
     </View>
   );
@@ -89,34 +63,29 @@ export default function DashboardScreen() {
 const BOTTOM_BAR_HEIGHT = 70;
 
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
-    flexDirection: 'column',
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
   },
-  loadingContainer: {
+  scrollable: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    marginTop: 16,
-    marginBottom: 8,
-    paddingHorizontal: 16,
-  },
-  listWrapper: {
-    flex: 1,
-    overflow: 'auto', // RNW specific
+    ...(Platform.OS === "web" && { overflowY: "auto" }), // RNW-specific fix
   } as any,
-  listItem: {
-    paddingHorizontal: 12,
-    borderRadius: 10,
-  },
   bottomBar: {
     height: BOTTOM_BAR_HEIGHT,
     borderTopWidth: 1,
-    padding: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
+
+export default useRequireUser(DashboardPage);

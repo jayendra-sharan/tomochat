@@ -11,18 +11,15 @@ export default function WebWrapper({ children }: { children: React.ReactNode }) 
   return (
     <View
       style={{
+        flex: 1,
         maxWidth: 620,
         width: '100%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        minHeight: '100vh',
+        marginHorizontal: 'auto',
         backgroundColor: theme.colors.background,
         borderLeftWidth: 1,
         borderRightWidth: 1,
         borderColor: theme.colors.outline,
-        display: "flex",
-        flexDirection: "column",
-      } as any}
+      }}
     >
       {children}
     </View>

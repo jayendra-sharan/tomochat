@@ -4,6 +4,8 @@ export const GROUPS = `
       id
       name
       topic
+      inviteLink
+      lastMessage
       members {
         user {
           displayName
@@ -11,4 +13,4 @@ export const GROUPS = `
       }
     }
   }
-`
+`;

@@ -12,19 +12,20 @@ export default function useNewMessageEvent(roomId: string) {
     if (!roomId) return;
 
     const handleNewMessage = (message: Message) => {
-      console.log(`new message received in room ${roomId} --- message: ${JSON.stringify(message)}`);
-      console.log("Updating store now");
       dispatch(
-        chatApi.util.updateQueryData('getGroupChats', { groupId: roomId }, (draft) => {
-          draft.messages.push(message);
-        })
-      )
-    }
+        chatApi.util.updateQueryData(
+          "getGroupChats",
+          { groupId: roomId },
+          (draft) => {
+            draft.messages.push(message);
+          },
+        ),
+      );
+    };
     socket.on(SocketEvents.NEW_MESSAGE, handleNewMessage);
 
     return () => {
       socket.off(SocketEvents.NEW_MESSAGE, handleNewMessage);
-    }
-
-  }, [roomId])
+    };
+  }, [roomId]);
 }

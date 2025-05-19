@@ -1,69 +1,70 @@
-import { useCallback, useEffect, useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import { Text, TextInput, Button, useTheme } from 'react-native-paper';
-import { useRouter } from 'expo-router';
-import { useGetMeQuery, useLoginMutation } from '@/domains/auth/authApi';
-import { storage } from '@/services/storage';
-import { AUTH_TOKEN } from '@/constants';
+import { useEffect, useState } from "react";
+import { View, Image, StyleSheet } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import {
+  useLoginMutation,
+  useGetMeQuery,
+  useLazyGetMeQuery,
+} from "@/domains/auth/authApi";
+import { storage } from "@/services/storage";
+import { AUTH_TOKEN } from "@/constants";
+import TextInput from "@/domains/shared/components/forms/TextInput/";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useLoginForm } from "@/domains/auth/hooks/useLoginForm";
+import { HEADER_HEIGHT } from "@/domains/shared/constants";
+import { getNextRoute } from "@/domains/shared/lib/getNextRoute";
 
 export default function LoginScreen() {
+  const theme = useAppTheme();
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
-  
+  const { invite_id: inviteId, id } = useLocalSearchParams<{
+    invite_id?: string;
+    id?: string;
+  }>();
+
   const [login] = useLoginMutation();
+  const [triggerMe] = useLazyGetMeQuery();
   const { data: user } = useGetMeQuery();
-  
-  const theme = useTheme();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const [errors, setErrors] = useState({ username: '', password: '' });
-  const [touched, setTouched] = useState({ username: false, password: false });
-
-  const validate = useCallback(() => {
-    const newErrors = { username: '', password: '' };
-
-    if (touched.username && username.trim().length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
-    }
-
-    if (touched.password && password.length < 2) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    setErrors(newErrors);
-  }, [username, password, touched]);
-
-  // Debounce validation
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      validate();
-    }, 300);
-    return () => clearTimeout(handler);
-  }, [username, password, validate]);
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    errors,
+    touched,
+    setTouched,
+    validate,
+  } = useLoginForm();
 
   useEffect(() => {
-    if (user?.email) {
-      router.push("/(main)/dashboard");
+    if (!inviteId && user?.email) {
+      router.replace("/(main)/dashboard");
     }
-  }, [user?.email])
+  }, [user?.email, inviteId]);
 
   const handleLogin = async () => {
     setTouched({ username: true, password: true });
     validate();
-
     const hasErrors = Object.values(errors).some(Boolean);
     if (hasErrors) return;
 
     setLoading(true);
-
     try {
-      const res = await login({ email: username, password }).unwrap();
-      storage.setItem(AUTH_TOKEN, res.token);
-      router.replace('/(main)/dashboard'); // redirect after login
+      const { token, user } = await login({
+        email: username,
+        password,
+      }).unwrap();
+      if (user?.email) {
+        await storage.setItem(AUTH_TOKEN, token);
+        await triggerMe();
+        router.replace(getNextRoute(inviteId) as any);
+      }
     } catch (err) {
-      console.error('Login error:', err);
+      console.error("Login error:", err);
     } finally {
       setLoading(false);
     }
@@ -74,8 +75,15 @@ export default function LoginScreen() {
       <View style={styles.logoWrapper}>
         <Image
           style={styles.logo}
-          source={require("@/assets/images/logo.png")} />
+          source={require("@/assets/images/logo.png")}
+        />
       </View>
+
+      {!!id && (
+        <Text style={styles.registrationSuccess}>
+          Registration successful. Login to continue.
+        </Text>
+      )}
 
       <TextInput
         label="Username"
@@ -84,19 +92,8 @@ export default function LoginScreen() {
           setUsername(text);
           setTouched((t) => ({ ...t, username: true }));
         }}
-        error={!!errors.username}
-        autoCapitalize="none"
-        style={styles.input}
+        error={errors.username}
       />
-      <View style={styles.errorWrapper}>
-        {errors.username ? (
-          <Text
-            style={[styles.errorText, { color: theme.colors.error }]}
-          >
-            {errors.username}
-          </Text>
-        ) : null}
-      </View>
 
       <TextInput
         label="Password"
@@ -105,27 +102,35 @@ export default function LoginScreen() {
           setPassword(text);
           setTouched((t) => ({ ...t, password: true }));
         }}
-        error={!!errors.password}
         secureTextEntry
-        style={styles.input}
+        error={errors.password}
       />
-      <View style={styles.errorWrapper}>
-        {errors.password ? (
-          <Text style={[styles.errorText, { color: theme.colors.error }]}>
-            {errors.password}
-          </Text>
-        ) : null}
-      </View>
 
       <Button
         mode="contained"
         onPress={handleLogin}
         loading={loading}
         disabled={loading || !!errors.username || !!errors.password}
-        labelStyle={styles.buttonLabel}
+        labelStyle={[styles.buttonLabel, { color: theme.colors.surface }]}
+        style={styles.button}
       >
-        {loading ? 'Please wait...' : 'Login'}
+        {loading ? "Please wait..." : "Login"}
       </Button>
+
+      {!!inviteId && !id && (
+        <View
+          style={{
+            marginTop: 24,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <Link href={`/(auth)/register?invite_id=${inviteId}`}>
+            Don't have an account? Click here!
+          </Link>
+        </View>
+      )}
     </View>
   );
 }
@@ -134,35 +139,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    justifyContent: 'center',
-    backgroundColor: '#FAFAFA', // theme.colors.background (manually pulled for RNW SSR)
+    justifyContent: "center",
+    backgroundColor: "#FAFAFA",
   },
   logoWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 40,
+    marginTop: -1 * HEADER_HEIGHT,
   },
   logo: {
-    resizeMode: 'contain',
-    height: 48,
-    width: 160,
+    resizeMode: "contain",
+    width: 64,
   },
-  input: {
-    marginBottom: 8,
-  },
-  errorWrapper: {
-    minHeight: 20,
-    marginBottom: 12,
-    justifyContent: 'flex-start',
-  },
-  errorText: {
-    fontSize: 13,
+  registrationSuccess: {
+    textAlign: "center",
+    marginBottom: 20,
   },
   button: {
     marginTop: 16,
     borderRadius: 8,
   },
   buttonLabel: {
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
