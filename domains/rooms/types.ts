@@ -4,6 +4,7 @@ import { Room } from "../shared/types";
 export type CreateRoomRequest = {
   name: string;
   language: string;
+  userDisplayName: string;
 };
 
 export type JoinRoomRequest = {

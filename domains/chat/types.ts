@@ -48,6 +48,7 @@ export type SendMessageInput = {
   groupId: string;
   content: string;
   isPrivate: boolean;
+  displayName: string;
 };
 
 export type SendMessageResponse = {

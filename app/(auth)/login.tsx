@@ -23,6 +23,7 @@ export default function LoginScreen() {
     id?: string;
   }>();
 
+  const [error, setError] = useState("");
   const [login] = useLoginMutation();
   const [triggerMe] = useLazyGetMeQuery();
   const { data: user } = useGetMeQuery();
@@ -48,23 +49,32 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     setTouched({ username: true, password: true });
+    setError("");
     validate();
     const hasErrors = Object.values(errors).some(Boolean);
     if (hasErrors) return;
 
     setLoading(true);
     try {
-      const { token, user } = await login({
+      const res = await login({
         email: username,
         password,
-      }).unwrap();
-      if (user?.email) {
+      });
+
+      if (res.error) {
+        const errorMessage = (res.error as { message?: string }).message;
+        setError(errorMessage || "Login error, please try again.");
+        return;
+      }
+      const { token, user } = res.data || {};
+      if (user?.email && token) {
         await storage.setItem(AUTH_TOKEN, token);
         await triggerMe();
         router.replace(getNextRoute(inviteId) as any);
       }
     } catch (err) {
-      console.error("Login error:", err);
+      // @todo update error message
+      console.log("Error from gql--", err);
     } finally {
       setLoading(false);
     }
@@ -75,8 +85,11 @@ export default function LoginScreen() {
       <View style={styles.logoWrapper}>
         <Image
           style={styles.logo}
-          source={require("@/assets/images/logo.png")}
+          source={require("@/assets/images/logo_vertical.png")}
         />
+        <Text style={{ marginTop: 20 }} variant="titleMedium">
+          Learn while you talk!
+        </Text>
       </View>
 
       {!!id && (
@@ -105,6 +118,18 @@ export default function LoginScreen() {
         secureTextEntry
         error={errors.password}
       />
+
+      {!!error && (
+        <Text
+          style={{
+            textAlign: "center",
+            color: theme.colors.error,
+            fontSize: theme.fontSizes.body,
+          }}
+        >
+          {error}
+        </Text>
+      )}
 
       <Button
         mode="contained"
@@ -143,14 +168,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAFAFA",
   },
   logoWrapper: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
     marginBottom: 40,
     marginTop: -1 * HEADER_HEIGHT,
   },
   logo: {
     resizeMode: "contain",
-    width: 64,
+    height: 64,
   },
   registrationSuccess: {
     textAlign: "center",

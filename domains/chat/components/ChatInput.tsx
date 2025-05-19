@@ -68,6 +68,7 @@ export default function ChatInput({
         groupId,
         content: message,
         isPrivate: true,
+        displayName,
       }).unwrap();
       messageBackup.current = message;
       setMessage("");

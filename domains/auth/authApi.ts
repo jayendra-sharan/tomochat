@@ -27,6 +27,7 @@ export const authApi = createApi({
         variables: { input },
       }),
       transformResponse: (res: any) => res.login,
+      transformErrorResponse: (error: any) => error,
     }),
     register: builder.mutation<RegisterUserResponse, RegisterUserInput>({
       query: (input) => ({

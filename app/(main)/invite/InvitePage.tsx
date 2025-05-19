@@ -46,7 +46,7 @@ export default function InvitePage({ user }: InvitePageProps) {
   return (
     <View style={{ padding: 24, flex: 1 }}>
       <Text variant="titleMedium" style={{ marginBottom: 12 }}>
-        You're invited to join a group on TomoChat.
+        You've been invited to join a group on TomoChat.
       </Text>
 
       {!me && (

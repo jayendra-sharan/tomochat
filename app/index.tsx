@@ -1,7 +1,7 @@
-import { useGetMeQuery } from '@/domains/auth/authApi';
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Image, View } from 'react-native';
+import { useGetMeQuery } from "@/domains/auth/authApi";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { Image, View } from "react-native";
 
 export default function Home() {
   const { data: user } = useGetMeQuery();
@@ -13,13 +13,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (mounted && user?.email) {
-      router.push("/(main)/dashboard");
+    if (mounted) {
+      if (user?.email) router.push("/(main)/dashboard");
+      else router.push("/(auth)/login");
     }
   }, [user?.email, mounted]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Image source={require("@/assets/images/logo.png")} />
     </View>
   );
