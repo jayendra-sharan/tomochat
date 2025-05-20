@@ -3,9 +3,9 @@ import React, { forwardRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput as PaperTextInput, Text } from "react-native-paper";
 import { FormTextInputProps } from "./types";
-import { TextInputProps as PaperTextInputProps } from "react-native-paper";
+import type { TextInput as RNTextInput } from "react-native";
 
-const TextInput = forwardRef<PaperTextInputProps, FormTextInputProps>(
+const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
   ({ label, errorMessage, ...rest }, ref) => {
     const theme = useAppTheme();
 

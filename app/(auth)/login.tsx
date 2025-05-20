@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { View, Image, StyleSheet } from "react-native";
-import type { TextInput as TextInputType } from "react-native";
+import type { TextInput as RNTextInputType } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import {
@@ -24,7 +24,7 @@ export default function LoginScreen() {
     id?: string;
   }>();
 
-  const passwordRef = useRef<TextInputType>(null);
+  const passwordRef = useRef<RNTextInputType>(null);
   const [error, setError] = useState("");
   const [login] = useLoginMutation();
   const [triggerMe] = useLazyGetMeQuery();
