@@ -20,6 +20,7 @@ export const authApi = createApi({
         document: ME,
       }),
       transformResponse: (res: any) => res.me,
+      transformErrorResponse: (error: any) => error,
     }),
     login: builder.mutation<LoginResponse, LoginInput>({
       query: (input) => ({
@@ -35,6 +36,7 @@ export const authApi = createApi({
         variables: { input },
       }),
       transformResponse: (res: any) => res.createUser,
+      transformErrorResponse: (error: any) => error,
     }),
   }),
 });

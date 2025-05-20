@@ -112,6 +112,7 @@ export default function LoginScreen() {
         onSubmitEditing={() => {
           passwordRef.current?.focus();
         }}
+        autoCapitalize="none"
       />
 
       <TextInput
@@ -126,6 +127,7 @@ export default function LoginScreen() {
         errorMessage={errors.password}
         returnKeyType="done"
         onSubmitEditing={handleLogin}
+        autoCapitalize="none"
       />
 
       {!!error && (

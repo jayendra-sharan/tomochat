@@ -12,7 +12,9 @@ type RoomsProps = {
 };
 export default function Rooms({ enterChat }: RoomsProps) {
   const theme = useAppTheme();
-  const { data: rooms, isLoading } = useGetRoomsQuery();
+  const { data: rooms, isLoading } = useGetRoomsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   if (isLoading) {
     return <LoadingScreen />;

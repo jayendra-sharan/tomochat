@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { View, FlatList, StyleSheet, Platform } from "react-native";
 import { Text, List, IconButton } from "react-native-paper";
 import { useRouter } from "expo-router";
@@ -14,6 +14,7 @@ import { resetStore } from "@/redux/store";
 import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import Rooms from "@/domains/rooms/components/Rooms";
 import { Room } from "@/domains/shared/types";
+import { registerForPushNotificationsAsync } from "@/services/notifications";
 
 function DashboardPage() {
   const theme = useAppTheme();
@@ -27,6 +28,15 @@ function DashboardPage() {
       router.push("/(auth)/login");
     }, 500);
   };
+
+  // @todo extract later
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      if (token) {
+        // save to backend
+      }
+    });
+  }, []);
 
   // @todo add invite link to room chat page to avoid url param.
   const enterChat = useCallback((room: Room) => {
