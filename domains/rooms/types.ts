@@ -1,4 +1,3 @@
-import { Message } from "../chat/types";
 import { Room } from "../shared/types";
 
 export type CreateRoomRequest = {

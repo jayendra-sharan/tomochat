@@ -32,8 +32,7 @@ function ChatHeader({
   const openMenu = () => setMenuVisible(true);
 
   const handleAction = async (action: string) => {
-    console.log("Action: ", action);
-    // @todos fix this condition - if props coming from hoc, how to fix type error.
+    // @todos fix this condition - if props coming from hoc, how to fix type error. - useContext
     copyToClipboard && (await copyToClipboard(inviteId));
     closeMenu();
   };

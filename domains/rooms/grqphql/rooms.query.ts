@@ -4,6 +4,7 @@ export const ROOMS = `
       id
       name
       topic
+      inviteLink
       lastMessage
       members {
         user {
