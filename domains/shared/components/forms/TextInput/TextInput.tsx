@@ -1,39 +1,33 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
-import React from "react";
+import React, { forwardRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput as PaperTextInput, Text } from "react-native-paper";
+import { FormTextInputProps } from "./types";
+import { TextInputProps as PaperTextInputProps } from "react-native-paper";
 
-export default function TextInput({
-  label,
-  value,
-  onChangeText,
-  error,
-  secureTextEntry = false,
-  autoCapitalize = "none",
-}: FormTextInputProps) {
-  const theme = useAppTheme();
+const TextInput = forwardRef<PaperTextInputProps, FormTextInputProps>(
+  ({ label, errorMessage, ...rest }, ref) => {
+    const theme = useAppTheme();
 
-  return (
-    <View style={styles.wrapper}>
-      <PaperTextInput
-        label={label}
-        value={value}
-        onChangeText={onChangeText}
-        error={!!error}
-        secureTextEntry={secureTextEntry}
-        autoCapitalize={autoCapitalize}
-        style={styles.input}
-      />
-      <View style={styles.errorWrapper}>
-        {!!error && (
-          <Text style={[styles.errorText, { color: theme.colors.error }]}>
-            {error}
-          </Text>
-        )}
+    return (
+      <View style={styles.wrapper}>
+        <PaperTextInput
+          label={label}
+          error={!!errorMessage}
+          style={styles.input}
+          {...rest}
+        />
+        <View style={styles.errorWrapper}>
+          {!!errorMessage && (
+            <Text style={[styles.errorText, { color: theme.colors.error }]}>
+              {errorMessage}
+            </Text>
+          )}
+        </View>
       </View>
-    </View>
-  );
-}
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -41,7 +35,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 4,
-    fontSize: 13,
+    fontSize: 16,
   },
   errorWrapper: {
     minHeight: 14,
@@ -53,3 +47,5 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
 });
+
+export default TextInput;

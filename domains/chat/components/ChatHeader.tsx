@@ -8,6 +8,8 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useCopyToClipboard } from "../hoc/useCopyToClipboard";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
 
+// @todo lock group??
+
 type ChatHeaderProps = {
   name?: string;
   privateMode?: boolean;
@@ -97,10 +99,6 @@ function ChatHeader({
             title="Copy Room Link"
           />
           <Menu.Item onPress={() => handleAction("mute")} title="Mute" />
-          <Menu.Item
-            onPress={() => handleAction("mute")}
-            title="@todos Lock Group"
-          />
           <Menu.Item
             onPress={() => handleAction("delete")}
             title="Delete Chat"

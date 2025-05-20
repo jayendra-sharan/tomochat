@@ -2,7 +2,8 @@ import { View, StyleSheet } from "react-native";
 import { Text, Button } from "react-native-paper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import TextInput from "@/domains/shared/components/forms/TextInput";
-import { useState } from "react";
+import { TextInput as TextInputType } from "react-native";
+import { useRef, useState } from "react";
 import { useRegisterForm } from "@/domains/auth/hooks/useRegisterForm";
 import { setUrlAsync } from "expo-clipboard";
 import { useRegisterMutation } from "@/domains/auth/authApi";
@@ -13,6 +14,10 @@ export default function RegisterScreen() {
   const { invite_id: inviteId } = useLocalSearchParams<{ invite_id: string }>();
   const { user, errors, updateUser } = useRegisterForm();
   const [register, { isLoading }] = useRegisterMutation();
+
+  const passwordRef = useRef<TextInputType>(null);
+  const rePasswordRef = useRef<TextInputType>(null);
+  const displayNameRef = useRef<TextInputType>(null);
 
   const { email, password, rePassword, displayName } = user;
 
@@ -47,30 +52,47 @@ export default function RegisterScreen() {
         label="Email"
         value={email}
         onChangeText={(text) => updateUser("email", text)}
-        error={errors.email}
+        errorMessage={errors.email}
+        returnKeyType="next"
+        onSubmitEditing={() => {
+          passwordRef.current?.focus();
+        }}
       />
 
       <TextInput
+        ref={passwordRef}
         label="Password"
         secureTextEntry
         value={password}
         onChangeText={(text) => updateUser("password", text)}
-        error={errors.password}
+        errorMessage={errors.password}
+        returnKeyType="next"
+        onSubmitEditing={() => {
+          rePasswordRef.current?.focus();
+        }}
       />
 
       <TextInput
+        ref={rePasswordRef}
         label="Re-enter password"
         secureTextEntry
         value={rePassword}
         onChangeText={(text) => updateUser("rePassword", text)}
-        error={errors.rePassword}
+        errorMessage={errors.rePassword}
+        returnKeyType="next"
+        onSubmitEditing={() => {
+          displayNameRef.current?.focus();
+        }}
       />
 
       <TextInput
+        ref={displayNameRef}
         label="Display name"
         value={displayName}
         onChangeText={(text) => updateUser("displayName", text)}
-        error={errors.displayName}
+        errorMessage={errors.displayName}
+        returnKeyType="done"
+        onSubmitEditing={handleRegisterClick}
       />
 
       <Button
