@@ -6,11 +6,12 @@ import { useGetGroupChatsQuery } from "@/domains/chat/chatApi";
 import { useSingleQueryParam } from "@/services/router/useSingleQueryParam";
 import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import { User } from "@/domains/auth/types";
-import { useChatRoom } from "@/services/socket/hooks/useChatRoom";
+import { useChatRoom } from "@/domains/socket/hooks/useChatRoom";
 import useNewMessageEvent from "@/domains/chat/hooks/useNewMessageEvent";
 import { useSelector } from "react-redux";
 import { ChatState } from "@/domains/chat/chatSlice";
 import { useLocalSearchParams } from "expo-router";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
 type ChatScreenProps = {
   user: User;
@@ -36,29 +37,35 @@ function ChatScreen({ user }: ChatScreenProps) {
   );
 
   return (
-    <View style={styles.container}>
-      <ChatHeader
-        name={name}
-        privateMode={privateMode}
-        inviteId={`${chatId}--${invite_id}`}
-      />
-      <View style={styles.bodyContainer}>
-        {messages && messages.length ? (
-          <ChatBody
-            userId={id ?? ""}
-            roomId={chatId}
-            messages={messages}
-            privateMode={privateMode}
-          />
-        ) : null}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={44} // Adjust depending on header height
+    >
+      <View style={styles.container}>
+        <ChatHeader
+          name={name}
+          privateMode={privateMode}
+          inviteId={`${chatId}--${invite_id}`}
+        />
+        <View style={styles.bodyContainer}>
+          {messages && messages.length ? (
+            <ChatBody
+              userId={id ?? ""}
+              roomId={chatId}
+              messages={messages}
+              privateMode={privateMode}
+            />
+          ) : null}
+        </View>
+        <ChatInput
+          displayName={displayName}
+          userId={id ?? ""}
+          groupId={chatId as string}
+          isPrivate={privateMode}
+        />
       </View>
-      <ChatInput
-        displayName={displayName}
-        userId={id ?? ""}
-        groupId={chatId as string}
-        isPrivate={privateMode}
-      />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

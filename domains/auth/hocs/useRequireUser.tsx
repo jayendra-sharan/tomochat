@@ -1,18 +1,18 @@
 import LoadingScreen from "@/domains/shared/components/LoadingScreen";
-import { useGetMeQuery } from "../authApi";
 import { Redirect } from "expo-router";
+import { useAuth } from "../hooks/useAuth";
 
 export function useRequireUser<T extends object>(
   Component: React.ComponentType<T>,
 ) {
   return function WrappedComponent(props: T) {
-    const { data: user, isLoading } = useGetMeQuery();
+    const { user, isLoggedIn, isLoading } = useAuth();
 
     if (isLoading) {
       return <LoadingScreen />;
     }
 
-    if (!user) {
+    if (!isLoggedIn) {
       return <Redirect href={"/login"} />;
     }
 

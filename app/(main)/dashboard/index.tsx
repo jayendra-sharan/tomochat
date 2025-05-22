@@ -15,6 +15,7 @@ import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import Rooms from "@/domains/rooms/components/Rooms";
 import { Room } from "@/domains/shared/types";
 import { registerForPushNotificationsAsync } from "@/services/notifications";
+import { useRegisterPushTokenMutation } from "@/domains/notification/notificationApi";
 
 function DashboardPage() {
   const theme = useAppTheme();
@@ -30,10 +31,15 @@ function DashboardPage() {
   };
 
   // @todo extract later
+  const [registerPushToken, { isLoading }] = useRegisterPushTokenMutation();
+
   useEffect(() => {
+    console.log("Asking for permission");
     registerForPushNotificationsAsync().then((token) => {
+      console.log("Asking for permission, Next", token);
       if (token) {
-        // save to backend
+        const platform = Platform.OS as string;
+        const res = registerPushToken({ token, platform });
       }
     });
   }, []);

@@ -110,7 +110,9 @@ export default function LoginScreen() {
         errorMessage={errors.username}
         returnKeyType="next"
         onSubmitEditing={() => {
-          passwordRef.current?.focus();
+          setTimeout(() => {
+            passwordRef.current?.focus();
+          }, 500);
         }}
         autoCapitalize="none"
       />

@@ -38,6 +38,7 @@ export default function ChatBody({
         styles.contentContainer,
         privateMode && styles.privateMode,
       ]}
+      keyboardShouldPersistTaps="handled"
     >
       {messages.map((message: Message) => (
         <MessageBubble

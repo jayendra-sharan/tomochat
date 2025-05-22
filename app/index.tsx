@@ -2,6 +2,7 @@ import { useGetMeQuery } from "@/domains/auth/authApi";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, View } from "react-native";
+import * as Notifications from "expo-notifications";
 
 export default function Home() {
   const { data: user } = useGetMeQuery();

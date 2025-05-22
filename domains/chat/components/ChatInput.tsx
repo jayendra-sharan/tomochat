@@ -9,8 +9,8 @@ import {
 import { chatApi, useSendMessageMutation } from "@/domains/chat/chatApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useTypingIndicator } from "@/domains/chat/hooks/useTypingIndicator";
-import socket from "@/services/socket/socket";
-import { SocketEvents } from "@/services/socket/socketEvents";
+import { SocketEvents } from "@/domains/socket/events";
+import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 
 type ChatInputProps = {
   groupId: string;
@@ -28,6 +28,8 @@ export default function ChatInput({
   const theme = useTheme();
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const socket = useSocketContext();
 
   const dispatch = useAppDispatch();
   const [sendMessage] = useSendMessageMutation();

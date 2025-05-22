@@ -5,7 +5,7 @@ import { Platform } from "react-native";
 export async function registerForPushNotificationsAsync(): Promise<
   string | null
 > {
-  if (!Device.isDevice) return null;
+  if (!Device.isDevice || process.env.NODE_ENV === "development") return null;
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import socket from "@/services/socket/socket";
-import { SocketEvents } from "@/services/socket/socketEvents";
+import { SocketEvents } from "@/domains/socket/events";
 import { TypingUserPayload } from "@/domains/shared/types/socketEvents";
+import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 
 export default function useTypingUsers({
   roomId,
@@ -11,6 +11,7 @@ export default function useTypingUsers({
   currentUserId: string;
 }) {
   const [typingUserIds, setTypingUserIds] = useState<TypingUserPayload[]>([]);
+  const socket = useSocketContext();
 
   useEffect(() => {
     if (!roomId) return;
