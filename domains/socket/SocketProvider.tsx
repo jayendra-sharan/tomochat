@@ -11,9 +11,14 @@ import {
   useEffect,
 } from "react";
 import { initSocket } from "./lib/socketService";
+import { useInAppNotification } from "../notification/hooks/useInAppNotification";
+
+export type SocketType =
+  | Socket<ServerToClientEvents, ClientToServerEvents>
+  | undefined;
 
 type SocketContextType = {
-  socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+  socket: SocketType;
 };
 
 export const SocketContext = createContext<SocketContextType | undefined>(
@@ -32,10 +37,7 @@ const useSocketContext = () => {
 };
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  const [socket, setSocket] = useState<Socket<
-    ServerToClientEvents,
-    ClientToServerEvents
-  > | null>(null);
+  const [socket, setSocket] = useState<SocketType>(undefined);
 
   useEffect(() => {
     const connect = async () => {
@@ -44,6 +46,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     };
     connect();
   }, []);
+
+  useInAppNotification(socket);
 
   return (
     <SocketContext.Provider value={{ socket }}>

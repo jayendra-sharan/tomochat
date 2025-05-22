@@ -11,6 +11,7 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useTypingIndicator } from "@/domains/chat/hooks/useTypingIndicator";
 import { SocketEvents } from "@/domains/socket/events";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
+import { Platform } from "react-native";
 
 type ChatInputProps = {
   groupId: string;
@@ -97,10 +98,20 @@ export default function ChatInput({
         value={message}
         onChangeText={handleChangeText}
         placeholder="Type a message"
-        style={styles.input}
+        style={{
+          flex: 1,
+          borderCurve: "circular",
+          margin: Platform.OS === "web" ? 10 : 0,
+          height: Platform.OS === "web" ? 36 : "auto",
+        }}
         multiline
         numberOfLines={1}
         returnKeyType="default"
+        contentStyle={{
+          padding: 5,
+          paddingLeft: 10,
+          verticalAlign: "middle",
+        }}
       />
       <View style={{ width: 40, justifyContent: "center" }}>
         {isLoading ? (
@@ -123,8 +134,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 8,
     borderTopWidth: 1,
+    paddingLeft: 10,
+    paddingBlock: Platform.OS === "web" ? 0 : 10,
   },
   input: {
     flex: 1,

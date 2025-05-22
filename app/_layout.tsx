@@ -12,21 +12,22 @@ import FeatureProvider from "@/redux/FeatureProvider";
 import AppWrapper from "@/domains/shared/components/AppWrapper";
 import { toastConfig } from "@/domains/notification/components/toastConfig";
 import { SocketProvider } from "@/domains/socket/SocketProvider";
+import SafeAreaWrapper from "@/domains/shared/components/SafeAreaWrapper";
 
 export default function Layout() {
-  const Wraper = Platform.OS === "web" ? WebWrapper : AppWrapper;
   return (
     <Provider store={store}>
       <FeatureProvider>
         <PaperProvider theme={TomoTheme}>
           <SocketProvider>
-            <Wraper>
-              {Platform.OS === "web" && <Header />}
-              <View style={{ flex: 1 }}>
-                <Slot />
-              </View>
+            <WebWrapper>
+              <SafeAreaWrapper>
+                <View style={{ flex: 1 }}>
+                  <Slot />
+                </View>
+              </SafeAreaWrapper>
               <Toast />
-            </Wraper>
+            </WebWrapper>
           </SocketProvider>
         </PaperProvider>
       </FeatureProvider>

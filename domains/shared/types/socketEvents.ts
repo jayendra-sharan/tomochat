@@ -3,13 +3,19 @@ import { Message } from "@/domains/chat/types";
 export type JoinRoomPayload = {
   roomId: string;
   userId: string;
-}
+};
 
 export type TypingUserPayload = {
   userId: string;
   roomId: string;
   displayName: string;
-}
+};
+
+export type InAppNotificationPayload = {
+  roomName: string;
+  displayName: string;
+  message: string;
+};
 
 export interface ClientToServerEvents {
   start_typing: (payload: TypingUserPayload) => void;
@@ -23,4 +29,5 @@ export interface ServerToClientEvents {
   typing_started: (payload: TypingUserPayload) => void;
   typing_stopped: (payload: TypingUserPayload) => void;
   new_message: (payload: Message) => void;
+  in_app_notification: (payload: InAppNotificationPayload) => void;
 }

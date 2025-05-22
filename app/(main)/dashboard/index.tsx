@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { View, FlatList, StyleSheet, Platform } from "react-native";
+import { View, FlatList, StyleSheet, Platform, Alert } from "react-native";
 import { Text, List, IconButton } from "react-native-paper";
 import { useRouter } from "expo-router";
 import GroupAvatar from "@/domains/shared/components/GroupAvatar";
@@ -16,11 +16,14 @@ import Rooms from "@/domains/rooms/components/Rooms";
 import { Room } from "@/domains/shared/types";
 import { registerForPushNotificationsAsync } from "@/services/notifications";
 import { useRegisterPushTokenMutation } from "@/domains/notification/notificationApi";
+import { useAuth } from "@/domains/auth/hooks/useAuth";
 
 function DashboardPage() {
   const theme = useAppTheme();
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  const { displayName } = useAuth();
 
   const handleLogout = () => {
     storage.removeItem(AUTH_TOKEN);
@@ -64,7 +67,14 @@ function DashboardPage() {
           },
         ]}
       >
-        <IconButton icon="account" size={24} onPress={() => {}} />
+        <IconButton
+          icon="account"
+          size={24}
+          onPress={() => {
+            Alert.alert("User", displayName);
+            console.log("user", displayName);
+          }}
+        />
         <IconButton
           icon="plus"
           size={24}

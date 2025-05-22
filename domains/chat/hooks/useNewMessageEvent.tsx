@@ -11,7 +11,7 @@ export default function useNewMessageEvent(roomId: string) {
   const socket = useSocketContext();
 
   useEffect(() => {
-    if (!roomId) return;
+    if (!roomId || !socket) return;
 
     const handleNewMessage = (message: Message) => {
       // if current group === message group
@@ -38,5 +38,5 @@ export default function useNewMessageEvent(roomId: string) {
     return () => {
       socket.off(SocketEvents.NEW_MESSAGE, handleNewMessage);
     };
-  }, [roomId]);
+  }, [roomId, socket]);
 }

@@ -7,18 +7,12 @@ import * as Notifications from "expo-notifications";
 export default function Home() {
   const { data: user } = useGetMeQuery();
   const router = useRouter();
-  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      if (user?.email) router.push("/(main)/dashboard");
-      else router.push("/(auth)/login");
-    }
-  }, [user?.email, mounted]);
+    if (!user) return;
+    if (user.email) router.push("/(main)/dashboard");
+    else router.push("/(auth)/login");
+  }, [user]);
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

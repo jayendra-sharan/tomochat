@@ -14,7 +14,7 @@ export default function useTypingUsers({
   const socket = useSocketContext();
 
   useEffect(() => {
-    if (!roomId) return;
+    if (!roomId || !socket) return;
     const handleTypingStarted = ({
       userId,
       roomId: incomingRoomId,
@@ -51,7 +51,7 @@ export default function useTypingUsers({
       socket.off(SocketEvents.TYPING_STARTED, handleTypingStarted);
       socket.off(SocketEvents.TYPING_STOPPED, handleTypingStopped);
     };
-  }, [roomId]);
+  }, [roomId, socket]);
 
   const showTypingIndicator = !!typingUserIds.length;
   const senderNames = typingUserIds.map((user) => user.displayName).join(", ");
