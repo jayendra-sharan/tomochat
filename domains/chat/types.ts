@@ -23,6 +23,7 @@ export type Suggestion = {
   improved: string;
   english: string;
   issues: [string];
+  original: string;
 };
 
 export type Message = {

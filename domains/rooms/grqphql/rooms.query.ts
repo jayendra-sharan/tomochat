@@ -6,6 +6,7 @@ export const ROOMS = `
       topic
       inviteLink
       lastMessage
+      isUnread
       members {
         user {
           displayName

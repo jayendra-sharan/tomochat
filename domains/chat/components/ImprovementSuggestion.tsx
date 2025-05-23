@@ -19,21 +19,15 @@ export function ImprovementSuggestion({
         padding: 10,
       }}
     >
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-        }}
-      >
+      <View style={styles.textWrapper}>
         <Text style={styles.label}>You said:</Text>
-        <Text style={styles.text}>{suggestion.improved}</Text>
+        <Text style={styles.text}>{suggestion.original}</Text>
       </View>
-      <View style={{ display: "flex", flexDirection: "row" }}>
+      <View style={styles.textWrapper}>
         <Text style={styles.label}>English:</Text>
         <Text style={styles.text}>{suggestion.english}</Text>
       </View>
-      <View style={{ display: "flex", flexDirection: "row" }}>
+      <View style={styles.textWrapper}>
         <Text style={styles.label}>Issues:</Text>
         <Text style={styles.text}>{suggestion.issues.join(", ")}</Text>
       </View>
@@ -42,17 +36,21 @@ export function ImprovementSuggestion({
 }
 
 const styles = StyleSheet.create({
+  textWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+  },
   label: {
     fontSize: 14,
     fontWeight: "bold",
     paddingVertical: 3,
     textAlign: "left",
-    width: "20%",
+    marginRight: 4,
   },
   text: {
     fontSize: 14,
     fontWeight: "normal",
     textAlign: "left",
-    width: "80%",
   },
 });

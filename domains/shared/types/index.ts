@@ -12,4 +12,5 @@ export type Room = {
   inviteLink: string;
   members: Member[];
   lastMessage: string;
+  isUnread: boolean;
 };

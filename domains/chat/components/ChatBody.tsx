@@ -30,8 +30,10 @@ export default function ChatBody({
   const handleMessageTap = useCallback(
     (messageId: string) => {
       const message = messages.find((message) => message.id === messageId);
-      setSuggestion(message?.suggestion);
-      setExpandedBubbleId(messageId);
+      if (message?.suggestion) {
+        setSuggestion(message?.suggestion);
+        setExpandedBubbleId(messageId);
+      }
     },
     [messages.length],
   );

@@ -18,13 +18,16 @@ import { registerForPushNotificationsAsync } from "@/services/notifications";
 import { useRegisterPushTokenMutation } from "@/domains/notification/notificationApi";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
 import ChatFilters from "@/domains/chat/components/ChatFilters";
+import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
+import { SocketEvents } from "@/domains/socket/events";
 
 function DashboardPage() {
   const theme = useAppTheme();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const socket = useSocketContext();
 
-  const { displayName } = useAuth();
+  const { userId, displayName } = useAuth();
 
   const handleLogout = () => {
     storage.removeItem(AUTH_TOKEN);
@@ -51,6 +54,10 @@ function DashboardPage() {
   // @todo add invite link to room chat page to avoid url param.
   const enterChat = useCallback((room: Room) => {
     router.push(`/(main)/chat/${room.id}?invite_id=${room.inviteLink}`);
+
+    setTimeout(() => {
+      socket?.emit(SocketEvents.READ_MESSAGE, { roomId: room.id, userId })
+    }, 1000);
   }, []);
 
   return (

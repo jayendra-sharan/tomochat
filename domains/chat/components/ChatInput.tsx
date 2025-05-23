@@ -38,7 +38,7 @@ export default function ChatInput({
   const messageBackup = useRef<string>("");
 
   const handleTypingStart = useCallback(() => {
-    socket.emit(SocketEvents.START_TYPING, {
+    socket?.emit(SocketEvents.START_TYPING, {
       roomId: groupId,
       userId,
       displayName,
@@ -46,7 +46,7 @@ export default function ChatInput({
   }, [groupId, userId]);
 
   const handleTypingStop = useCallback(() => {
-    socket.emit(SocketEvents.STOP_TYPING, {
+    socket?.emit(SocketEvents.STOP_TYPING, {
       roomId: groupId,
       userId,
       displayName,

@@ -15,6 +15,7 @@ export const GROUP_MESSAGES = `
           improved
           english
           issues
+          original
         }
         createdAt
       }

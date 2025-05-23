@@ -32,7 +32,7 @@ export default function Rooms({ enterChat }: RoomsProps) {
         descriptionStyle={{ maxWidth: 150, marginTop: 5 }}
         onPress={() => enterChat(item)}
         left={() => <GroupAvatar groupName={item.name} />}
-        right={() => <UnreadIndicator />}
+        right={() => item.isUnread ? <UnreadIndicator /> : null  }
       />
     );
   };
