@@ -9,7 +9,7 @@ export default function SafeAreaWrapper({
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: "#fafafa" }}
         edges={["top", "bottom", "left", "right"]}
       >
         {children}

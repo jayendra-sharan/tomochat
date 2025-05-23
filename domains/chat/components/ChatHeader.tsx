@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { IconButton, Menu, Switch, useTheme } from "react-native-paper";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
@@ -7,8 +7,10 @@ import { setPrivateMode } from "../chatSlice";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useCopyToClipboard } from "../hoc/useCopyToClipboard";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
-
-// @todo lock group??
+import { Appbar, Text } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import GroupAvatar from "@/domains/shared/components/GroupAvatar";
+import { current } from "@reduxjs/toolkit";
 
 type ChatHeaderProps = {
   name?: string;
@@ -40,36 +42,39 @@ function ChatHeader({
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
+    <View style={[styles.container]}>
       <View style={styles.leftContainer}>
-        <IconButton
-          icon="chevron-left"
-          size={24}
-          style={{ width: 30, height: 30 }}
-          onPress={() => router.push("/(main)/dashboard")}
+        <Appbar.BackAction
+          onPress={() => {
+            router.push("/(main)/dashboard");
+          }}
         />
+
         <View
-          style={[styles.groupDetails, { borderColor: theme.colors.outline }]}
+          style={[styles.groupWrapper, { borderColor: theme.colors.outline }]}
         >
-          <Text
-            style={[
-              styles.title,
-              { color: theme.colors.onSurface, fontSize: theme.fontSizes.body },
-            ]}
-          >
-            {name}
-          </Text>
-          <Text
-            style={[
-              styles.subtext,
-              {
-                color: theme.colors.onSurfaceVariant,
-                fontSize: theme.fontSizes.secondary,
-              },
-            ]}
-          >
-            status
-          </Text>
+          <View>
+            <GroupAvatar groupName={name || ""} />
+          </View>
+          <View style={styles.groupDetails}>
+            <Text
+              variant="titleMedium"
+              style={[styles.title, { color: theme.colors.onSurface }]}
+            >
+              {name}
+            </Text>
+            <Text
+              variant="labelSmall"
+              style={[
+                styles.subtext,
+                {
+                  color: theme.colors.onSurfaceVariant,
+                },
+              ]}
+            >
+              status
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -119,21 +124,28 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderBottomWidth: 1,
     borderBottomColor: "#f4f5f6",
+    backgroundColor: "#fafafa",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
   },
   leftContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
+  groupWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   groupDetails: {
-    paddingVertical: 2,
+    marginLeft: 10,
   },
-  title: {
-    fontWeight: "600",
-  },
-  subtext: {
-    fontSize: 14,
-    marginTop: 4,
-  },
+  title: {},
+  subtext: {},
   rightContainer: {
     display: "flex",
     flexDirection: "row",

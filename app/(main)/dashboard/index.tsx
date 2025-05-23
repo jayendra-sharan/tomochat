@@ -17,6 +17,7 @@ import { Room } from "@/domains/shared/types";
 import { registerForPushNotificationsAsync } from "@/services/notifications";
 import { useRegisterPushTokenMutation } from "@/domains/notification/notificationApi";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
+import ChatFilters from "@/domains/chat/components/ChatFilters";
 
 function DashboardPage() {
   const theme = useAppTheme();
@@ -54,6 +55,7 @@ function DashboardPage() {
 
   return (
     <View style={styles.page}>
+      <ChatFilters />
       <View style={styles.scrollable}>
         <Rooms enterChat={enterChat} />
       </View>
@@ -63,7 +65,7 @@ function DashboardPage() {
           styles.bottomBar,
           {
             backgroundColor: theme.colors.surface,
-            borderTopColor: theme.colors.outline,
+            borderColor: theme.colors.outline,
           },
         ]}
       >
@@ -86,7 +88,7 @@ function DashboardPage() {
   );
 }
 
-const BOTTOM_BAR_HEIGHT = 70;
+const BOTTOM_BAR_HEIGHT = 60;
 
 const styles = StyleSheet.create({
   page: {
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    paddingTop: 20,
   },
   scrollable: {
     flex: 1,
@@ -101,11 +104,13 @@ const styles = StyleSheet.create({
   } as any,
   bottomBar: {
     height: BOTTOM_BAR_HEIGHT,
-    borderTopWidth: 1,
+    borderWidth: 1,
     paddingHorizontal: 12,
+    marginHorizontal: 12,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderRadius: 60,
   },
   loadingContainer: {
     flex: 1,

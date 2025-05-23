@@ -6,6 +6,7 @@ import { FlatList } from "react-native";
 import { Room } from "@/domains/shared/types";
 import { List } from "react-native-paper";
 import GroupAvatar from "@/domains/shared/components/GroupAvatar";
+import { UnreadIndicator } from "@/domains/shared/components/UnreadIndicator";
 
 type RoomsProps = {
   enterChat: (room: Room) => void;
@@ -25,11 +26,13 @@ export default function Rooms({ enterChat }: RoomsProps) {
       <List.Item
         style={[styles.listItem, { borderBottomColor: theme.colors.outline }]}
         title={item.name}
-        description={item.lastMessage}
+        titleStyle={{ fontWeight: "bold" }}
+        description={item.lastMessage || "no messages"}
         descriptionNumberOfLines={1}
         descriptionStyle={{ maxWidth: 150, marginTop: 5 }}
         onPress={() => enterChat(item)}
         left={() => <GroupAvatar groupName={item.name} />}
+        right={() => <UnreadIndicator />}
       />
     );
   };
@@ -50,11 +53,12 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   listItem: {
+    paddingVertical: 2,
     textAlign: "left",
     paddingHorizontal: 12,
     marginHorizontal: 4,
     borderRadius: 8,
-    marginBottom: 8,
+    marginBottom: 4,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },

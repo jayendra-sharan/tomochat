@@ -13,6 +13,7 @@ export type TypingUserPayload = {
 
 export type InAppNotificationPayload = {
   roomName: string;
+  roomId: string;
   displayName: string;
   message: string;
 };

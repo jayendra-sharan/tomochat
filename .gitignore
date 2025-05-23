@@ -36,3 +36,4 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 tasks.md
+secrets.md

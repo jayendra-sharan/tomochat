@@ -7,20 +7,20 @@ export default function GroupAvatar({ groupName }: { groupName: string }) {
   return (
     <View
       style={{
-        width: 64,
-        height: 64,
-        borderRadius: 64,
+        width: 48,
+        height: 48,
+        borderRadius: 48,
         backgroundColor: theme.colors.surfaceVariant,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Text
         style={{
           color: theme.colors.onSurface,
-          fontSize: 48,
-          fontWeight: 'bold',
-          textAlign: 'center',
+          fontSize: 32,
+          fontWeight: "bold",
+          textAlign: "center",
         }}
       >
         {groupName.charAt(0).toUpperCase()}

@@ -70,7 +70,7 @@ export default function ChatInput({
       await sendMessage({
         groupId,
         content: message,
-        isPrivate: true,
+        isPrivate: false,
         displayName,
       }).unwrap();
       messageBackup.current = message;
@@ -88,7 +88,7 @@ export default function ChatInput({
       style={[
         styles.container,
         {
-          backgroundColor: theme.colors.surface,
+          backgroundColor: "#fafafa",
           borderColor: theme.colors.outline,
         },
       ]}

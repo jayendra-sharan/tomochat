@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { Message } from "../types";
 import { chatApi } from "../chatApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { showToast } from "@/domains/notification/lib/showToast";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 
 export default function useNewMessageEvent(roomId: string) {
@@ -14,6 +13,7 @@ export default function useNewMessageEvent(roomId: string) {
     if (!roomId || !socket) return;
 
     const handleNewMessage = (message: Message) => {
+      console.log("New message received", message);
       // if current group === message group
       // update chat history
       //
@@ -31,7 +31,6 @@ export default function useNewMessageEvent(roomId: string) {
           },
         ),
       );
-      showToast("info", "new message", message.content);
     };
     socket.on(SocketEvents.NEW_MESSAGE, handleNewMessage);
 

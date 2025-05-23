@@ -1,9 +1,12 @@
 import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
-import { Message } from "@/domains/chat/types";
+import { Message, Suggestion } from "@/domains/chat/types";
 import { TypingIndicatorBubble } from "@/domains/chat/components/TypingIndicatorBubble";
 import useTypingUsers from "@/domains/chat/hooks/useTypingUsers";
+import ChatInfoBottomSheet from "./ChatInfoBottomSheet";
+import { ImprovementSuggestion } from "./ImprovementSuggestion";
+import { KeyboardAwareScrollView } from "@/domains/shared/components/KeyboardAwareScrollView";
 
 type ChatBodyProps = {
   messages: Message[];
@@ -19,8 +22,19 @@ export default function ChatBody({
   roomId,
 }: ChatBodyProps) {
   const scrollRef = useRef<ScrollView>(null);
+  const nextMessageSenderId = useRef<string>("");
+  const currentMessageSenderId = useRef<string>("");
   const [expandedBubbleId, setExpandedBubbleId] = useState<string>("");
+  const [suggestion, setSuggestion] = useState<Suggestion | undefined | null>();
 
+  const handleMessageTap = useCallback(
+    (messageId: string) => {
+      const message = messages.find((message) => message.id === messageId);
+      setSuggestion(message?.suggestion);
+      setExpandedBubbleId(messageId);
+    },
+    [messages.length],
+  );
   const { showTypingIndicator, senderNames } = useTypingUsers({
     roomId,
     currentUserId: userId,
@@ -31,28 +45,50 @@ export default function ChatBody({
   }, [messages.length, showTypingIndicator]);
 
   return (
-    <ScrollView
-      ref={scrollRef}
-      style={styles.scrollView}
-      contentContainerStyle={[
-        styles.contentContainer,
-        privateMode && styles.privateMode,
-      ]}
-      keyboardShouldPersistTaps="handled"
-    >
-      {messages.map((message: Message) => (
-        <MessageBubble
-          key={message.id}
-          message={message}
-          userId={userId}
-          expandedBubbleId={expandedBubbleId}
-          setExpandedBubbleId={setExpandedBubbleId}
-        />
-      ))}
-      {!!showTypingIndicator && (
-        <TypingIndicatorBubble key="typing" senderName={senderNames} />
-      )}
-    </ScrollView>
+    <>
+      <KeyboardAwareScrollView
+        ref={scrollRef}
+        contentContainerStyle={[
+          styles.contentContainer,
+          privateMode && styles.privateMode,
+        ]}
+      >
+        {/* <ScrollView
+        ref={scrollRef}
+        style={styles.scrollView}
+        contentContainerStyle={[
+          styles.contentContainer,
+          privateMode && styles.privateMode,
+        ]}
+        keyboardShouldPersistTaps="handled"
+      > */}
+        {messages.map((message: Message, index: number) => {
+          currentMessageSenderId.current = message.sender.id;
+          nextMessageSenderId.current = messages[index - 1]?.sender.id;
+          return (
+            <MessageBubble
+              key={message.id}
+              message={message}
+              userId={userId}
+              handleMessageTap={handleMessageTap}
+              renderName={
+                currentMessageSenderId.current !== nextMessageSenderId.current
+              }
+            />
+          );
+        })}
+        {!!showTypingIndicator && (
+          <TypingIndicatorBubble key="typing" senderName={senderNames} />
+        )}
+        {/* </ScrollView> */}
+      </KeyboardAwareScrollView>
+      <ChatInfoBottomSheet
+        visible={!!expandedBubbleId}
+        onClose={() => setExpandedBubbleId("")}
+      >
+        <ImprovementSuggestion suggestion={suggestion} />
+      </ChatInfoBottomSheet>
+    </>
   );
 }
 

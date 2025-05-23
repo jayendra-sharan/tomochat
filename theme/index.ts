@@ -26,7 +26,7 @@ export const TomoTheme: MD3Theme & {
     // Override Paper tokens (optional)
     primary: "#2E7BE0",
     onPrimary: "#FFFFFF",
-    background: "#FAFAFA",
+    background: "#F2F2F2",
     surface: "#FFFFFF",
     onSurface: "#212121",
     surfaceVariant: "#F5F5F5",
