@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
-export default function GroupAvatar({ groupName }: { groupName: string }) {
+export default function RoomAvatar({ roomName }: { roomName: string }) {
   const theme = useTheme();
 
   return (
@@ -23,7 +23,7 @@ export default function GroupAvatar({ groupName }: { groupName: string }) {
           textAlign: "center",
         }}
       >
-        {groupName.charAt(0).toUpperCase()}
+        {roomName.charAt(0).toUpperCase()}
       </Text>
     </View>
   );

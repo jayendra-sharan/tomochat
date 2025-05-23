@@ -24,8 +24,8 @@ export default function useNewMessageEvent(roomId: string) {
       // - show unread and unread count
       dispatch(
         chatApi.util.updateQueryData(
-          "getGroupChats",
-          { groupId: roomId },
+          "getRoomChats",
+          { roomId },
           (draft) => {
             draft.messages.push(message);
           },

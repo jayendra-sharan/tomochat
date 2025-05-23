@@ -1,6 +1,6 @@
-export const GROUPS = `
-  query Groups {
-    groups {
+export const ROOMS = `
+  query Rooms {
+    rooms {
       id
       name
       topic

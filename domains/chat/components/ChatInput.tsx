@@ -14,14 +14,14 @@ import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { Platform } from "react-native";
 
 type ChatInputProps = {
-  groupId: string;
+  roomId: string;
   userId: string;
   displayName: string;
   isPrivate: boolean;
 };
 
 export default function ChatInput({
-  groupId,
+  roomId,
   userId,
   displayName,
   isPrivate,
@@ -39,19 +39,19 @@ export default function ChatInput({
 
   const handleTypingStart = useCallback(() => {
     socket?.emit(SocketEvents.START_TYPING, {
-      roomId: groupId,
+      roomId,
       userId,
       displayName,
     });
-  }, [groupId, userId]);
+  }, [roomId, userId]);
 
   const handleTypingStop = useCallback(() => {
     socket?.emit(SocketEvents.STOP_TYPING, {
-      roomId: groupId,
+      roomId,
       userId,
       displayName,
     });
-  }, [groupId, userId]);
+  }, [roomId, userId]);
 
   const triggerTyping = useTypingIndicator({
     onTypingStart: handleTypingStart,
@@ -68,7 +68,7 @@ export default function ChatInput({
       if (!message.trim()) return;
       setIsLoading(true);
       await sendMessage({
-        groupId,
+        roomId,
         content: message,
         isPrivate: false,
         displayName,

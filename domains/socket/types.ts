@@ -1,6 +1,6 @@
 export interface StartTypingPayload {
   userId: string;
-  groupId: string;
+  roomId: string;
   displayName: string;
 }
 

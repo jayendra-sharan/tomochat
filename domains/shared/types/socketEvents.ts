@@ -33,7 +33,6 @@ export interface ClientToServerEvents {
   join_room: (payload: JoinRoomPayload) => void;
   leave_room: (payload: JoinRoomPayload) => void;
   "message:read": (payload: ReadMessagePayload) => void;
-  // send_message: (payload: { groupId: string; content: string; userId: string }) => void;
 }
 
 export interface ServerToClientEvents {

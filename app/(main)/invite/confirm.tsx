@@ -33,7 +33,7 @@ export default function InviteConfirmPage() {
   return (
     <View style={styles.container}>
       <Text variant="titleMedium" style={styles.success}>
-        ✅ You've successfully joined the group!
+        ✅ You've successfully joined the chat!
       </Text>
 
       <View style={styles.actions}>
@@ -44,7 +44,7 @@ export default function InviteConfirmPage() {
           mode="outlined"
           onPress={() => router.push(`/(main)/chat/${room}`)}
         >
-          Open Group Chat
+          Open chat
         </Button>
       </View>
     </View>

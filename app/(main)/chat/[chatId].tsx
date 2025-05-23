@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import ChatHeader from "@/domains/chat/components/ChatHeader";
 import ChatBody from "@/domains/chat/components/ChatBody";
 import ChatInput from "@/domains/chat/components/ChatInput";
-import { useGetGroupChatsQuery } from "@/domains/chat/chatApi";
+import { useGetRoomChatsQuery } from "@/domains/chat/chatApi";
 import { useSingleQueryParam } from "@/services/router/useSingleQueryParam";
 import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import { User } from "@/domains/auth/types";
@@ -21,7 +21,7 @@ function ChatScreen({ user }: ChatScreenProps) {
   const chatId = useSingleQueryParam("chatId");
   // @todo invite_id move to constants
   const { invite_id } = useLocalSearchParams<{ invite_id: string }>();
-  const { data } = useGetGroupChatsQuery({ groupId: chatId as string });
+  const { data } = useGetRoomChatsQuery({ roomId: chatId as string });
   const { id, displayName } = user;
 
   if (!chatId) {
@@ -61,7 +61,7 @@ function ChatScreen({ user }: ChatScreenProps) {
         <ChatInput
           displayName={displayName}
           userId={id ?? ""}
-          groupId={chatId as string}
+          roomId={chatId as string}
           isPrivate={privateMode}
         />
       </View>

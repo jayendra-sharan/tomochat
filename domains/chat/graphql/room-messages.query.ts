@@ -1,6 +1,6 @@
-export const GROUP_MESSAGES = `
-  query GroupMessages($input: GroupMessagesInput!) {
-    groupMessages(input: $input) {
+export const ROOM_MESSAGES = `
+  query RoomMessages($input: RoomMessagesInput!) {
+    roomMessages(input: $input) {
       name
       id
       userId

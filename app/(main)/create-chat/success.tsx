@@ -24,7 +24,7 @@ export default function CreateChatSuccessPage() {
     setCopiedVisible(true);
   };
 
-  const [groupId] = invite_id.split("--");
+  const [roomId] = invite_id.split("--");
 
   // @todo add email address input for inviting people
   return (
@@ -53,10 +53,10 @@ export default function CreateChatSuccessPage() {
         <View>
           <Button
             mode="outlined"
-            onPress={() => router.replace(`/chat/${groupId}`)}
+            onPress={() => router.replace(`/chat/${roomId}`)}
             style={{ marginTop: 32 }}
           >
-            Go to group chat
+            Go to chat
           </Button>
 
           <Button

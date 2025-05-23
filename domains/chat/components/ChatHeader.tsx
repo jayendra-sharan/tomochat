@@ -9,7 +9,7 @@ import { useCopyToClipboard } from "../hoc/useCopyToClipboard";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
 import { Appbar, Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import GroupAvatar from "@/domains/shared/components/GroupAvatar";
+import RoomAvatar from "@/domains/shared/components/RoomAvatar";
 import { current } from "@reduxjs/toolkit";
 
 type ChatHeaderProps = {
@@ -51,12 +51,12 @@ function ChatHeader({
         />
 
         <View
-          style={[styles.groupWrapper, { borderColor: theme.colors.outline }]}
+          style={[styles.roomWrapper, { borderColor: theme.colors.outline }]}
         >
           <View>
-            <GroupAvatar groupName={name || ""} />
+            <RoomAvatar roomName={name || ""} />
           </View>
-          <View style={styles.groupDetails}>
+          <View style={styles.roomDetails}>
             <Text
               variant="titleMedium"
               style={[styles.title, { color: theme.colors.onSurface }]}
@@ -136,12 +136,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  groupWrapper: {
+  roomWrapper: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
   },
-  groupDetails: {
+  roomDetails: {
     marginLeft: 10,
   },
   title: {},

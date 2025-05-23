@@ -15,17 +15,16 @@ export default function InvitePage({ user }: InvitePageProps) {
   const { invite_id: inviteId } = useLocalSearchParams<{ invite_id: string }>();
   const { me } = useLocalSearchParams<{ me: string }>();
   const [password, setPassword] = useState("");
-  const [joining, setJoining] = useState(false);
 
   const [joinRoom, { isLoading }] = useJoinRoomMutation();
 
-  const [groupId] = inviteId.split("--");
+  const [roomId] = inviteId.split("--");
   const handleJoin = async () => {
     if (!inviteId) return;
     // @todos send password and add validation
     const { result } = await joinRoom({ inviteLink: inviteId }).unwrap();
     if (result) {
-      router.replace(`/(main)/invite/confirm?room=${groupId}`);
+      router.replace(`/(main)/invite/confirm?room=${roomId}`);
     } else {
       router.replace(`/(main)/invite/confirm?room=`);
     }
@@ -46,7 +45,7 @@ export default function InvitePage({ user }: InvitePageProps) {
   return (
     <View style={{ padding: 24, flex: 1 }}>
       <Text variant="titleMedium" style={{ marginBottom: 12 }}>
-        You've been invited to join a group on TomoChat.
+        You've been invited to join a chat on TomoChat.
       </Text>
 
       {!me && (
@@ -70,7 +69,7 @@ export default function InvitePage({ user }: InvitePageProps) {
         loading={isLoading}
         disabled={disableButton}
       >
-        Join Group
+        Join chat
       </Button>
     </View>
   );

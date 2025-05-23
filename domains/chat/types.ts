@@ -5,7 +5,7 @@ type Member = {
   user: User;
 };
 
-export type Group = {
+export type Room= {
   id: string;
   name: string;
   topic: string;
@@ -34,11 +34,11 @@ export type Message = {
   createdAt: string;
 };
 
-export type GroupMessageInput = {
-  groupId: string;
+export type RoomMessageInput = {
+  roomId: string;
 };
 
-export type GroupMessages = {
+export type RoomMessages = {
   name: string;
   id: string;
   userId: string;
@@ -46,7 +46,7 @@ export type GroupMessages = {
 };
 
 export type SendMessageInput = {
-  groupId: string;
+  roomId: string;
   content: string;
   isPrivate: boolean;
   displayName: string;

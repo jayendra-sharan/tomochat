@@ -5,7 +5,7 @@ import LoadingScreen from "@/domains/shared/components/LoadingScreen";
 import { FlatList } from "react-native";
 import { Room } from "@/domains/shared/types";
 import { List } from "react-native-paper";
-import GroupAvatar from "@/domains/shared/components/GroupAvatar";
+import RoomAvatar from "@/domains/shared/components/RoomAvatar";
 import { UnreadIndicator } from "@/domains/shared/components/UnreadIndicator";
 
 type RoomsProps = {
@@ -31,7 +31,7 @@ export default function Rooms({ enterChat }: RoomsProps) {
         descriptionNumberOfLines={1}
         descriptionStyle={{ maxWidth: 150, marginTop: 5 }}
         onPress={() => enterChat(item)}
-        left={() => <GroupAvatar groupName={item.name} />}
+        left={() => <RoomAvatar roomName={item.name} />}
         right={() => item.isUnread ? <UnreadIndicator /> : null  }
       />
     );
