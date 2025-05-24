@@ -37,6 +37,7 @@ export const gqlBaseQuery =
     try {
       const result = await gqlFetch(document, variables);
       if (result.error) {
+        console.error("Error", result.error);
         return {
           error: {
             name: result.error.name || "GraphQLError",
@@ -47,6 +48,7 @@ export const gqlBaseQuery =
 
       return { data: result.data };
     } catch (error: any) {
+      console.error("Error", error);
       return {
         error: {
           name: error?.name || "NetworkError",

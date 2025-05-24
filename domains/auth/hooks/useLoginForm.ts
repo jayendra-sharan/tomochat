@@ -1,33 +1,48 @@
 import { useState, useCallback, useEffect } from 'react';
 
+type User = {
+  email: string;
+  password: string;
+}
 export function useLoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [user, setUser] = useState<User>({
+    email: '',
+    password: '',
+  });
 
-  const [errors, setErrors] = useState({ username: '', password: '' });
-  const [touched, setTouched] = useState({ username: false, password: false });
+  const [errors, setErrors] = useState<User>({ email: '', password: '' });
+  const [touched, setTouched] = useState({ email: false, password: false });
 
   const validate = useCallback(() => {
-    const newErrors = { username: '', password: '' };
-    if (touched.username && username.trim().length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
-    }
-    if (touched.password && password.length < 2) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
+    const newErrors = { email: '', password: '' };
+    // if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email.trim())) {
+    //   newErrors.email = 'Must be a valid email address';
+    // }
+    // if (touched.password && user.password.length < 2) {
+    //   newErrors.password = 'Password must be at least 6 characters';
+    // }
     setErrors(newErrors);
-  }, [username, password, touched]);
+  }, [user, touched]);
+
+  const updateUser = (field: keyof User, value: string) => {
+    setUser({
+      ...user,
+      [field]: value,
+    });
+    setTouched({
+      ...touched,
+      [field]: true,
+    })
+  }
 
   useEffect(() => {
     const timer = setTimeout(validate, 300);
     return () => clearTimeout(timer);
-  }, [username, password, validate]);
+  }, [user, validate]);
 
   return {
-    username,
-    setUsername,
-    password,
-    setPassword,
+    user,
+    setUser: updateUser,
     errors,
     touched,
     setTouched,

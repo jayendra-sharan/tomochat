@@ -40,7 +40,11 @@ export function useRegisterForm() {
     }));
   };
 
+  const isValidPassword = (password: string) =>
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password);
+
   const validate = useCallback(() => {
+    
     const newErrors = {
       email: "",
       password: "",
@@ -48,13 +52,14 @@ export function useRegisterForm() {
       displayName: "",
     };
     // @todo add email testing
-    if (touched.email && email.trim().length < 6) {
-      newErrors.email = "Username must be at least 3 characters";
-    }
-    // @todo add password policy
-    if (touched.password && password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
+    // if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    //   newErrors.email = "Username must be a valid email address";
+    // }
+    // // @todo add password policy
+    
+    // if (touched.password && !isValidPassword(password)) {
+    //   newErrors.password = "Password must be at least 6 characters";
+    // }
     if (touched.rePassword && rePassword !== password) {
       newErrors.rePassword = "Must match with password";
     }

@@ -22,10 +22,21 @@ export default function MessageBubble({
   const theme = useAppTheme();
   const time = format(new Date(message.createdAt), "HH:mm");
 
+  const isSystemMessage = message.sender.id === "SYSTEM";
   const isSelf = userId === message.sender.id;
   const backgroundColor = isSelf
     ? theme.colors.chatBubbleSelf
     : theme.colors.chatBubbleOther;
+  
+  const bubblePosition = () => {
+    if (isSystemMessage) {
+      return "center"
+    }
+    if (isSelf) {
+      return "flex-end";
+    }
+    return "flex-start"
+  }
 
   const textColor = isSelf
     ? theme.colors.surface || "#0D0D0D"
@@ -36,30 +47,31 @@ export default function MessageBubble({
     : message.content;
 
   const renderMessage = () => {
-    if (renderName) {
+    if (!renderName || isSystemMessage) {
       return (
         <Text style={[styles.content, { color: textColor, fontSize: 14 }]}>
-          <Text
-            style={{ fontWeight: "bold", color: textColor, marginRight: 2 }}
-          >
-            {`${message.sender.displayName}: `}
-          </Text>
           {message.content}
         </Text>
       );
     }
     return (
       <Text style={[styles.content, { color: textColor, fontSize: 14 }]}>
+        <Text
+          style={{ fontWeight: "bold", color: textColor, marginRight: 2 }}
+        >
+          {`${message.sender.displayName}: `}
+        </Text>
         {message.content}
       </Text>
     );
   };
+
   const hasSuggestion = message.suggestion;
   return (
     <>
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={() => handleMessageTap(message.id)}>
-          <View style={[isSelf ? [styles.selfBubble] : [styles.othersBubble]]}>
+          <View style={{ "alignSelf": bubblePosition()}}>
             <View
               style={[
                 isSelf ? [styles.bubble] : [styles.bubble],
@@ -76,16 +88,20 @@ export default function MessageBubble({
                 <Icon source="lightbulb" size={10} color="yellow" />
               )}
             </View>
-            <Text
-              style={{
-                fontSize: 11,
-                alignSelf: "flex-end",
-                marginTop: 4,
-                marginRight: 8,
-              }}
-            >
-              {time}
-            </Text>
+            {
+              !isSystemMessage && (
+                <Text
+                  style={{
+                    fontSize: 11,
+                    alignSelf: "flex-end",
+                    marginTop: 4,
+                    marginRight: 8,
+                  }}
+                >
+                  {time}
+                </Text>
+              )
+            }
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -114,10 +130,8 @@ const styles = StyleSheet.create({
   },
   othersBubble: {
     alignSelf: "flex-start",
-    borderBottomLeftRadius: 0,
   },
   selfBubble: {
-    borderBottomRightRadius: 0,
     alignSelf: "flex-end",
   },
   content: {

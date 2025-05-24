@@ -12,9 +12,8 @@ export function useInAppNotification(socket: SocketType) {
     if (!socket) return;
     const inAppNotificationHandler = (data: InAppNotificationPayload) => {
       const { roomId, roomName, displayName, message } = data;
-      const lastMessage = `${displayName}: ${message}`;
-      showToast("info", `${roomName}`, lastMessage);
-      updateLastMessage({ roomId, lastMessage });
+      showToast("info", `${roomName}`, message);
+      updateLastMessage({ roomId,  lastMessage: message});
     };
     socket.on(SocketEvents.IN_APP_NOTIFICATION, inAppNotificationHandler);
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { View, Image, StyleSheet } from "react-native";
 import type { TextInput as RNTextInputType } from "react-native";
 import { Button, Text } from "react-native-paper";
@@ -15,42 +15,61 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useLoginForm } from "@/domains/auth/hooks/useLoginForm";
 import { HEADER_HEIGHT } from "@/domains/shared/constants";
 import { getNextRoute } from "@/domains/shared/lib/getNextRoute";
+import Bottomsheet from "@/domains/shared/components/Bottomsheet";
+import EmailVerificationSheet from "@/domains/auth/components/EmailVerificationBottomsheet";
+import LoadingScreen from "@/domains/shared/components/LoadingScreen";
+import { useAuth } from "@/domains/auth/hooks/useAuth";
+import { LoginForm } from "@/domains/auth/components/LoginForm";
 
 export default function LoginScreen() {
   const theme = useAppTheme();
   const router = useRouter();
-  const { invite_id: inviteId, id } = useLocalSearchParams<{
+  const { invite_id: inviteId, id: userId } = useLocalSearchParams<{
     invite_id?: string;
     id?: string;
   }>();
 
-  const passwordRef = useRef<RNTextInputType>(null);
   const [error, setError] = useState("");
   const [login] = useLoginMutation();
+  const { isLoggedIn } = useAuth();
   const [triggerMe] = useLazyGetMeQuery();
-  const { data: user } = useGetMeQuery();
+  const { data: userData } = useGetMeQuery();
+  const [visible, setVisible] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
+  const redirectToDashboard = () => {
+    const nextRoute = getNextRoute(inviteId) as any;
+    router.replace(nextRoute)
+  }
+
   const {
-    username,
-    setUsername,
-    password,
-    setPassword,
+    user,
+    setUser,
     errors,
     touched,
-    setTouched,
     validate,
   } = useLoginForm();
 
   useEffect(() => {
-    if (!inviteId && user?.email) {
-      router.replace("/(main)/dashboard");
+    if (isLoggedIn && !userData?.isEmailVerified) {
+      console.log("User", userData);
+      setVisible(true);
+      return;
+
     }
-  }, [user?.email, inviteId]);
+    if (!inviteId && userData?.email) {
+      redirectToDashboard();
+    }
+  }, [userData?.email, inviteId]);
+
+  const onVerified = () => {
+    setVisible(false);
+    redirectToDashboard();
+  };
 
   const handleLogin = async () => {
-    setTouched({ username: true, password: true });
+    const { email, password } = user;
     setError("");
     validate();
     const hasErrors = Object.values(errors).some(Boolean);
@@ -59,7 +78,7 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const res = await login({
-        email: username,
+        email,
         password,
       });
 
@@ -72,7 +91,11 @@ export default function LoginScreen() {
       if (user?.email && token) {
         await storage.setItem(AUTH_TOKEN, token);
         await triggerMe();
-        router.replace(getNextRoute(inviteId) as any);
+        if (user?.isEmailVerified) {
+          redirectToDashboard();
+        } else {
+          setVisible(true);
+        }
       }
     } catch (err) {
       // @todo update error message
@@ -82,94 +105,34 @@ export default function LoginScreen() {
     }
   };
 
+  if (visible) {
+    return (
+      <>
+        <LoadingScreen loadingText="Verifying email..." />
+        <Bottomsheet
+          visible={visible}
+          onClose={() => {}}
+        >
+          <EmailVerificationSheet email={user?.email} onVerified={onVerified} />
+        </Bottomsheet>
+      </>
+    )
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.logoWrapper}>
-        <Image
-          style={styles.logo}
-          source={require("@/assets/images/logo_vertical.png")}
-        />
-        <Text style={{ marginTop: 20 }} variant="titleMedium">
-          Learn while you talk!
-        </Text>
-      </View>
-
-      {!!id && (
-        <Text style={styles.registrationSuccess}>
-          Registration successful. Login to continue.
-        </Text>
-      )}
-
-      <TextInput
-        label="Username"
-        value={username}
-        onChangeText={(text) => {
-          setUsername(text);
-          setTouched((t) => ({ ...t, username: true }));
-        }}
-        errorMessage={errors.username}
-        returnKeyType="next"
-        onSubmitEditing={() => {
-          setTimeout(() => {
-            passwordRef.current?.focus();
-          }, 500);
-        }}
-        autoCapitalize="none"
-      />
-
-      <TextInput
-        ref={passwordRef}
-        label="Password"
-        value={password}
-        onChangeText={(text) => {
-          setPassword(text);
-          setTouched((t) => ({ ...t, password: true }));
-        }}
-        secureTextEntry
-        errorMessage={errors.password}
-        returnKeyType="done"
-        onSubmitEditing={handleLogin}
-        autoCapitalize="none"
-      />
-
-      {!!error && (
-        <Text
-          style={{
-            textAlign: "center",
-            color: theme.colors.error,
-            fontSize: theme.fontSizes.body,
-          }}
-        >
-          {error}
-        </Text>
-      )}
-
-      <Button
-        mode="contained"
-        onPress={handleLogin}
+    <>
+      <LoginForm
+        user={user}
+        setUser={setUser}
+        errors={errors}
+        touched={touched}
+        error={error}
+        handleLogin={handleLogin}
         loading={loading}
-        disabled={loading || !!errors.username || !!errors.password}
-        labelStyle={[styles.buttonLabel, { color: theme.colors.surface }]}
-        style={styles.button}
-      >
-        {loading ? "Please wait..." : "Login"}
-      </Button>
-
-      {!!inviteId && !id && (
-        <View
-          style={{
-            marginTop: 24,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <Link href={`/(auth)/register?invite_id=${inviteId}`}>
-            Don't have an account? Click here!
-          </Link>
-        </View>
-      )}
-    </View>
+        inviteId={inviteId}
+        userId={userId}
+      />
+    </>
   );
 }
 

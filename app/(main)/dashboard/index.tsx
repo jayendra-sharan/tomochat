@@ -16,12 +16,14 @@ import { useAuth } from "@/domains/auth/hooks/useAuth";
 import ChatFilters from "@/domains/chat/components/ChatFilters";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { SocketEvents } from "@/domains/socket/events";
+import { useFeatureFlag } from "@/redux/FeatureProvider";
 
 function DashboardPage() {
   const theme = useAppTheme();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const socket = useSocketContext();
+  const { showChatFilters } = useFeatureFlag();
 
   const { userId, displayName } = useAuth();
 
@@ -58,7 +60,7 @@ function DashboardPage() {
 
   return (
     <View style={styles.page}>
-      <ChatFilters />
+      {showChatFilters && <ChatFilters />}
       <View style={styles.scrollable}>
         <Rooms enterChat={enterChat} />
       </View>

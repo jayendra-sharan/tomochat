@@ -7,6 +7,7 @@ import { Room } from "@/domains/shared/types";
 import { List } from "react-native-paper";
 import RoomAvatar from "@/domains/shared/components/RoomAvatar";
 import { UnreadIndicator } from "@/domains/shared/components/UnreadIndicator";
+import { NoChatsCreateOne } from "./NoChatsCreateOne";
 
 type RoomsProps = {
   enterChat: (room: Room) => void;
@@ -19,6 +20,10 @@ export default function Rooms({ enterChat }: RoomsProps) {
 
   if (isLoading) {
     return <LoadingScreen />;
+  }
+
+  if (!rooms?.length) {
+    return <NoChatsCreateOne />
   }
 
   const renderItem = ({ item }: { item: Room }) => {

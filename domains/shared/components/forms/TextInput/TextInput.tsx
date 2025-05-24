@@ -12,6 +12,7 @@ const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
     return (
       <View style={styles.wrapper}>
         <PaperTextInput
+          ref={ref}
           label={label}
           error={!!errorMessage}
           style={styles.input}

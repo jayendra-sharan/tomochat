@@ -1,8 +1,11 @@
 import { Image, View, StyleSheet } from "react-native";
 import TypingDots from "./TypingDots";
-import { useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 
-export default function LoadingScreen() {
+type LoadingScreenText = {
+  loadingText?: string;
+}
+export default function LoadingScreen({ loadingText }: LoadingScreenText) {
   const theme = useTheme();
 
   return (
@@ -14,6 +17,9 @@ export default function LoadingScreen() {
         style={styles.logo}
       />
       <TypingDots count={6} />
+      {
+        loadingText && <Text style={{ marginTop: 10}} variant="bodyMedium">{loadingText}</Text>
+      }
     </View>
   );
 }

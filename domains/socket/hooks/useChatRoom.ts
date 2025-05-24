@@ -12,10 +12,10 @@ export function useChatRoom({ userId, roomId }: ChatRoomInput) {
   useEffect(() => {
     if (!userId || !roomId) return;
 
-    socket.emit(SocketEvents.JOIN_ROOM, { userId, roomId });
+    socket?.emit(SocketEvents.JOIN_ROOM, { userId, roomId });
 
     return () => {
-      socket.emit(SocketEvents.LEAVE_ROOM, { userId, roomId });
+      socket?.emit(SocketEvents.LEAVE_ROOM, { userId, roomId });
     };
   }, [userId, roomId]);
 }

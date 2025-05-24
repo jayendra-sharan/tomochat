@@ -6,6 +6,7 @@ export const LOGIN_MUTATION = `
         id
         email
         displayName
+        isEmailVerified
       }
     }
   }

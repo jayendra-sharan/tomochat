@@ -13,7 +13,7 @@ export default function InvitePage({ user }: InvitePageProps) {
   const theme = useTheme();
   const router = useRouter();
   const { invite_id: inviteId } = useLocalSearchParams<{ invite_id: string }>();
-  const { me } = useLocalSearchParams<{ me: string }>();
+  const { me: userCreated } = useLocalSearchParams<{ me: string }>();
   const [password, setPassword] = useState("");
 
   const [joinRoom, { isLoading }] = useJoinRoomMutation();
@@ -30,16 +30,10 @@ export default function InvitePage({ user }: InvitePageProps) {
     }
   };
 
-  console.log(
-    "State",
-    !me,
-    !(!!me && !password.trim()),
-    !me || !(!!me && !password.trim()),
-  );
   let disableButton = true;
-  if (!!me) {
+  if (!!userCreated) {
     disableButton = false;
-  } else if (!me) {
+  } else if (!userCreated) {
     disableButton = !password.trim();
   }
   return (
@@ -48,7 +42,7 @@ export default function InvitePage({ user }: InvitePageProps) {
         You've been invited to join a chat on TomoChat.
       </Text>
 
-      {!me && (
+      {!userCreated && (
         <>
           <Text style={{ marginBottom: 24 }}>
             Please confirm your password to accept the invitation.

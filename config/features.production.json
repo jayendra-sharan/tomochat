@@ -1,3 +1,4 @@
 {
-  "enablePrivateMessaging": false
+  "enablePrivateMessaging": false,
+  "showChatFilters": false
 }
