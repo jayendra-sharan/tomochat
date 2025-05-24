@@ -51,15 +51,14 @@ export function useRegisterForm() {
       rePassword: "",
       displayName: "",
     };
-    // @todo add email testing
-    // if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-    //   newErrors.email = "Username must be a valid email address";
-    // }
-    // // @todo add password policy
+    if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      newErrors.email = "Username must be a valid email address";
+    }
+    // @todo add password policy
     
-    // if (touched.password && !isValidPassword(password)) {
-    //   newErrors.password = "Password must be at least 6 characters";
-    // }
+    if (touched.password && !isValidPassword(password)) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
     if (touched.rePassword && rePassword !== password) {
       newErrors.rePassword = "Must match with password";
     }

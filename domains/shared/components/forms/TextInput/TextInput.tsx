@@ -6,8 +6,18 @@ import { FormTextInputProps } from "./types";
 import type { TextInput as RNTextInput } from "react-native";
 
 const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
-  ({ label, errorMessage, ...rest }, ref) => {
+  ({ label, fieldType, errorMessage, ...rest }, ref) => {
     const theme = useAppTheme();
+    let keyboardProps = {};
+    if (fieldType === "email") {
+      keyboardProps = {
+        keyboardType: "email-address",
+        autoCapitalize: "none",
+        autoComplete: "email",
+        textContentType: "emailAddress",
+        
+      };
+    } 
 
     return (
       <View style={styles.wrapper}>
@@ -16,6 +26,7 @@ const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
           label={label}
           error={!!errorMessage}
           style={styles.input}
+          {...keyboardProps}
           {...rest}
         />
         <View style={styles.errorWrapper}>

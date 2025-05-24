@@ -68,6 +68,7 @@ export default function RegisterScreen() {
               </Text>
             </View>
           <TextInput
+            fieldType="email"
             label="Email"
             value={email}
             onChangeText={(text) => updateUser("email", text)}
