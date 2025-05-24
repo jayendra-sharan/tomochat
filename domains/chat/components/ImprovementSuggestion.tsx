@@ -16,20 +16,16 @@ export function ImprovementSuggestion({
       style={{
         display: "flex",
         flexDirection: "column",
-        padding: 10,
+        paddingVertical: 10,
       }}
     >
       <View style={styles.textWrapper}>
-        <Text style={styles.label}>You said:</Text>
+        <Text style={styles.label}>Original text:</Text>
         <Text style={styles.text}>{suggestion.original}</Text>
       </View>
       <View style={styles.textWrapper}>
-        <Text style={styles.label}>English:</Text>
-        <Text style={styles.text}>{suggestion.english}</Text>
-      </View>
-      <View style={styles.textWrapper}>
-        <Text style={styles.label}>Issues:</Text>
-        <Text style={styles.text}>{suggestion.issues.join(", ")}</Text>
+        <Text style={styles.label}>What's fixed:</Text>
+        <Text style={styles.text}>{suggestion.fixLogic}</Text>
       </View>
     </View>
   );
@@ -39,7 +35,8 @@ const styles = StyleSheet.create({
   textWrapper: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    paddingHorizontal: 24,
   },
   label: {
     fontSize: 14,
@@ -47,6 +44,8 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     textAlign: "left",
     marginRight: 4,
+    display: "flex",
+    alignSelf: "flex-start",
   },
   text: {
     fontSize: 14,

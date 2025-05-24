@@ -53,7 +53,9 @@ export default function CreateChatSuccessPage() {
         <View>
           <Button
             mode="outlined"
-            onPress={() => router.replace(`/chat/${roomId}`)}
+            onPress={() =>
+              router.replace(`/chat/${roomId}?invite_id=${invite_id}`)
+            }
             style={{ marginTop: 32 }}
           >
             Go to chat

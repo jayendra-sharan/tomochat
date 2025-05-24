@@ -5,10 +5,10 @@ mutation SendMessage($input: SendMessageInput!) {
     content
     createdAt
     suggestion {
+      isMessageOk
       original
-      aiReply
-      english
-      issues
+      fixedMessage
+      fixLogic
     }
     sender {
       id

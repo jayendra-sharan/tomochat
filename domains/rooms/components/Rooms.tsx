@@ -23,7 +23,7 @@ export default function Rooms({ enterChat }: RoomsProps) {
   }
 
   if (!rooms?.length) {
-    return <NoChatsCreateOne />
+    return <NoChatsCreateOne />;
   }
 
   const renderItem = ({ item }: { item: Room }) => {
@@ -37,7 +37,7 @@ export default function Rooms({ enterChat }: RoomsProps) {
         descriptionStyle={{ maxWidth: 150, marginTop: 5 }}
         onPress={() => enterChat(item)}
         left={() => <RoomAvatar roomName={item.name} />}
-        right={() => item.isUnread ? <UnreadIndicator /> : null  }
+        right={() => (item.isUnread ? <UnreadIndicator /> : null)}
       />
     );
   };

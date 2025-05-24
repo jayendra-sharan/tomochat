@@ -1,25 +1,15 @@
 import React, { useState } from "react";
-import { View } from "react-native";
-import {
-  Button,
-  TextInput,
-  HelperText,
-  RadioButton,
-  Text,
-} from "react-native-paper";
+import { Button, TextInput, HelperText } from "react-native-paper";
 import { useRouter } from "expo-router";
 import { useGetMeQuery } from "@/domains/auth/authApi";
 import { useCreateRoomMutation } from "@/domains/rooms/roomsApi";
-
-const LANGUAGES = [
-  { label: "English", value: "EN" },
-  { label: "Dutch", value: "NL" },
-];
+import { PageWithLogo } from "@/domains/shared/components/PageWithLogo";
+import LanguagePicker from "@/domains/rooms/components/LanguagePicker";
 
 export default function CreateChatPage() {
   // const theme = useAppTheme();
   const [roomName, setRoomName] = useState("");
-  const [language, setLanguage] = useState("EN");
+  const [language, setLanguage] = useState<string>();
 
   const router = useRouter();
   const [createRoom, { isLoading }] = useCreateRoomMutation();
@@ -28,7 +18,7 @@ export default function CreateChatPage() {
   const isRoomNameValid = /^[a-zA-Z0-9\s,&-]+$/.test(roomName);
 
   const onSubmit = async () => {
-    if (!isRoomNameValid || !roomName.trim()) return;
+    if (!isRoomNameValid || !roomName.trim() || !language) return;
     try {
       const { inviteLink } = await createRoom({
         name: roomName.trim(),
@@ -42,7 +32,7 @@ export default function CreateChatPage() {
   };
 
   return (
-    <View style={{ padding: 16 }}>
+    <PageWithLogo>
       <TextInput
         label="Chat name"
         value={roomName}
@@ -57,18 +47,7 @@ export default function CreateChatPage() {
         Only letters, numbers, spaces, &, - are allowed.
       </HelperText>
 
-      <Text variant="titleMedium" style={{ marginTop: 16 }}>
-        Language
-      </Text>
-      <RadioButton.Group onValueChange={setLanguage} value={language}>
-        {LANGUAGES.map((lang) => (
-          <RadioButton.Item
-            key={lang.value}
-            label={lang.label}
-            value={lang.value}
-          />
-        ))}
-      </RadioButton.Group>
+      <LanguagePicker language={language} setLanguage={setLanguage} />
 
       <Button
         mode="contained"
@@ -78,6 +57,15 @@ export default function CreateChatPage() {
       >
         Create
       </Button>
-    </View>
+      <Button
+        mode="text"
+        onPress={() => {
+          router.replace("/(main)/dashboard");
+        }}
+        style={{ marginTop: 16 }}
+      >
+        Back to all chats
+      </Button>
+    </PageWithLogo>
   );
 }

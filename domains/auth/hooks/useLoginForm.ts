@@ -15,12 +15,12 @@ export function useLoginForm() {
 
   const validate = useCallback(() => {
     const newErrors = { email: '', password: '' };
-    if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email.trim())) {
-      newErrors.email = 'Must be a valid email address';
-    }
-    if (touched.password && user.password.length < 2) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
+    // if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email.trim())) {
+    //   newErrors.email = 'Must be a valid email address';
+    // }
+    // if (touched.password && user.password.length < 2) {
+    //   newErrors.password = 'Password must be at least 6 characters';
+    // }
     setErrors(newErrors);
   }, [user, touched]);
 

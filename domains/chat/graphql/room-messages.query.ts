@@ -12,10 +12,10 @@ export const ROOM_MESSAGES = `
           displayName
         }
         suggestion {
-          improved
-          english
-          issues
+          isMessageOk
           original
+          fixedMessage
+          fixLogic
         }
         createdAt
       }

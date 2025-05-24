@@ -1,4 +1,4 @@
-import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import { Message, Suggestion } from "@/domains/chat/types";
@@ -55,15 +55,6 @@ export default function ChatBody({
           privateMode && styles.privateMode,
         ]}
       >
-        {/* <ScrollView
-        ref={scrollRef}
-        style={styles.scrollView}
-        contentContainerStyle={[
-          styles.contentContainer,
-          privateMode && styles.privateMode,
-        ]}
-        keyboardShouldPersistTaps="handled"
-      > */}
         {messages.map((message: Message, index: number) => {
           currentMessageSenderId.current = message.sender.id;
           nextMessageSenderId.current = messages[index - 1]?.sender.id;
@@ -104,6 +95,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-end", // force bottom alignment
+    paddingTop: 16,
   },
   privateMode: {
     backgroundColor: "#f4f0e8",

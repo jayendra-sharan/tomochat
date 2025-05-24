@@ -20,10 +20,11 @@ export default function WebWrapper({
         maxWidth: 620,
         width: "100%",
         marginHorizontal: "auto",
-        backgroundColor: theme.colors.background,
+        backgroundColor: "#fafafa",
         borderLeftWidth: 1,
         borderRightWidth: 1,
         borderColor: theme.colors.outline,
+        paddingBottom: 10,
       }}
     >
       <Header />

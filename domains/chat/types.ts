@@ -5,7 +5,7 @@ type Member = {
   user: User;
 };
 
-export type Room= {
+export type Room = {
   id: string;
   name: string;
   topic: string;
@@ -20,10 +20,10 @@ export type Sender = {
 };
 
 export type Suggestion = {
-  improved: string;
-  english: string;
-  issues: [string];
+  isMessageOk: boolean;
   original: string;
+  fixedMessage?: string;
+  fixLogic?: string;
 };
 
 export type Message = {

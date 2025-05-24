@@ -27,81 +27,67 @@ export default function MessageBubble({
   const backgroundColor = isSelf
     ? theme.colors.chatBubbleSelf
     : theme.colors.chatBubbleOther;
-  
+
   const bubblePosition = () => {
     if (isSystemMessage) {
-      return "center"
+      return "center";
     }
     if (isSelf) {
       return "flex-end";
     }
-    return "flex-start"
-  }
+    return "flex-start";
+  };
 
   const textColor = isSelf
     ? theme.colors.surface || "#0D0D0D"
     : theme.colors.onSurface || "#212121";
 
-  const content = renderName
-    ? `${message.sender.displayName}: ${message.content}`
-    : message.content;
-
   const renderMessage = () => {
-    if (!renderName || isSystemMessage) {
+    if (!renderName || isSystemMessage || isSelf) {
       return (
-        <Text style={[styles.content, { color: textColor, fontSize: 14 }]}>
-          {message.content}
-        </Text>
+        <View style={{ display: "flex", flexDirection: "column" }}>
+          <Text
+            style={[
+              styles.content,
+              { color: textColor },
+              isSystemMessage && styles.systeMessage,
+            ]}
+          >
+            {message.content}
+          </Text>
+        </View>
       );
     }
     return (
-      <Text style={[styles.content, { color: textColor, fontSize: 14 }]}>
-        <Text
-          style={{ fontWeight: "bold", color: textColor, marginRight: 2 }}
-        >
-          {`${message.sender.displayName}: `}
+      <View style={{ display: "flex", flexDirection: "column" }}>
+        <Text style={styles.sender}>{message.sender.displayName}</Text>
+        <Text style={[styles.content, { color: textColor, fontSize: 14 }]}>
+          {message.content}
         </Text>
-        {message.content}
-      </Text>
+      </View>
     );
   };
 
   const hasSuggestion = message.suggestion;
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container, { alignSelf: bubblePosition() }]}>
         <TouchableWithoutFeedback onPress={() => handleMessageTap(message.id)}>
-          <View style={{ "alignSelf": bubblePosition()}}>
-            <View
-              style={[
-                isSelf ? [styles.bubble] : [styles.bubble],
-                {
-                  backgroundColor,
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                },
-              ]}
-            >
-              {renderMessage()}
+          <View
+            style={[
+              styles.bubble,
+              {
+                backgroundColor,
+              },
+            ]}
+          >
+            {renderMessage()}
+            <View style={styles.messageFooter}>
+              <Text style={[styles.time, { color: textColor }]}>{time}</Text>
               {hasSuggestion && (
                 <Icon source="lightbulb" size={10} color="yellow" />
               )}
             </View>
-            {
-              !isSystemMessage && (
-                <Text
-                  style={{
-                    fontSize: 11,
-                    alignSelf: "flex-end",
-                    marginTop: 4,
-                    marginRight: 8,
-                  }}
-                >
-                  {time}
-                </Text>
-              )
-            }
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -111,21 +97,21 @@ export default function MessageBubble({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   bubble: {
-    paddingVertical: 6,
-    paddingHorizontal: 4,
-    // maxWidth: "80%",
-    minWidth: 50,
-    minHeight: 36,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingBottom: 8,
+    paddingTop: 6,
+    paddingHorizontal: 8,
     borderRadius: 8,
     marginBottom: 0,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 2,
-    display: "flex",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
     justifyContent: "center",
   },
   othersBubble: {
@@ -135,14 +121,18 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   content: {
-    lineHeight: 16,
-    paddingHorizontal: 10,
+    fontSize: 14,
+    lineHeight: 20,
     display: "flex",
     flexDirection: "row",
   },
+  systeMessage: {
+    fontSize: 12,
+    color: "#333",
+  },
   sender: {
+    fontSize: 12,
     fontWeight: "bold",
-    marginRight: 4,
   },
   footer: {
     flexDirection: "row",
@@ -160,5 +150,15 @@ const styles = StyleSheet.create({
   suggestionText: {
     fontSize: 14,
     marginBottom: 4,
+  },
+  messageFooter: {
+    alignSelf: "flex-end",
+    display: "flex",
+    flexDirection: "row",
+    gap: 6,
+    paddingLeft: 6,
+  },
+  time: {
+    fontSize: 10,
   },
 });
