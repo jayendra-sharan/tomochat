@@ -24,9 +24,8 @@ export default function MessageBubble({
 
   const isSystemMessage = message.sender.id === "SYSTEM";
   const isSelf = userId === message.sender.id;
-  const backgroundColor = isSelf
-    ? theme.colors.chatBubbleSelf
-    : theme.colors.chatBubbleOther;
+  const backgroundColor = isSelf ? theme.colors.onSurface : "#8B0000";
+  // : theme.colors.chatBubbleOther;
 
   const bubblePosition = () => {
     if (isSystemMessage) {
@@ -81,7 +80,7 @@ export default function MessageBubble({
               styles.bubble,
               {
                 borderColor: backgroundColor,
-                borderWidth: 2,
+                borderWidth: 1,
               },
               expandedBubbleId === message.id && styles.selected,
             ]}
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingTop: 6,
     paddingHorizontal: 4,
-    borderRadius: 8,
+    borderRadius: 2,
     marginBottom: 0,
     // shadowOffset: { width: 0, height: 1 },
     // shadowOpacity: 0.1,

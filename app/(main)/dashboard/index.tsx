@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect } from "react";
-import { View, FlatList, StyleSheet, Platform, Alert } from "react-native";
-import { Text, List, IconButton } from "react-native-paper";
+import React, { useCallback, useEffect, useState } from "react";
+import { View, StyleSheet, Platform } from "react-native";
+import { Button, Icon } from "react-native-paper";
 import { useRouter } from "expo-router";
-import { storage } from "@/services/storage";
-import { AUTH_TOKEN } from "@/constants";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { resetStore } from "@/redux/store";
 import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import Rooms from "@/domains/rooms/components/Rooms";
 import { Room } from "@/domains/shared/types";
@@ -17,26 +14,21 @@ import ChatFilters from "@/domains/chat/components/ChatFilters";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { SocketEvents } from "@/domains/socket/events";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
+import UserPopover from "@/domains/user/components/UserPopover";
+import Popover from "@/domains/shared/components/Popover";
+import { UserAvatar } from "@/domains/user/components/UserAvatar";
 
 function DashboardPage() {
-  const theme = useAppTheme();
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const socket = useSocketContext();
+  const [showUserPopover, setShowUserPopover] = useState(false);
+
   const { showChatFilters } = useFeatureFlag();
 
-  const { userId, displayName } = useAuth();
-
-  const handleLogout = () => {
-    storage.removeItem(AUTH_TOKEN);
-    dispatch(resetStore());
-    setTimeout(() => {
-      router.push("/(auth)/login");
-    }, 500);
-  };
+  const { userId } = useAuth();
 
   // @todo extract later
-  const [registerPushToken, { isLoading }] = useRegisterPushTokenMutation();
+  const [registerPushToken] = useRegisterPushTokenMutation();
 
   useEffect(() => {
     console.log("Asking for permission");
@@ -44,7 +36,7 @@ function DashboardPage() {
       console.log("Asking for permission, Next", token);
       if (token) {
         const platform = Platform.OS as string;
-        const res = registerPushToken({ token, platform });
+        registerPushToken({ token, platform });
       }
     });
   }, []);
@@ -54,7 +46,7 @@ function DashboardPage() {
     router.push(`/(main)/chat/${room.id}?invite_id=${room.inviteLink}`);
 
     setTimeout(() => {
-      socket?.emit(SocketEvents.READ_MESSAGE, { roomId: room.id, userId })
+      socket?.emit(SocketEvents.READ_MESSAGE, { roomId: room.id, userId });
     }, 1000);
   }, []);
 
@@ -69,26 +61,24 @@ function DashboardPage() {
         style={[
           styles.bottomBar,
           {
-            backgroundColor: theme.colors.surface,
-            borderColor: theme.colors.outline,
+            // backgroundColor: theme.colors.surface,
+            // borderColor: theme.colors.outline,
           },
         ]}
       >
-        <IconButton
-          icon="account"
-          size={24}
-          onPress={() => {
-            Alert.alert("User", displayName);
-            console.log("user", displayName);
-          }}
-        />
-        <IconButton
-          icon="plus"
-          size={24}
-          onPress={() => router.push("/(main)/create-chat")}
-        />
-        <IconButton icon="logout" size={24} onPress={handleLogout} />
+        <Button onPress={() => router.push("/(main)/create-chat")}>
+          <Icon size={40} source="plus" />
+        </Button>
+        <Button onPress={() => setShowUserPopover(true)}>
+          <UserAvatar id={userId} />
+        </Button>
       </View>
+      <Popover
+        visible={showUserPopover}
+        onClose={() => setShowUserPopover(false)}
+      >
+        <UserPopover />
+      </Popover>
     </View>
   );
 }
@@ -109,13 +99,13 @@ const styles = StyleSheet.create({
   } as any,
   bottomBar: {
     height: BOTTOM_BAR_HEIGHT,
-    borderWidth: 1,
+    // borderWidth: 1,
     paddingHorizontal: 12,
     marginHorizontal: 12,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: 60,
+    // borderRadius: 2,
   },
   loadingContainer: {
     flex: 1,

@@ -45,6 +45,7 @@ function ChatScreen({ user }: ChatScreenProps) {
       <View style={styles.container}>
         <ChatHeader
           name={name}
+          roomId={chatId}
           privateMode={privateMode}
           inviteId={`${chatId}--${invite_id}`}
         />

@@ -14,6 +14,7 @@ import { current } from "@reduxjs/toolkit";
 
 type ChatHeaderProps = {
   name?: string;
+  roomId: string;
   privateMode?: boolean;
   inviteId: string;
   copyToClipboard?: (inviteId: string) => Promise<void>;
@@ -21,6 +22,7 @@ type ChatHeaderProps = {
 
 function ChatHeader({
   name,
+  roomId,
   privateMode = false,
   copyToClipboard,
   inviteId,
@@ -54,7 +56,7 @@ function ChatHeader({
           style={[styles.roomWrapper, { borderColor: theme.colors.outline }]}
         >
           <View>
-            <RoomAvatar roomName={name || ""} />
+            <RoomAvatar roomName={name || ""} roomId={roomId} />
           </View>
           <View style={styles.roomDetails}>
             <Text

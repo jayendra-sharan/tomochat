@@ -29,14 +29,17 @@ export default function Rooms({ enterChat }: RoomsProps) {
   const renderItem = ({ item }: { item: Room }) => {
     return (
       <List.Item
-        style={[styles.listItem, { borderBottomColor: theme.colors.outline }]}
+        style={[
+          styles.listItem,
+          { borderColor: theme.colors.onSurface, borderWidth: 1 },
+        ]}
         title={item.name}
         titleStyle={{ fontWeight: "bold" }}
         description={item.lastMessage || "no messages"}
         descriptionNumberOfLines={1}
         descriptionStyle={{ maxWidth: 150, marginTop: 5 }}
         onPress={() => enterChat(item)}
-        left={() => <RoomAvatar roomName={item.name} />}
+        left={() => <RoomAvatar roomId={item.id} roomName={item.name} />}
         right={() => (item.isUnread ? <UnreadIndicator /> : null)}
       />
     );
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     paddingHorizontal: 12,
     marginHorizontal: 4,
-    borderRadius: 8,
+    borderRadius: 2,
     marginBottom: 4,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
