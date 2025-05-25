@@ -1,31 +1,29 @@
-import { useGetMeQuery } from "@/domains/auth/authApi";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, View, Text, Alert } from "react-native";
-import * as Notifications from "expo-notifications";
-import LoadingScreen from "@/domains/shared/components/LoadingScreen";
+import { Image, View, Text } from "react-native";
+import { useAuth } from "@/domains/auth/hooks/useAuth";
 
 export default function Home() {
-  const { data: user, error } = useGetMeQuery();
+  const { user, isLoggedIn } = useAuth();
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const { email } = user || {};
+  const { isEmailVerified } = user || {};
   useEffect(() => {
     setMounted(true);
   }, []);
   useEffect(() => {
     if (mounted) {
-      if (error || !email) {
-        router.push("/(auth)/login");
-      } else {
+      if (isLoggedIn && isEmailVerified) {
         router.push("/(main)/dashboard");
+      } else {
+        router.push("/(auth)/login");
       }
     }
-  }, [email, error]);
+  }, [isEmailVerified, isLoggedIn, mounted]);
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>TomoChat</Text>
+      <Text>t</Text>
       <Image source={require("@/assets/images/logo.png")} />
     </View>
   );

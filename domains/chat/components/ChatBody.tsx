@@ -64,6 +64,7 @@ export default function ChatBody({
               message={message}
               userId={userId}
               handleMessageTap={handleMessageTap}
+              expandedBubbleId={expandedBubbleId}
               renderName={
                 currentMessageSenderId.current !== nextMessageSenderId.current
               }

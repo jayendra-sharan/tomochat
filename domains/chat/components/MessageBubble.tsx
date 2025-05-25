@@ -1,16 +1,15 @@
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { IconButton, Text, Icon } from "react-native-paper";
+import { Text, Icon } from "react-native-paper";
 import { format } from "date-fns";
 import { Message } from "@/domains/chat/types";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useStore } from "react-redux";
-import { useState } from "react";
 
 type MessageBubbleProps = {
   message: Message;
   userId: string;
   renderName: boolean;
   handleMessageTap: (messageId: string) => void;
+  expandedBubbleId?: string;
 };
 
 export default function MessageBubble({
@@ -18,6 +17,7 @@ export default function MessageBubble({
   userId,
   handleMessageTap,
   renderName,
+  expandedBubbleId,
 }: MessageBubbleProps) {
   const theme = useAppTheme();
   const time = format(new Date(message.createdAt), "HH:mm");
@@ -38,14 +38,17 @@ export default function MessageBubble({
     return "flex-start";
   };
 
-  const textColor = isSelf
-    ? theme.colors.surface || "#0D0D0D"
-    : theme.colors.onSurface || "#212121";
+  // const textColor = isSelf
+  //   ? theme.colors.surface || "#0D0D0D"
+  //   : theme.colors.onSurface || "#212121";
+  const textColor = theme.colors.onSurface;
 
   const renderMessage = () => {
     if (!renderName || isSystemMessage || isSelf) {
       return (
-        <View style={{ display: "flex", flexDirection: "column" }}>
+        <View
+          style={{ display: "flex", flexDirection: "column", maxWidth: "80%" }}
+        >
           <Text
             style={[
               styles.content,
@@ -77,15 +80,17 @@ export default function MessageBubble({
             style={[
               styles.bubble,
               {
-                backgroundColor,
+                borderColor: backgroundColor,
+                borderWidth: 2,
               },
+              expandedBubbleId === message.id && styles.selected,
             ]}
           >
             {renderMessage()}
             <View style={styles.messageFooter}>
               <Text style={[styles.time, { color: textColor }]}>{time}</Text>
               {hasSuggestion && (
-                <Icon source="lightbulb" size={10} color="yellow" />
+                <Icon source="lightbulb" size={12} color="#c9c906" />
               )}
             </View>
           </View>
@@ -98,6 +103,7 @@ export default function MessageBubble({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 8,
+    maxWidth: "80%",
   },
   bubble: {
     display: "flex",
@@ -105,14 +111,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 8,
     paddingTop: 6,
-    paddingHorizontal: 8,
+    paddingHorizontal: 4,
     borderRadius: 8,
     marginBottom: 0,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    elevation: 1,
+    // shadowOffset: { width: 0, height: 1 },
+    // shadowOpacity: 0.1,
+    // shadowRadius: 1,
+    // elevation: 1,
     justifyContent: "center",
+  },
+  selected: {
+    // shadowOffset: { width: 1, height: 2 },
+    // shadowOpacity: 1,
+    // shadowRadius: 2,
+    // elevation: 2,
+    // shadowColor: "#fbed17",
+    backgroundColor: "#fbed17",
   },
   othersBubble: {
     alignSelf: "flex-start",
@@ -121,7 +135,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   content: {
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 20,
     display: "flex",
     flexDirection: "row",

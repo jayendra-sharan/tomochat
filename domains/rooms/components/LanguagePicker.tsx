@@ -13,11 +13,9 @@ import { Button } from "react-native-paper";
 const LANGUAGES = [
   { label: "Dutch", value: "nl-NL" },
   { label: "Spanish", value: "es-ES" },
-  { label: "Ukranian", value: "uk-UA" },
-  { label: "Greek", value: "el-GR" },
-  { label: "Hindi", value: "hi-IN" },
-  { label: "Persian", value: "fa-IR" },
   { label: "Italian", value: "it-IT" },
+  { label: "Greek", value: "el-GR" },
+  { label: "Ukranian", value: "uk-UA" },
   { label: "French", value: "fr-FR" },
   { label: "Deutsch/German", value: "de-DE" },
 ];

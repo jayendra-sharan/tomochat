@@ -4,6 +4,7 @@ export const ME = `
       id
       email
       displayName
+      isEmailVerified
     }
   }
 `;

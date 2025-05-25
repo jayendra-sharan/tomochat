@@ -1,26 +1,29 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from "react";
 
 type User = {
   email: string;
   password: string;
-}
+};
 export function useLoginForm() {
   const [user, setUser] = useState<User>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const [errors, setErrors] = useState<User>({ email: '', password: '' });
+  const [errors, setErrors] = useState<User>({ email: "", password: "" });
   const [touched, setTouched] = useState({ email: false, password: false });
 
   const validate = useCallback(() => {
-    const newErrors = { email: '', password: '' };
-    // if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email.trim())) {
-    //   newErrors.email = 'Must be a valid email address';
-    // }
-    // if (touched.password && user.password.length < 2) {
-    //   newErrors.password = 'Password must be at least 6 characters';
-    // }
+    const newErrors = { email: "", password: "" };
+    if (
+      touched.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email.trim())
+    ) {
+      newErrors.email = "Must be a valid email address";
+    }
+    if (touched.password && user.password.length < 2) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
     setErrors(newErrors);
   }, [user, touched]);
 
@@ -32,8 +35,8 @@ export function useLoginForm() {
     setTouched({
       ...touched,
       [field]: true,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const timer = setTimeout(validate, 300);

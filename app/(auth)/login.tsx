@@ -1,19 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { View, Image, StyleSheet } from "react-native";
-import type { TextInput as RNTextInputType } from "react-native";
-import { Button, Text } from "react-native-paper";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   useLoginMutation,
-  useGetMeQuery,
   useLazyGetMeQuery,
+  useVerfiyEmailCodeMutation,
 } from "@/domains/auth/authApi";
 import { storage } from "@/services/storage";
 import { AUTH_TOKEN } from "@/constants";
-import TextInput from "@/domains/shared/components/forms/TextInput/";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { useLoginForm } from "@/domains/auth/hooks/useLoginForm";
-import { HEADER_HEIGHT } from "@/domains/shared/constants";
 import { getNextRoute } from "@/domains/shared/lib/getNextRoute";
 import Bottomsheet from "@/domains/shared/components/Bottomsheet";
 import EmailVerificationSheet from "@/domains/auth/components/EmailVerificationBottomsheet";
@@ -21,52 +14,84 @@ import LoadingScreen from "@/domains/shared/components/LoadingScreen";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
 import { LoginForm } from "@/domains/auth/components/LoginForm";
 
+import { LoginResponse } from "@/domains/auth/types";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
+
+type LoginResult =
+  | { data: LoginResponse }
+  | { error: FetchBaseQueryError | SerializedError };
+
 export default function LoginScreen() {
-  const theme = useAppTheme();
   const router = useRouter();
   const { invite_id: inviteId, id: userId } = useLocalSearchParams<{
     invite_id?: string;
     id?: string;
   }>();
 
-  const [error, setError] = useState("");
   const [login] = useLoginMutation();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user: userData } = useAuth();
   const [triggerMe] = useLazyGetMeQuery();
-  const { data: userData } = useGetMeQuery();
-  const [visible, setVisible] = useState(false);
 
+  const [error, setError] = useState("");
+  const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { isEmailVerified, email: userEmail } = userData || {};
+
+  const [verifyEmail, { isLoading: isVerifying }] =
+    useVerfiyEmailCodeMutation();
 
   const redirectToDashboard = () => {
     const nextRoute = getNextRoute(inviteId) as any;
-    router.replace(nextRoute)
-  }
+    router.replace(nextRoute);
+  };
 
-  const {
-    user,
-    setUser,
-    errors,
-    touched,
-    validate,
-  } = useLoginForm();
+  const { user, setUser, errors, touched, validate } = useLoginForm();
+
+  const handleAuthResponse = async (res: LoginResult) => {
+    if ("error" in res) {
+      const errorMessage =
+        (res.error as any)?.message || "Login error, please try again.";
+      setError(errorMessage);
+      return;
+    }
+
+    const { token, user } = res.data;
+
+    if (!token || !user?.email) {
+      setError("Invalid login response. Please try again.");
+      return;
+    }
+
+    await storage.setItem(AUTH_TOKEN, token);
+    await triggerMe();
+
+    user.isEmailVerified ? redirectToDashboard() : setVisible(true);
+  };
+  const verifyEmailAndLogin = async (code: string) => {
+    if (!userData?.email) {
+      return;
+    }
+    try {
+      // on registrationSuccess
+      const res = await verifyEmail({ email: userData?.email, code });
+      await handleAuthResponse(res as LoginResult);
+    } catch (err) {
+      console.log("error in verifying code");
+    }
+  };
 
   useEffect(() => {
-    if (isLoggedIn && !userData?.isEmailVerified) {
-      console.log("User", userData);
+    if (isLoggedIn && !isEmailVerified) {
       setVisible(true);
       return;
-
     }
-    if (!inviteId && userData?.email) {
+    if (isEmailVerified && userEmail) {
       redirectToDashboard();
     }
-  }, [userData?.email, inviteId]);
-
-  const onVerified = () => {
-    setVisible(false);
-    redirectToDashboard();
-  };
+  }, [inviteId, isEmailVerified, userEmail]);
 
   const handleLogin = async () => {
     const { email, password } = user;
@@ -82,21 +107,7 @@ export default function LoginScreen() {
         password,
       });
 
-      if (res.error) {
-        const errorMessage = (res.error as { message?: string }).message;
-        setError(errorMessage || "Login error, please try again.");
-        return;
-      }
-      const { token, user } = res.data || {};
-      if (user?.email && token) {
-        await storage.setItem(AUTH_TOKEN, token);
-        await triggerMe();
-        if (user?.isEmailVerified) {
-          redirectToDashboard();
-        } else {
-          setVisible(true);
-        }
-      }
+      await handleAuthResponse(res as LoginResult);
     } catch (err) {
       // @todo update error message
       console.log("Error from gql--", err);
@@ -109,14 +120,17 @@ export default function LoginScreen() {
     return (
       <>
         <LoadingScreen loadingText="Verifying email..." />
-        <Bottomsheet
-          visible={visible}
-          onClose={() => {}}
-        >
-          <EmailVerificationSheet email={user?.email} onVerified={onVerified} />
+        <Bottomsheet visible={visible} onClose={() => {}}>
+          <EmailVerificationSheet
+            error={error}
+            email={userEmail ?? ""}
+            verifyEmail={verifyEmailAndLogin}
+            isVerifying={isVerifying}
+            resetError={() => setError("")}
+          />
         </Bottomsheet>
       </>
-    )
+    );
   }
 
   return (
@@ -135,34 +149,3 @@ export default function LoginScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: "center",
-    backgroundColor: "#FAFAFA",
-  },
-  logoWrapper: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 40,
-    marginTop: -1 * HEADER_HEIGHT,
-  },
-  logo: {
-    resizeMode: "contain",
-    height: 64,
-  },
-  registrationSuccess: {
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  button: {
-    marginTop: 16,
-    borderRadius: 8,
-  },
-  buttonLabel: {
-    fontWeight: "600",
-  },
-});

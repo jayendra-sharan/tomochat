@@ -1,41 +1,40 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
+import { useSendVerificationCodeMutation } from "../authApi";
 
 type Props = {
-  email?: string;
-  onVerified?: () => void;
+  email: string;
+  verifyEmail: (code: string) => void;
+  isVerifying: boolean;
+  error?: string;
+  resetError: () => void;
 };
 
-export default function EmailVerificationSheet({ email, onVerified }: Props) {
+export default function EmailVerificationSheet({
+  email,
+  verifyEmail,
+  isVerifying,
+  error,
+  resetError,
+}: Props) {
   const [code, setCode] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [sendVerificationCode, { isLoading }] =
+    useSendVerificationCodeMutation();
 
   const handleVerify = async () => {
     if (code.trim().length < 4) {
-      setError("Please enter the code");
       return;
     }
-
-    setLoading(true);
-    setError("");
-    try {
-      // @todo: call verifyEmailCode mutation here
-      // await fakeVerify(code); // replace with mutation
-      onVerified?.();
-    } catch (err) {
-      setError("Invalid or expired code");
-    } finally {
-      setLoading(false);
-    }
+    verifyEmail(code);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Verify your email</Text>
       <Text style={styles.caption}>
-        A verification code has been sent to <Text style={styles.email}>{email}</Text>
+        A verification code has been sent to{" "}
+        <Text style={styles.email}>{email}</Text>
       </Text>
 
       <TextInput
@@ -50,10 +49,20 @@ export default function EmailVerificationSheet({ email, onVerified }: Props) {
       {!!error && <Text style={styles.error}>{error}</Text>}
 
       <Button
+        onPress={() => {
+          sendVerificationCode({ email });
+          resetError();
+          setCode("");
+        }}
+      >
+        Didn't receive the code? Click to resend.
+      </Button>
+
+      <Button
         mode="contained"
         onPress={handleVerify}
-        loading={loading}
-        disabled={loading}
+        loading={isVerifying || isLoading}
+        disabled={isVerifying || isLoading}
         style={styles.button}
       >
         Verify

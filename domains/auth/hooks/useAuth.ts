@@ -9,6 +9,7 @@ export function useAuth() {
     user,
     userId: user?.id ?? "",
     displayName: user?.displayName ?? "",
+    isEmailVerified: user?.isEmailVerified,
     isLoggedIn,
     isLoading,
     isError,

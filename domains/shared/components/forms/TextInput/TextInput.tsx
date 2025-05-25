@@ -15,9 +15,8 @@ const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
         autoCapitalize: "none",
         autoComplete: "email",
         textContentType: "emailAddress",
-        
       };
-    } 
+    }
 
     return (
       <View style={styles.wrapper}>
@@ -26,6 +25,9 @@ const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
           label={label}
           error={!!errorMessage}
           style={styles.input}
+          autoComplete="off"
+          textContentType="none"
+          importantForAutofill="no"
           {...keyboardProps}
           {...rest}
         />
@@ -43,7 +45,7 @@ const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: 4,
+    marginBottom: 10,
   },
   input: {
     marginBottom: 4,
@@ -54,8 +56,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   errorText: {
-    fontSize: 11,
-    lineHeight: 11,
+    fontSize: 12,
+    lineHeight: 12,
     paddingLeft: 16,
   },
 });

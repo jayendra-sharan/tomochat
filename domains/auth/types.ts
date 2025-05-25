@@ -35,3 +35,12 @@ export interface RegisterUserResponse {
   id: string;
   email: string;
 }
+
+export interface RequestEmailVerificationInput {
+  email: string;
+}
+
+export interface VerifyEmailCodeInput {
+  email: string;
+  code: string;
+}

@@ -9,7 +9,7 @@ import LanguagePicker from "@/domains/rooms/components/LanguagePicker";
 export default function CreateChatPage() {
   // const theme = useAppTheme();
   const [roomName, setRoomName] = useState("");
-  const [language, setLanguage] = useState<string>();
+  const [language, setLanguage] = useState<string>("nl-NL");
 
   const router = useRouter();
   const [createRoom, { isLoading }] = useCreateRoomMutation();

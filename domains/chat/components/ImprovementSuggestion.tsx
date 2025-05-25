@@ -16,16 +16,19 @@ export function ImprovementSuggestion({
       style={{
         display: "flex",
         flexDirection: "column",
-        paddingVertical: 10,
       }}
     >
       <View style={styles.textWrapper}>
-        <Text style={styles.label}>Original text:</Text>
-        <Text style={styles.text}>{suggestion.original}</Text>
+        <Text>
+          <Text style={styles.label}>Original text: </Text>
+          {suggestion.original}
+        </Text>
       </View>
       <View style={styles.textWrapper}>
-        <Text style={styles.label}>What's fixed:</Text>
-        <Text style={styles.text}>{suggestion.fixLogic}</Text>
+        <Text>
+          <Text style={styles.label}>What's fixed: </Text>
+          {suggestion.fixLogic}
+        </Text>
       </View>
     </View>
   );
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 24,
+    marginBottom: 8,
   },
   label: {
     fontSize: 14,
