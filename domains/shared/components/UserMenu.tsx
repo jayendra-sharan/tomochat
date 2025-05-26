@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { Icon, Button } from "react-native-paper";
 import { UserAvatar } from "@/domains/user/components/UserAvatar";
 import UserPopover from "@/domains/user/components/UserPopover";
@@ -10,7 +10,10 @@ import { useAuth } from "@/domains/auth/hooks/useAuth";
 
 const BOTTOM_BAR_HEIGHT = 60;
 
-export default function UserMenu() {
+type UserMenuProps = {
+  showBack?: boolean;
+};
+export default function UserMenu({ showBack }: UserMenuProps) {
   // const theme = useAppTheme();
   const { userId } = useAuth();
   const [showUserPopover, setShowUserPopover] = useState(false);
@@ -22,9 +25,15 @@ export default function UserMenu() {
   return (
     <>
       <View style={[styles.bottomBar]}>
-        <Button onPress={() => router.push("/(main)/create-chat")}>
-          <Icon size={40} source="plus" />
-        </Button>
+        {showBack ? (
+          <Button onPress={() => router.back()}>
+            <Icon size={40} source="arrow-left-bold" />
+          </Button>
+        ) : (
+          <Button onPress={() => router.push("/(main)/create-chat")}>
+            <Icon size={40} source="chat-plus" />
+          </Button>
+        )}
 
         <Button onPress={() => router.push("/(main)/dashboard")}>
           <Icon size={40} source="home" />
@@ -47,8 +56,8 @@ export default function UserMenu() {
 const styles = StyleSheet.create({
   bottomBar: {
     height: BOTTOM_BAR_HEIGHT,
-    paddingHorizontal: 12,
-    marginHorizontal: 12,
+    marginBottom: Platform.OS === "ios" ? 0 : 36,
+    paddingHorizontal: 6,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

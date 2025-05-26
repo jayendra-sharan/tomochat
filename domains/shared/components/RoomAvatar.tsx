@@ -7,12 +7,12 @@ export default function RoomAvatar({
   roomId,
   showInitials,
 }: {
-  roomName: string;
   roomId: string;
+  roomName?: string;
   showInitials?: boolean;
 }) {
   const theme = useTheme();
-  if (showInitials) {
+  if (showInitials && roomName) {
     return (
       <View
         style={{

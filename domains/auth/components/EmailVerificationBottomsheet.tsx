@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Text, TextInput, Button } from "react-native-paper";
+import { Text, TextInput } from "react-native-paper";
 import { useSendVerificationCodeMutation } from "../authApi";
+import { Button } from "@/domains/shared/components/Button";
 
 type Props = {
   email: string;

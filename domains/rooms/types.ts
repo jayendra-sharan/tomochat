@@ -21,3 +21,11 @@ export type JoinRoomResponse = {
 };
 
 export type RoomResponse = Room[];
+
+export type GetRoomDetailsInput = {
+  roomId: string;
+};
+
+export interface GetRoomDetailsResponse extends Room {
+  messageCount: number;
+}

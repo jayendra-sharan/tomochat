@@ -1,17 +1,25 @@
-import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { Text, Button } from "react-native-paper";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
+import { Text } from "react-native-paper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import TextInput from "@/domains/shared/components/forms/TextInput";
 import { TextInput as TextInputType, Image } from "react-native";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useRegisterForm } from "@/domains/auth/hooks/useRegisterForm";
-import { setUrlAsync } from "expo-clipboard";
 import { useRegisterMutation } from "@/domains/auth/authApi";
 import LoadingScreen from "@/domains/shared/components/LoadingScreen";
 import { HEADER_HEIGHT } from "@/domains/shared/constants";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { Button } from "@/domains/shared/components/Button";
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const theme = useAppTheme();
   const { invite_id: inviteId } = useLocalSearchParams<{ invite_id: string }>();
   const { user, errors, updateUser } = useRegisterForm();
   const [register, { isLoading }] = useRegisterMutation();
@@ -53,20 +61,20 @@ export default function RegisterScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={80} // adjust as needed depending on header
     >
-       <ScrollView
+      <ScrollView
         contentContainerStyle={{ flexGrow: 1, padding: 16 }}
         keyboardShouldPersistTaps="handled"
-        >
+      >
         <View style={styles.container}>
           <View style={styles.logoWrapper}>
-              <Image
-                style={styles.logo}
-                source={require("@/assets/images/logo_vertical.png")}
-              />
-              <Text style={{ marginTop: 20 }} variant="titleMedium">
-                Learn while you talk!
-              </Text>
-            </View>
+            <Image
+              style={styles.logo}
+              source={require("@/assets/images/logo_vertical.png")}
+            />
+            <Text style={{ marginTop: 20 }} variant="titleMedium">
+              Learn while you talk!
+            </Text>
+          </View>
           <TextInput
             fieldType="email"
             label="Email"
@@ -124,9 +132,13 @@ export default function RegisterScreen() {
           </Button>
           <Button
             mode="text"
-            onPress={() => {router.replace("/(auth)/login")}}
+            onPress={() => {
+              router.replace("/(auth)/login");
+            }}
             style={{ marginTop: 16 }}
-          >Back to login</Button>
+          >
+            Back to login
+          </Button>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -141,14 +153,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAFAFA",
   },
   logoWrapper: {
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 40,
-      marginTop: -1 * HEADER_HEIGHT,
-    },
-    logo: {
-      resizeMode: "contain",
-      height: 64,
-    },
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 40,
+    marginTop: -1 * HEADER_HEIGHT,
+  },
+  logo: {
+    resizeMode: "contain",
+    height: 64,
+  },
 });

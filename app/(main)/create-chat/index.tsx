@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, TextInput, HelperText, Text } from "react-native-paper";
+import { TextInput, HelperText, Text } from "react-native-paper";
 import { useRouter } from "expo-router";
 import { useGetMeQuery } from "@/domains/auth/authApi";
 import { useCreateRoomMutation } from "@/domains/rooms/roomsApi";
 import { PageWithLogo } from "@/domains/shared/components/PageWithLogo";
 import LanguagePicker from "@/domains/rooms/components/LanguagePicker";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { Button } from "@/domains/shared/components/Button";
 
 export default function CreateChatPage() {
   const theme = useAppTheme();

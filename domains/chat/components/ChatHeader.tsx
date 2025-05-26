@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { IconButton, Menu, Switch, useTheme } from "react-native-paper";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { setPrivateMode } from "../chatSlice";
@@ -52,32 +52,23 @@ function ChatHeader({
           }}
         />
 
-        <View
-          style={[styles.roomWrapper, { borderColor: theme.colors.outline }]}
-        >
-          <View>
-            <RoomAvatar roomName={name || ""} roomId={roomId} />
+        <Link href={`/(main)/chat/details?room=${roomId}`}>
+          <View
+            style={[styles.roomWrapper, { borderColor: theme.colors.outline }]}
+          >
+            <View>
+              <RoomAvatar roomName={name || ""} roomId={roomId} />
+            </View>
+            <View style={styles.roomDetails}>
+              <Text
+                variant="titleMedium"
+                style={[styles.title, { color: theme.colors.onSurface }]}
+              >
+                {name}
+              </Text>
+            </View>
           </View>
-          <View style={styles.roomDetails}>
-            <Text
-              variant="titleMedium"
-              style={[styles.title, { color: theme.colors.onSurface }]}
-            >
-              {name}
-            </Text>
-            <Text
-              variant="labelSmall"
-              style={[
-                styles.subtext,
-                {
-                  color: theme.colors.onSurfaceVariant,
-                },
-              ]}
-            >
-              status
-            </Text>
-          </View>
-        </View>
+        </Link>
       </View>
 
       <View style={styles.rightContainer}>

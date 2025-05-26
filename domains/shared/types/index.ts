@@ -4,8 +4,8 @@ export interface User {
   displayName: string;
 }
 
-type Member = {
-  user: Pick<User, "displayName">;
+export type Member = {
+  user: Pick<User, "displayName" | "id">;
 };
 
 export type Room = {

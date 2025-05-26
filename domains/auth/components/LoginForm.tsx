@@ -1,20 +1,19 @@
+import { useRef } from "react";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { router } from "expo-router";
 import {
   View,
   Image,
   StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from "react-native";
 import TextInput from "@/domains/shared/components/forms/TextInput";
-import { Button, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { HEADER_HEIGHT } from "@/domains/shared/constants";
 import { TextInput as RNTextInput } from "react-native";
-import { useRef } from "react";
+import { Button } from "@/domains/shared/components/Button";
 
 type User = {
   email: string;
@@ -128,13 +127,6 @@ export function LoginForm({
           onPress={handleLogin}
           loading={loading}
           disabled={loading || !!errors.username || !!errors.password}
-          labelStyle={[
-            styles.buttonLabel,
-            {
-              color: theme.colors.surface,
-            },
-          ]}
-          style={[styles.button, { backgroundColor: theme.colors.onSurface }]}
         >
           {loading ? "Please wait..." : "Login"}
         </Button>
@@ -142,11 +134,9 @@ export function LoginForm({
         {!userId && (
           <Button
             mode="text"
-            textColor={theme.colors.onSurface}
             onPress={() => {
               router.replace(`/(auth)/register?invite_id=${inviteId}`);
             }}
-            style={{ marginTop: 24 }}
           >
             Don't have an account? Click here!
           </Button>

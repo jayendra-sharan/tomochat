@@ -29,8 +29,12 @@ const ConnectionsScreen = () => {
       <List.Item
         title={item.displayName}
         description={() => (
-          <Text numberOfLines={1} ellipsizeMode="middle">
-            {item.email}
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="middle"
+            style={{ paddingVertical: 4 }}
+          >
+            {`Connected since dd.mm.yyyy`}
           </Text>
         )}
         left={() => <UserAvatar id={item.id} />}
