@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Button, TextInput, HelperText } from "react-native-paper";
+import { Button, TextInput, HelperText, Text } from "react-native-paper";
 import { useRouter } from "expo-router";
 import { useGetMeQuery } from "@/domains/auth/authApi";
 import { useCreateRoomMutation } from "@/domains/rooms/roomsApi";
 import { PageWithLogo } from "@/domains/shared/components/PageWithLogo";
 import LanguagePicker from "@/domains/rooms/components/LanguagePicker";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export default function CreateChatPage() {
-  // const theme = useAppTheme();
+  const theme = useAppTheme();
   const [roomName, setRoomName] = useState("");
   const [language, setLanguage] = useState<string>("nl-NL");
 
@@ -53,9 +54,15 @@ export default function CreateChatPage() {
         mode="contained"
         onPress={onSubmit}
         disabled={!isRoomNameValid || isLoading}
-        style={{ marginTop: 24 }}
+        style={{
+          marginTop: 24,
+          backgroundColor:
+            !isRoomNameValid || isLoading
+              ? "lightgray"
+              : theme.colors.onSurface,
+        }}
       >
-        Create
+        <Text style={{ color: "#ffffff" }}>Create</Text>
       </Button>
       <Button
         mode="text"
@@ -63,6 +70,7 @@ export default function CreateChatPage() {
           router.replace("/(main)/dashboard");
         }}
         style={{ marginTop: 16 }}
+        textColor={theme.colors.onSurface}
       >
         Back to all chats
       </Button>

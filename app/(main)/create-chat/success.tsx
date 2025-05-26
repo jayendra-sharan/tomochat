@@ -56,7 +56,8 @@ export default function CreateChatSuccessPage() {
             onPress={() =>
               router.replace(`/chat/${roomId}?invite_id=${invite_id}`)
             }
-            style={{ marginTop: 32 }}
+            style={{ marginTop: 32, borderRadius: 2 }}
+            textColor={theme.colors.onSurface}
           >
             Go to chat
           </Button>
@@ -65,7 +66,11 @@ export default function CreateChatSuccessPage() {
             mode="contained"
             onPress={() => router.replace("/dashboard")}
             textColor={theme.colors.surface}
-            style={{ marginTop: 32, backgroundColor: theme.colors.onSurface }}
+            style={{
+              marginTop: 32,
+              backgroundColor: theme.colors.onSurface,
+              borderRadius: 2,
+            }}
           >
             Return to Dashboard
           </Button>

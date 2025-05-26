@@ -12,9 +12,6 @@ import ChatFilters from "@/domains/chat/components/ChatFilters";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { SocketEvents } from "@/domains/socket/events";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
-import UserPopover from "@/domains/user/components/UserPopover";
-import Popover from "@/domains/shared/components/Popover";
-import { UserAvatar } from "@/domains/user/components/UserAvatar";
 import UserMenu from "@/domains/shared/components/UserMenu";
 
 function DashboardPage() {
@@ -71,11 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     ...(Platform.OS === "web" && { overflowY: "auto" }), // RNW-specific fix
   } as any,
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
 });
 
 export default useRequireUser(DashboardPage);
