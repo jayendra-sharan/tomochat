@@ -4,6 +4,7 @@ import chatReducer from "@/domains/chat/chatSlice";
 import { authApi } from "@/domains/auth/authApi";
 import { chatApi } from "@/domains/chat/chatApi";
 import { roomsApi } from "@/domains/rooms/roomsApi";
+import { userApi } from "@/domains/user/userApi";
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [chatApi.reducerPath]: chatApi.reducer,
   [roomsApi.reducerPath]: roomsApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 });
 
 const rootReducer = (state: any, action: any) => {
@@ -27,6 +29,7 @@ export const store = configureStore({
       authApi.middleware,
       chatApi.middleware,
       roomsApi.middleware,
+      userApi.middleware,
     ),
   devTools: process.env.NODE_ENV !== "production",
 });

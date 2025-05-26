@@ -4,8 +4,10 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Keyboard,
+  Platform,
 } from "react-native";
 import { Portal } from "react-native-paper";
+import { WEB_APP_MAX_WIDTH } from "../constants";
 
 type Props = {
   visible: boolean;
@@ -32,7 +34,15 @@ const Popover: React.FC<Props> = ({
           onClose();
         }}
       >
-        <View style={StyleSheet.absoluteFill}>
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            Platform.OS === "web" && {
+              maxWidth: WEB_APP_MAX_WIDTH,
+              margin: "auto",
+            },
+          ]}
+        >
           {/* @todo make it reusable by removing dependeicy on position */}
           <View style={{ position: "absolute", bottom: y, left: x, right: 0 }}>
             {children}

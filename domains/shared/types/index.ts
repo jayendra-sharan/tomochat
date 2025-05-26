@@ -1,8 +1,11 @@
-type User = {
+export interface User {
+  id: string;
+  email: string;
   displayName: string;
-};
+}
+
 type Member = {
-  user: User;
+  user: Pick<User, "displayName">;
 };
 
 export type Room = {

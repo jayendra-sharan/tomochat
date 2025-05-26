@@ -13,10 +13,9 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 type Props = {
   onSettings?: () => void;
-  onContacts?: () => void;
 };
 
-const UserPopover: React.FC<Props> = ({ onSettings, onContacts }) => {
+const UserPopover: React.FC<Props> = ({ onSettings }) => {
   const { user } = useAuth();
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
@@ -25,6 +24,18 @@ const UserPopover: React.FC<Props> = ({ onSettings, onContacts }) => {
     return null;
   }
   const { displayName, email, id } = user;
+
+  // @todo fix duplicate logic
+  const redirectToHome = () => {
+    router.push("/(main)/dashboard");
+  };
+  const redirectToConnections = () => {
+    router.push("/(main)/profile/connections");
+  };
+
+  const redirectToProfile = () => {
+    router.push("/(main)/profile");
+  };
 
   const handleLogout = () => {
     storage.removeItem(AUTH_TOKEN);
@@ -38,6 +49,7 @@ const UserPopover: React.FC<Props> = ({ onSettings, onContacts }) => {
     <Surface
       style={{
         padding: 16,
+        paddingBottom: 40,
         borderTopLeftRadius: 2,
         borderTopRightRadius: 2,
         elevation: 2,
@@ -64,7 +76,16 @@ const UserPopover: React.FC<Props> = ({ onSettings, onContacts }) => {
       <Divider style={{ marginVertical: 8 }} />
 
       <Button
-        onPress={onContacts}
+        onPress={redirectToHome}
+        mode="text"
+        textColor={theme.colors.onSurface}
+        contentStyle={{ justifyContent: "flex-start" }}
+      >
+        Home
+      </Button>
+
+      <Button
+        onPress={redirectToProfile}
         mode="text"
         textColor={theme.colors.onSurface}
         contentStyle={{ justifyContent: "flex-start" }}
@@ -73,12 +94,12 @@ const UserPopover: React.FC<Props> = ({ onSettings, onContacts }) => {
       </Button>
 
       <Button
-        onPress={onContacts}
+        onPress={redirectToConnections}
         mode="text"
         textColor={theme.colors.onSurface}
         contentStyle={{ justifyContent: "flex-start" }}
       >
-        Contacts
+        My connections
       </Button>
 
       <Divider style={{ marginVertical: 8 }} />

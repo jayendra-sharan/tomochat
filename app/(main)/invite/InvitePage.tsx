@@ -62,6 +62,12 @@ export default function InvitePage({ user }: InvitePageProps) {
         onPress={handleJoin}
         loading={isLoading}
         disabled={disableButton}
+        textColor={disableButton ? "#ffffff" : theme.colors.surface}
+        style={{
+          marginTop: 32,
+          backgroundColor: disableButton ? "gray" : theme.colors.onSurface,
+          borderRadius: 2,
+        }}
       >
         Join chat
       </Button>

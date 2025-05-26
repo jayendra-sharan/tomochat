@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import { Button, Icon } from "react-native-paper";
 import { useRouter } from "expo-router";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import Rooms from "@/domains/rooms/components/Rooms";
 import { Room } from "@/domains/shared/types";
@@ -17,11 +15,11 @@ import { useFeatureFlag } from "@/redux/FeatureProvider";
 import UserPopover from "@/domains/user/components/UserPopover";
 import Popover from "@/domains/shared/components/Popover";
 import { UserAvatar } from "@/domains/user/components/UserAvatar";
+import UserMenu from "@/domains/shared/components/UserMenu";
 
 function DashboardPage() {
   const router = useRouter();
   const socket = useSocketContext();
-  const [showUserPopover, setShowUserPopover] = useState(false);
 
   const { showChatFilters } = useFeatureFlag();
 
@@ -56,34 +54,10 @@ function DashboardPage() {
       <View style={styles.scrollable}>
         <Rooms enterChat={enterChat} />
       </View>
-
-      <View
-        style={[
-          styles.bottomBar,
-          {
-            // backgroundColor: theme.colors.surface,
-            // borderColor: theme.colors.outline,
-          },
-        ]}
-      >
-        <Button onPress={() => router.push("/(main)/create-chat")}>
-          <Icon size={40} source="plus" />
-        </Button>
-        <Button onPress={() => setShowUserPopover(true)}>
-          <UserAvatar id={userId} />
-        </Button>
-      </View>
-      <Popover
-        visible={showUserPopover}
-        onClose={() => setShowUserPopover(false)}
-      >
-        <UserPopover />
-      </Popover>
+      <UserMenu />
     </View>
   );
 }
-
-const BOTTOM_BAR_HEIGHT = 60;
 
 const styles = StyleSheet.create({
   page: {
@@ -97,16 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     ...(Platform.OS === "web" && { overflowY: "auto" }), // RNW-specific fix
   } as any,
-  bottomBar: {
-    height: BOTTOM_BAR_HEIGHT,
-    // borderWidth: 1,
-    paddingHorizontal: 12,
-    marginHorizontal: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    // borderRadius: 2,
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",

@@ -10,8 +10,6 @@ import {
 import { CREATE_ROOM } from "./grqphql/createRoom.mutation";
 import { JOIN_ROOM } from "./grqphql/joinRoom.mutation";
 import { ROOMS } from "./grqphql/rooms.query";
-import { authApi } from "../auth/authApi";
-import { RootState } from "@/redux/store";
 
 export const roomsApi = createApi({
   reducerPath: "roomsApi",

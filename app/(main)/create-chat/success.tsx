@@ -64,7 +64,8 @@ export default function CreateChatSuccessPage() {
           <Button
             mode="contained"
             onPress={() => router.replace("/dashboard")}
-            style={{ marginTop: 32 }}
+            textColor={theme.colors.surface}
+            style={{ marginTop: 32, backgroundColor: theme.colors.onSurface }}
           >
             Return to Dashboard
           </Button>

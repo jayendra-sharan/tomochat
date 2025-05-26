@@ -61,13 +61,21 @@ export function LoginForm({
               style={styles.logo}
               source={require("@/assets/images/logo_vertical.png")}
             />
-            <Text style={{ marginTop: 20 }} variant="titleMedium">
+            <Text
+              style={{ marginTop: 20, color: theme.colors.onSurface }}
+              variant="titleMedium"
+            >
               Learn while you talk!
             </Text>
           </View>
 
           {!!userId && (
-            <Text style={styles.registrationSuccess}>
+            <Text
+              style={[
+                styles.registrationSuccess,
+                { color: theme.colors.onSurface },
+              ]}
+            >
               Registration successful. Login to continue.
             </Text>
           )}
@@ -118,8 +126,13 @@ export function LoginForm({
             onPress={handleLogin}
             loading={loading}
             disabled={loading || !!errors.username || !!errors.password}
-            labelStyle={[styles.buttonLabel, { color: theme.colors.surface }]}
-            style={styles.button}
+            labelStyle={[
+              styles.buttonLabel,
+              {
+                color: theme.colors.surface,
+              },
+            ]}
+            style={[styles.button, { backgroundColor: theme.colors.onSurface }]}
           >
             {loading ? "Please wait..." : "Login"}
           </Button>
@@ -127,6 +140,7 @@ export function LoginForm({
           {!userId && (
             <Button
               mode="text"
+              textColor={theme.colors.onSurface}
               onPress={() => {
                 router.replace(`/(auth)/register?invite_id=${inviteId}`);
               }}
@@ -165,9 +179,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
-    borderRadius: 8,
+    borderRadius: 2,
   },
   buttonLabel: {
     fontWeight: "600",
+    fontSize: 16,
   },
 });
