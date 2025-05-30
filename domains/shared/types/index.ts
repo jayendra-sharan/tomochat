@@ -16,4 +16,5 @@ export type Room = {
   members: Member[];
   lastMessage: string;
   isUnread: boolean;
+  description?: string;
 };

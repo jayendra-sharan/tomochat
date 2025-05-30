@@ -4,6 +4,7 @@ export const GET_ROOM_DETAILS = `
       id
       name
       topic
+      description
       roomType
       inviteLink
       lastMessage

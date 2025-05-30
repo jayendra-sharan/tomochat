@@ -7,6 +7,7 @@ import Popover from "./Popover";
 // import { useAppTheme } from "@/hooks/useAppTheme";
 import { useState } from "react";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
+import CreateRoomPage from "@/domains/rooms/components/CreateRoomPage";
 
 const BOTTOM_BAR_HEIGHT = 60;
 
@@ -17,6 +18,7 @@ export default function UserMenu({ showBack }: UserMenuProps) {
   // const theme = useAppTheme();
   const { userId } = useAuth();
   const [showUserPopover, setShowUserPopover] = useState(false);
+  const [showCreateFlow, setShowCreateFlow] = useState(false);
 
   if (!userId) {
     return null;
@@ -30,7 +32,7 @@ export default function UserMenu({ showBack }: UserMenuProps) {
             <Icon size={40} source="arrow-left-bold" />
           </Button>
         ) : (
-          <Button onPress={() => router.push("/(main)/create-chat")}>
+          <Button onPress={() => setShowCreateFlow(true)}>
             <Icon size={40} source="chat-plus" />
           </Button>
         )}
@@ -49,6 +51,9 @@ export default function UserMenu({ showBack }: UserMenuProps) {
       >
         <UserPopover />
       </Popover>
+      <Popover visible={showCreateFlow} onClose={() => {}}>
+        <CreateRoomPage onDismiss={() => setShowCreateFlow(false)} />
+      </Popover>
     </>
   );
 }
@@ -56,7 +61,7 @@ export default function UserMenu({ showBack }: UserMenuProps) {
 const styles = StyleSheet.create({
   bottomBar: {
     height: BOTTOM_BAR_HEIGHT,
-    marginBottom: Platform.OS === "ios" ? 0 : 36,
+    marginBottom: Platform.OS === "ios" ? 0 : 20,
     paddingHorizontal: 6,
     flexDirection: "row",
     justifyContent: "space-between",

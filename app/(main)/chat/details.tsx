@@ -32,7 +32,7 @@ const DetailsScreen = () => {
     { roomId },
     {
       refetchOnMountOrArgChange: true,
-    },
+    }
   );
 
   if (isLoading) {
@@ -43,7 +43,6 @@ const DetailsScreen = () => {
     // @todo - add error plus go back
     return <Text>Room detail not found</Text>;
   }
-  console.log("room", data);
   const renderMembers = ({ item }: { item: Member }) => (
     <>
       <List.Item
@@ -89,7 +88,7 @@ const DetailsScreen = () => {
           variant="bodyMedium"
           style={{ marginTop: 4, textAlign: "center" }}
         >
-          Default group description
+          {data.description}
         </Text>
       </View>
 

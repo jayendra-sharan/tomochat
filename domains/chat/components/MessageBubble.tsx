@@ -46,7 +46,11 @@ export default function MessageBubble({
     if (!renderName || isSystemMessage || isSelf) {
       return (
         <View
-          style={{ display: "flex", flexDirection: "column", maxWidth: "80%" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: isSystemMessage ? undefined : "80%",
+          }}
         >
           <Text
             style={[
@@ -108,8 +112,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    paddingBottom: 8,
-    paddingTop: 6,
+    paddingBottom: 4,
+    paddingTop: 4,
     paddingHorizontal: 4,
     borderRadius: 2,
     marginBottom: 0,
@@ -142,6 +146,7 @@ const styles = StyleSheet.create({
   systeMessage: {
     fontSize: 12,
     color: "#333",
+    maxWidth: "100%",
   },
   sender: {
     fontSize: 12,

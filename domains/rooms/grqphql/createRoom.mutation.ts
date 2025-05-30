@@ -1,12 +1,16 @@
 export const CREATE_ROOM = `
   mutation CreateRoom($input: CreateRoomInput!) {
     createRoom(input:$input) {
-      name
-      inviteLink
       id
+      name
       topic
+      inviteLink
+      lastMessage
+      isUnread
       members {
-        id
+        user { 
+          displayName
+        }
       }
     }
   }

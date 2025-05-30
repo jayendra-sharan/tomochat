@@ -1,20 +1,32 @@
 import React from "react";
 import {
-  View,
-  TouchableWithoutFeedback,
-  StyleSheet,
   Keyboard,
   Platform,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Pressable,
+  View,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Portal } from "react-native-paper";
-import { WEB_APP_MAX_WIDTH } from "../constants";
+
+const styles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#00000050",
+  },
+  centeredWeb: {
+    maxWidth: 768,
+    marginHorizontal: "auto",
+  },
+});
 
 type Props = {
   visible: boolean;
-  x?: number;
-  y?: number;
   onClose: () => void;
   children: React.ReactNode;
+  x?: number;
+  y?: number;
 };
 
 const Popover: React.FC<Props> = ({
@@ -28,27 +40,43 @@ const Popover: React.FC<Props> = ({
 
   return (
     <Portal>
-      <TouchableWithoutFeedback
+      <Pressable
+        style={[styles.overlay, Platform.OS === "web" && styles.centeredWeb]}
         onPress={() => {
           Keyboard.dismiss();
           onClose();
         }}
       >
         <View
-          style={[
-            StyleSheet.absoluteFill,
-            Platform.OS === "web" && {
-              maxWidth: WEB_APP_MAX_WIDTH,
-              margin: "auto",
-            },
-          ]}
+          style={[styles.overlay, Platform.OS === "web" && styles.centeredWeb]}
         >
-          {/* @todo make it reusable by removing dependeicy on position */}
-          <View style={{ position: "absolute", bottom: y, left: x, right: 0 }}>
-            {children}
-          </View>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            keyboardVerticalOffset={120}
+            style={{
+              position: "absolute",
+              bottom: y,
+              left: x,
+              right: 0,
+              maxHeight: "80%",
+              width: "100%",
+            }}
+          >
+            <Pressable
+              style={{
+                bottom: y,
+                left: x,
+                right: 0,
+                // maxHeight: "80%",
+                width: "100%",
+              }}
+              onPress={() => {}}
+            >
+              {children}
+            </Pressable>
+          </KeyboardAvoidingView>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     </Portal>
   );
 };

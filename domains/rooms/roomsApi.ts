@@ -8,11 +8,14 @@ import {
   RoomResponse,
   GetRoomDetailsResponse,
   GetRoomDetailsInput,
+  AddMembersToRoomResponse,
+  AddMembersToRoomInput,
 } from "./types";
 import { CREATE_ROOM } from "./grqphql/createRoom.mutation";
 import { JOIN_ROOM } from "./grqphql/joinRoom.mutation";
 import { ROOMS } from "./grqphql/rooms.query";
 import { GET_ROOM_DETAILS } from "./grqphql/getRoomDetails";
+import { ADD_MEMBERS_TO_ROOM } from "./grqphql/addMembersToRoom.query";
 
 export const roomsApi = createApi({
   reducerPath: "roomsApi",
@@ -47,6 +50,17 @@ export const roomsApi = createApi({
       transformResponse: (res: any) => res.getRoomDetails,
       transformErrorResponse: (error: any) => error,
     }),
+    addMembersToRoom: builder.mutation<
+      AddMembersToRoomResponse,
+      AddMembersToRoomInput
+    >({
+      query: (input) => ({
+        document: ADD_MEMBERS_TO_ROOM,
+        variables: { input },
+      }),
+      transformResponse: (res: any) => res.addMembersToRoom,
+      transformErrorResponse: (error: any) => error,
+    }),
   }),
 });
 
@@ -55,4 +69,5 @@ export const {
   useJoinRoomMutation,
   useGetRoomsQuery,
   useGetRoomDetailsQuery,
+  useAddMembersToRoomMutation,
 } = roomsApi;

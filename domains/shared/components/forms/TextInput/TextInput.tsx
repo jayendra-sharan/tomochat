@@ -28,6 +28,7 @@ const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
           autoComplete="off"
           textContentType="none"
           importantForAutofill="no"
+          activeUnderlineColor={theme.colors.onSurface}
           {...keyboardProps}
           {...rest}
         />
@@ -40,7 +41,7 @@ const TextInput = forwardRef<RNTextInput, FormTextInputProps>(
         </View>
       </View>
     );
-  },
+  }
 );
 
 const styles = StyleSheet.create({

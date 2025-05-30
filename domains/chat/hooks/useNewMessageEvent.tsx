@@ -23,13 +23,9 @@ export default function useNewMessageEvent(roomId: string) {
       // - order is updated
       // - show unread and unread count
       dispatch(
-        chatApi.util.updateQueryData(
-          "getRoomChats",
-          { roomId },
-          (draft) => {
-            draft.messages.push(message);
-          },
-        ),
+        chatApi.util.updateQueryData("getRoomChats", { roomId }, (draft) => {
+          draft.messages.push(message);
+        })
       );
     };
     socket.on(SocketEvents.NEW_MESSAGE, handleNewMessage);

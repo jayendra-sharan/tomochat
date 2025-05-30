@@ -14,13 +14,24 @@ interface ButtonProps extends Omit<RNPButtonProps, "theme"> {
 export const Button: React.FC<ButtonProps> = ({
   disabled,
   children,
-  mode,
+  mode = "contained",
   style,
   ...props
 }) => {
   const theme = useAppTheme();
-  const backgroundColor = disabled ? "lightgrey" : theme.colors.onSurface;
-  const textColor = mode !== "text" ? "#ffffff" : theme.colors.onSurface;
+  let backgroundColor = "";
+  let textColor = "";
+  let borderColor = "#e0e0e0";
+  if (mode === "contained") {
+    backgroundColor = disabled
+      ? theme.colors.onSurfaceDisabled
+      : theme.colors.onSurface;
+    textColor = theme.colors.surface;
+    borderColor = theme.colors.onSurface;
+  }
+  if (mode === "outlined") {
+    borderColor = theme.colors.onSurface;
+  }
   const isTextMode = mode === "text";
   return (
     <RNPButton
@@ -31,6 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
           borderRadius: 2,
         },
         !isTextMode && { backgroundColor },
+        { borderColor },
         style,
       ]}
       {...props}

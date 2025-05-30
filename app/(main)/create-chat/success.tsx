@@ -8,7 +8,7 @@ import {
   Snackbar,
   useTheme,
 } from "react-native-paper";
-import * as Clipboard from "expo-clipboard";
+import Clipboard from "expo-clipboard";
 
 export default function CreateChatSuccessPage() {
   const theme = useTheme();

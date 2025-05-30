@@ -4,17 +4,14 @@ export type CreateRoomRequest = {
   name: string;
   language: string;
   userDisplayName: string;
+  description: string;
 };
 
 export type JoinRoomRequest = {
   inviteLink: string;
 };
 
-export type CreateRoomResponse = {
-  name: string;
-  id: string;
-  inviteLink: string;
-};
+export type CreateRoomResponse = Room;
 
 export type JoinRoomResponse = {
   result: boolean;
@@ -29,3 +26,10 @@ export type GetRoomDetailsInput = {
 export interface GetRoomDetailsResponse extends Room {
   messageCount: number;
 }
+
+export interface AddMembersToRoomInput {
+  roomId: string;
+  memberIds: string[];
+}
+
+export type AddMembersToRoomResponse = Room;
