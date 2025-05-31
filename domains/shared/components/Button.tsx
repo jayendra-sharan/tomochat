@@ -51,7 +51,7 @@ export const Button: React.FC<ButtonProps> = ({
         style={{
           color: textColor,
           fontWeight: "400",
-          fontSize: 16,
+          fontSize: 14,
           paddingHorizontal: 4,
           paddingVertical: 2,
         }}

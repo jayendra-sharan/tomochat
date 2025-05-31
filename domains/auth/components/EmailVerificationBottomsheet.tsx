@@ -55,6 +55,7 @@ export default function EmailVerificationSheet({
           resetError();
           setCode("");
         }}
+        mode="text"
       >
         Didn't receive the code? Click to resend.
       </Button>
