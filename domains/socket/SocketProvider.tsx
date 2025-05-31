@@ -12,6 +12,7 @@ import {
 } from "react";
 import { initSocket } from "./lib/socketService";
 import { useInAppNotification } from "../notification/hooks/useInAppNotification";
+import { useAuth } from "../auth/hooks/useAuth";
 
 export type SocketType =
   | Socket<ServerToClientEvents, ClientToServerEvents>
@@ -22,7 +23,7 @@ type SocketContextType = {
 };
 
 export const SocketContext = createContext<SocketContextType | undefined>(
-  undefined,
+  undefined
 );
 
 const useSocketContext = () => {
@@ -30,7 +31,7 @@ const useSocketContext = () => {
 
   if (!context) {
     throw new Error(
-      "SocketContext must be used inside valid children component",
+      "SocketContext must be used inside valid children component"
     );
   }
   return context;
@@ -38,6 +39,7 @@ const useSocketContext = () => {
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<SocketType>(undefined);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     const connect = async () => {
@@ -45,7 +47,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       if (s) setSocket(s);
     };
     connect();
-  }, []);
+  }, [isLoggedIn]);
 
   useInAppNotification(socket);
 

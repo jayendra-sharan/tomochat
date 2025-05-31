@@ -32,7 +32,18 @@ export default ({ config }) => {
       output: "static",
       favicon: "./assets/images/favicon.png",
     },
-    plugins: ["expo-router", "expo-secure-store"],
+    plugins: [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "@sentry/react-native/expo",
+        {
+          url: "https://sentry.io/",
+          project: "react-native",
+          organization: "tomochat",
+        },
+      ],
+    ],
     experiments: {
       typedRoutes: true,
     },
