@@ -77,7 +77,7 @@ export default function ChatInput({
       setMessage("");
     } catch (err) {
       setMessage(messageBackup.current);
-      throw new Error("error in sending message");
+      throw new Error("FE: error in sending message");
     } finally {
       setIsLoading(false);
     }

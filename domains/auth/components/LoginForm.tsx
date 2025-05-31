@@ -118,6 +118,7 @@ export function LoginForm({
               textAlign: "center",
               color: theme.colors.error,
               fontSize: theme.fontSizes.body,
+              marginBottom: 12,
             }}
           >
             {error}

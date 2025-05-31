@@ -7,9 +7,9 @@ export function showToast(type: ToastType, title: string, message?: string) {
     type,
     text1: title,
     text2: message,
-    position: "bottom",
+    position: "top",
     visibilityTime: 5000,
     autoHide: true,
-    bottomOffset: 50,
+    topOffset: 50,
   });
 }

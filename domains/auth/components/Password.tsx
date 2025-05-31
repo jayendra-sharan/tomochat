@@ -16,6 +16,7 @@ type Props = {
 export default function Password({ mode = "default", title }: Props) {
   const { password, error, setPassword, updatePassword } = usePasswordUpdate();
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordChanged, setPasswordChanged] = useState(false);
 
   const handlePasswordSubmit = async () => {
     try {
@@ -31,6 +32,9 @@ export default function Password({ mode = "default", title }: Props) {
           router.push("/(auth)/login");
         }, 3000);
       }
+      if (mode === "default") {
+        setPasswordChanged(true);
+      }
     } catch (err) {
       const message = (err as APIError).message;
       console.error(`Error occured ${err}`);
@@ -44,6 +48,25 @@ export default function Password({ mode = "default", title }: Props) {
       setIsLoading(false);
     }
   };
+
+  if (mode === "default" && passwordChanged) {
+    return (
+      <View>
+        <Text variant="titleLarge" style={{ marginBottom: 16 }}>
+          {title}
+        </Text>
+        <Text style={{ marginBottom: 40 }} variant="bodySmall">
+          Password successfully changed.
+        </Text>
+        <Button
+          mode="contained"
+          onPress={() => router.push("/(main)/dashboard")}
+        >
+          Go to all chats
+        </Button>
+      </View>
+    );
+  }
 
   return (
     <View>

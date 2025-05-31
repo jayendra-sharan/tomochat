@@ -39,3 +39,4 @@ tasks.md
 secrets.md
 
 .env.local
+.env
