@@ -1,16 +1,21 @@
 import { View, StyleSheet } from "react-native";
-import { Suggestion } from "../types";
 import { Text } from "react-native-paper";
+
+import { Suggestion } from "../types";
+import { TTSToolbar } from "./TTSToolbar";
 
 export function ImprovementSuggestion({
   suggestion,
+  content,
 }: {
   suggestion: Suggestion | undefined | null;
+  content?: string;
 }) {
   // @todo remove this, and add check in parent, also the type above
   if (!suggestion) {
     return;
   }
+
   return (
     <View
       style={{
@@ -18,6 +23,9 @@ export function ImprovementSuggestion({
         flexDirection: "column",
       }}
     >
+      <View style={styles.textWrapper}>
+        <TTSToolbar text={content || ""} />
+      </View>
       <View style={styles.textWrapper}>
         <Text>
           <Text style={styles.label}>Original text: </Text>

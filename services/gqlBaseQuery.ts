@@ -5,10 +5,7 @@ import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 const GRAPHQL_ENDPOINT = `${API_URL}/graphql`;
 
-export async function gqlFetch<T = any>(
-  query: string,
-  variables?: Record<string, any>,
-): Promise<T> {
+export async function gqlFetch(query: string, variables?: Record<string, any>) {
   const token = await storage.getItem("token");
   const res = await fetch(GRAPHQL_ENDPOINT, {
     method: "POST",
@@ -22,38 +19,49 @@ export async function gqlFetch<T = any>(
     }),
   });
 
-  const json = await res.json();
+  const result = await res.json();
 
-  if (json.errors) {
-    throw new Error(json.errors[0].message || "GraphQL Error");
+  if (result.errors?.length) {
+    return {
+      error: result.errors[0],
+    };
   }
 
-  return json;
+  return {
+    data: result.data,
+  };
 }
 
+export type APIError = {
+  message: string;
+  name: string;
+};
+
 export const gqlBaseQuery =
-  (): BaseQueryFn<{ document: string; variables?: any }, unknown, unknown> =>
+  <ResultType = unknown>(): BaseQueryFn<
+    { document: string; variables?: any },
+    ResultType,
+    APIError
+  > =>
   async ({ document, variables }) => {
     try {
       const result = await gqlFetch(document, variables);
       if (result.error) {
-        // console.error("Error", result.error);
         return {
           error: {
             name: result.error.name || "GraphQLError",
             message: result.error.message || "Unknown GraphQL error",
-          },
+          } as APIError,
         };
       }
 
-      return { data: result.data };
+      return { data: result.data as ResultType };
     } catch (error: any) {
-      // console.error("Error", error);
       return {
         error: {
           name: error?.name || "NetworkError",
           message: error?.message || "Unknown error occurred",
-        },
+        } as APIError,
       };
     }
   };

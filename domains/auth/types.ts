@@ -44,3 +44,16 @@ export interface VerifyEmailCodeInput {
   email: string;
   code: string;
 }
+
+export interface ChangePasswordInput {
+  newPassword: string;
+  currentPassword: string;
+}
+
+export interface RequestPasswordResetInput {
+  email: string;
+}
+export interface RecoverPasswordInput {
+  password: string;
+  token: string;
+}

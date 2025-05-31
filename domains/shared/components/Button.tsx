@@ -50,9 +50,10 @@ export const Button: React.FC<ButtonProps> = ({
       <Text
         style={{
           color: textColor,
-          fontWeight: "bold",
+          fontWeight: "400",
           fontSize: 16,
-          padding: 4,
+          paddingHorizontal: 4,
+          paddingVertical: 2,
         }}
       >
         {children}

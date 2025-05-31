@@ -1,6 +1,5 @@
 import { InAppNotificationPayload } from "@/domains/shared/types/socketEvents";
 import { SocketEvents } from "@/domains/socket/events";
-import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { useEffect } from "react";
 import { showToast } from "../lib/showToast";
 import { SocketType } from "@/domains/socket/SocketProvider";
@@ -11,9 +10,9 @@ export function useInAppNotification(socket: SocketType) {
   useEffect(() => {
     if (!socket) return;
     const inAppNotificationHandler = (data: InAppNotificationPayload) => {
-      const { roomId, roomName, displayName, message } = data;
+      const { roomId, roomName, message } = data;
       showToast("info", `${roomName}`, message);
-      updateLastMessage({ roomId,  lastMessage: message});
+      updateLastMessage({ roomId, lastMessage: message });
     };
     socket.on(SocketEvents.IN_APP_NOTIFICATION, inAppNotificationHandler);
 

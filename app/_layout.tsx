@@ -10,6 +10,7 @@ import WebWrapper from "../domains/shared/components/WebWrapper";
 import FeatureProvider from "@/redux/FeatureProvider";
 import { SocketProvider } from "@/domains/socket/SocketProvider";
 import SafeAreaWrapper from "@/domains/shared/components/SafeAreaWrapper";
+import { toastConfig } from "@/services/toastConfig";
 
 export default function Layout() {
   return (
@@ -23,7 +24,7 @@ export default function Layout() {
                   <Slot />
                 </View>
               </SafeAreaWrapper>
-              <Toast />
+              <Toast config={toastConfig} />
             </WebWrapper>
           </SocketProvider>
         </PaperProvider>

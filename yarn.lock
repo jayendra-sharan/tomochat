@@ -3602,6 +3602,7 @@ __metadata:
     expo-notifications: "npm:^0.31.2"
     expo-router: "npm:~5.0.6"
     expo-secure-store: "npm:~14.2.3"
+    expo-speech: "npm:^13.1.7"
     expo-splash-screen: "npm:~0.30.8"
     expo-status-bar: "npm:~2.2.3"
     expo-system-ui: "npm:~5.0.7"
@@ -4354,6 +4355,15 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10c0/c1414e2a0a470a4531ae8b6f04e355184e29f61c41c988f9c9f6a3fa2a3f563382a7d44976d8ed560165288993971d295d4071e4921fe17105f3b807180e6f06
+  languageName: node
+  linkType: hard
+
+"expo-speech@npm:^13.1.7":
+  version: 13.1.7
+  resolution: "expo-speech@npm:13.1.7"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/adbdb86eef03a99113540ee20873f7b8a98360093142de1d4774963dd430666414252eef4e6286ff20acdf31d631768f18b4b5a0e3ccd3fda33c2468064a7e06
   languageName: node
   linkType: hard
 

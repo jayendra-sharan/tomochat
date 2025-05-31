@@ -18,6 +18,7 @@ import { LoginResponse } from "@/domains/auth/types";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import RequestPasswordReset from "@/domains/auth/components/RequestPasswordReset";
 
 type LoginResult =
   | { data: LoginResponse }
@@ -37,6 +38,7 @@ export default function LoginScreen() {
   const [error, setError] = useState("");
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [forgotPasswordMode, setForgotPasswordMode] = useState<boolean>(false);
 
   const { isEmailVerified, email: userEmail } = userData || {};
 
@@ -116,6 +118,24 @@ export default function LoginScreen() {
     }
   };
 
+  const handleForgotPassword = () => {
+    setForgotPasswordMode(true);
+  };
+
+  const handleReturnToLogin = () => {
+    setForgotPasswordMode(false);
+  };
+
+  if (forgotPasswordMode) {
+    return (
+      <>
+        <LoadingScreen loadingText="Password recovery..." />
+        <Bottomsheet visible={forgotPasswordMode} onClose={() => {}}>
+          <RequestPasswordReset returnToLogin={handleReturnToLogin} />
+        </Bottomsheet>
+      </>
+    );
+  }
   if (visible) {
     return (
       <>
@@ -145,6 +165,7 @@ export default function LoginScreen() {
         loading={loading}
         inviteId={inviteId}
         userId={userId}
+        triggerForgotPassword={handleForgotPassword}
       />
     </>
   );

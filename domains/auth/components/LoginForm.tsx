@@ -30,6 +30,7 @@ type LoginFormProps = {
   loading: boolean;
   inviteId?: string;
   userId?: string;
+  triggerForgotPassword: () => void;
 };
 
 export function LoginForm({
@@ -41,6 +42,7 @@ export function LoginForm({
   loading,
   inviteId = "",
   userId,
+  triggerForgotPassword,
 }: LoginFormProps) {
   const theme = useAppTheme();
   const passwordRef = useRef<RNTextInput>(null);
@@ -133,14 +135,20 @@ export function LoginForm({
 
         {!userId && (
           <Button
+            style={{ marginTop: 12 }}
             mode="text"
             onPress={() => {
               router.replace(`/(auth)/register?invite_id=${inviteId}`);
             }}
           >
-            Don't have an account? Click here!
+            <Text style={{ fontSize: 14 }}>
+              Don't have an account? Click here!
+            </Text>
           </Button>
         )}
+        <Button mode="text" onPress={triggerForgotPassword}>
+          <Text style={{ fontSize: 14 }}>Forgot Password?</Text>
+        </Button>
       </ScrollView>
     </KeyboardAvoidingView>
   );

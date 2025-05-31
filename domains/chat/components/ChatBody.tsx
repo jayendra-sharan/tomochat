@@ -26,16 +26,18 @@ export default function ChatBody({
   const currentMessageSenderId = useRef<string>("");
   const [expandedBubbleId, setExpandedBubbleId] = useState<string>("");
   const [suggestion, setSuggestion] = useState<Suggestion | undefined | null>();
+  const [content, setContent] = useState<string | undefined>();
 
   const handleMessageTap = useCallback(
     (messageId: string) => {
       const message = messages.find((message) => message.id === messageId);
+      setContent(message?.content);
       if (message?.suggestion) {
         setSuggestion(message?.suggestion);
         setExpandedBubbleId(messageId);
       }
     },
-    [messages.length],
+    [messages.length]
   );
   const { showTypingIndicator, senderNames } = useTypingUsers({
     roomId,
@@ -80,7 +82,7 @@ export default function ChatBody({
         visible={!!expandedBubbleId}
         onClose={() => setExpandedBubbleId("")}
       >
-        <ImprovementSuggestion suggestion={suggestion} />
+        <ImprovementSuggestion content={content} suggestion={suggestion} />
       </ChatInfoBottomSheet>
     </>
   );

@@ -90,7 +90,7 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
         textColor={theme.colors.onSurface}
         contentStyle={{ justifyContent: "flex-start" }}
       >
-        My profile
+        Change Password
       </Button>
 
       <Button
