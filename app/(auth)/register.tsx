@@ -124,14 +124,14 @@ export default function RegisterScreen() {
           />
 
           <Button
-            mode="contained"
+            type="primary"
             onPress={handleRegisterClick}
             style={{ marginTop: 16 }}
           >
             Register
           </Button>
           <Button
-            mode="text"
+            type="textLink"
             onPress={() => {
               router.replace("/(auth)/login");
             }}
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     justifyContent: "center",
-    backgroundColor: "#FAFAFA",
+    // backgroundColor: "#FAFAFA",
   },
   logoWrapper: {
     flexDirection: "column",

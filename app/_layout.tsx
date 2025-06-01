@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Slot } from "expo-router";
 import { Provider as PaperProvider } from "react-native-paper";
 import { Provider } from "react-redux";
@@ -11,6 +11,7 @@ import FeatureProvider from "@/redux/FeatureProvider";
 import { SocketProvider } from "@/domains/socket/SocketProvider";
 import SafeAreaWrapper from "@/domains/shared/components/SafeAreaWrapper";
 import { toastConfig } from "@/services/toastConfig";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Sentry from "@sentry/react-native";
 
 Sentry.init({
@@ -27,21 +28,35 @@ Sentry.init({
 
 export default Sentry.wrap(function Layout() {
   return (
-    <Provider store={store}>
-      <FeatureProvider>
-        <PaperProvider theme={TomoTheme}>
-          <SocketProvider>
-            <WebWrapper>
-              <SafeAreaWrapper>
-                <View style={{ flex: 1 }}>
-                  <Slot />
-                </View>
-              </SafeAreaWrapper>
-              <Toast config={toastConfig} />
-            </WebWrapper>
-          </SocketProvider>
-        </PaperProvider>
-      </FeatureProvider>
-    </Provider>
+    <LinearGradient
+      colors={["#ffffff", "#f1f5f9", "#e0f2fe"]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      <Provider store={store}>
+        <FeatureProvider>
+          <PaperProvider theme={TomoTheme}>
+            <SocketProvider>
+              <WebWrapper>
+                <SafeAreaWrapper>
+                  <View style={styles.appWrapper}>
+                    <Slot />
+                  </View>
+                </SafeAreaWrapper>
+                <Toast config={toastConfig} />
+              </WebWrapper>
+            </SocketProvider>
+          </PaperProvider>
+        </FeatureProvider>
+      </Provider>
+    </LinearGradient>
   );
+});
+
+const styles = StyleSheet.create({
+  appWrapper: {
+    flex: 1,
+    // backgroundColor: "#fdfdfd",
+  },
 });

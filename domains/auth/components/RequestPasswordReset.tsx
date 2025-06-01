@@ -52,7 +52,7 @@ export default function RequestPasswordReset({ returnToLogin }: Props) {
             errorMessage={""}
           />
           <Button
-            mode="contained"
+            type="primary"
             onPress={sendRecoverEmail}
             loading={isLoading}
             disabled={false}
@@ -62,7 +62,7 @@ export default function RequestPasswordReset({ returnToLogin }: Props) {
           </Button>
         </>
       )}
-      <Button mode="text" onPress={returnToLogin}>
+      <Button type="textLink" onPress={returnToLogin}>
         Back to login
       </Button>
     </View>
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 8,
-    borderRadius: 8,
   },
   error: {
     color: "#D32F2F",

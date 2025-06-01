@@ -17,6 +17,7 @@ import UserMenu from "@/domains/shared/components/UserMenu";
 function DashboardPage() {
   const router = useRouter();
   const socket = useSocketContext();
+  const [create, setCreate] = useState(false);
 
   const { showChatFilters } = useFeatureFlag();
 
@@ -45,13 +46,17 @@ function DashboardPage() {
     }, 1000);
   }, []);
 
+  const createRoom = () => {
+    setCreate(true);
+  };
+
   return (
     <View style={styles.page}>
       {showChatFilters && <ChatFilters />}
       <View style={styles.scrollable}>
-        <Rooms enterChat={enterChat} />
+        <Rooms enterChat={enterChat} createRoom={createRoom} />
       </View>
-      <UserMenu />
+      <UserMenu create={create} />
     </View>
   );
 }

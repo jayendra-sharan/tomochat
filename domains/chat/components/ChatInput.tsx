@@ -88,7 +88,7 @@ export default function ChatInput({
       style={[
         styles.container,
         {
-          backgroundColor: "#fafafa",
+          // backgroundColor: "#fafafa",
           borderColor: theme.colors.outline,
         },
       ]}

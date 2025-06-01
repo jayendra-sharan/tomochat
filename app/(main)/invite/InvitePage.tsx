@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Text, TextInput, Button, useTheme } from "react-native-paper";
+import { Text, TextInput, useTheme } from "react-native-paper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { User } from "@/domains/auth/types";
 import { useJoinRoomMutation } from "@/domains/rooms/roomsApi";
+import { Button } from "@/domains/shared/components/Button";
 
 type InvitePageProps = {
   user: User;
@@ -58,16 +59,10 @@ export default function InvitePage({ user }: InvitePageProps) {
       )}
 
       <Button
-        mode="contained"
+        type="primary"
         onPress={handleJoin}
         loading={isLoading}
         disabled={disableButton}
-        textColor={disableButton ? "#ffffff" : theme.colors.surface}
-        style={{
-          marginTop: 32,
-          backgroundColor: disableButton ? "gray" : theme.colors.onSurface,
-          borderRadius: 2,
-        }}
       >
         Join chat
       </Button>

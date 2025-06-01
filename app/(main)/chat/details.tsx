@@ -8,15 +8,8 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { View, FlatList } from "react-native";
-import {
-  Text,
-  Avatar,
-  IconButton,
-  Divider,
-  Menu,
-  List,
-  Button,
-} from "react-native-paper";
+import { Text, IconButton, Divider, Menu, List } from "react-native-paper";
+import { Button } from "@/domains/shared/components/Button";
 
 const DetailsScreen = () => {
   const theme = useAppTheme();
@@ -57,28 +50,28 @@ const DetailsScreen = () => {
             <UserAvatar id={item.user.id} />
           </View>
         )}
-        right={() => (
-          <Menu
-            visible={menuVisible === item.user.id}
-            onDismiss={() => setMenuVisible(null)}
-            anchor={
-              <IconButton
-                icon="dots-vertical"
-                onPress={() => setMenuVisible(item.user.id)}
-              />
-            }
-          >
-            <Menu.Item onPress={() => {}} title="Make Admin" />
-            <Menu.Item onPress={() => {}} title="Remove" />
-          </Menu>
-        )}
+        // right={() => (
+        //   <Menu
+        //     visible={menuVisible === item.user.id}
+        //     onDismiss={() => setMenuVisible(null)}
+        //     anchor={
+        //       <IconButton
+        //         icon="dots-vertical"
+        //         onPress={() => setMenuVisible(item.user.id)}
+        //       />
+        //     }
+        //   >
+        //     <Menu.Item onPress={() => {}} title="Make Admin" />
+        //     <Menu.Item onPress={() => {}} title="Remove" />
+        //   </Menu>
+        // )}
       />
       <Divider />
     </>
   );
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
+    <View style={{ flex: 1, padding: 16, paddingBottom: 0 }}>
       <View style={{ alignItems: "center", marginBottom: 16 }}>
         <RoomAvatar roomId={roomId} showInitials={false} />
         <Text variant="headlineSmall" style={{ marginTop: 8 }}>
@@ -101,9 +94,9 @@ const DetailsScreen = () => {
         }}
       >
         <Text variant="titleMedium">Participants</Text>
-        <Button mode="text" onPress={() => {}}>
+        {/* <Button type="menuLink" onPress={() => {}}>
           Add
-        </Button>
+        </Button> */}
       </View>
       {data.members.length ? (
         <FlatList

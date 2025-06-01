@@ -67,7 +67,6 @@ const Popover: React.FC<Props> = ({
                 bottom: y,
                 left: x,
                 right: 0,
-                // maxHeight: "80%",
                 width: "100%",
               }}
               onPress={() => {}}

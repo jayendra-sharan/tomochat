@@ -75,7 +75,7 @@ export function UserAvatar({
   }
   return (
     <Avatar.Image
-      size={42}
+      size={36}
       source={{ uri: getAvatarUrl({ id, avatarType: "user" }) }}
     />
   );

@@ -1,3 +1,4 @@
+// @todo deprecate
 import React, { useState } from "react";
 import { View } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";

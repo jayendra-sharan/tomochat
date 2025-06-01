@@ -126,10 +126,16 @@ export function LoginForm({
         )}
 
         <Button
-          mode="contained"
+          type="primary"
           onPress={handleLogin}
           loading={loading}
-          disabled={loading || !!errors.username || !!errors.password}
+          disabled={
+            loading ||
+            !!errors.username ||
+            !!errors.password ||
+            !email ||
+            !password.trim()
+          }
         >
           {loading ? "Please wait..." : "Login"}
         </Button>
@@ -137,7 +143,7 @@ export function LoginForm({
         {!userId && (
           <Button
             style={{ marginTop: 12 }}
-            mode="text"
+            type="textLink"
             onPress={() => {
               router.replace(`/(auth)/register?invite_id=${inviteId}`);
             }}
@@ -147,7 +153,7 @@ export function LoginForm({
             </Text>
           </Button>
         )}
-        <Button mode="text" onPress={triggerForgotPassword}>
+        <Button type="textLink" onPress={triggerForgotPassword}>
           <Text style={{ fontSize: 14 }}>Forgot Password?</Text>
         </Button>
       </ScrollView>
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     justifyContent: "center",
-    backgroundColor: "#FAFAFA",
+    // backgroundColor: "#FAFAFA",
   },
   logoWrapper: {
     flexDirection: "column",

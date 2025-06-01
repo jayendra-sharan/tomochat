@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Keyboard } from "react-native";
 import { Surface, Dialog, Text } from "react-native-paper";
-import {
-  Step1_CreateBasic,
-  Step2_MoreSettings,
-  Step3_InvitePeople,
-} from "./Steps";
+import { Step1_CreateBasic } from "./Steps";
 import CreateRoomSuccess from "./CreateRoomSuccess";
 import { Button } from "@/domains/shared/components/Button";
 import { roomsApi, useCreateRoomMutation } from "../roomsApi";
@@ -60,6 +56,7 @@ const CreateRoomPage = ({ onDismiss }: { onDismiss: () => void }) => {
         })
       );
 
+      // @todo remove depdency from step count
       setStep(4);
     } catch (error) {}
   };
@@ -69,11 +66,10 @@ const CreateRoomPage = ({ onDismiss }: { onDismiss: () => void }) => {
       <Surface
         style={{
           padding: 16,
-          paddingBottom: 20,
+          paddingBottom: 30,
           borderTopLeftRadius: 2,
           borderTopRightRadius: 2,
           elevation: 2,
-          backgroundColor: "#fafafa",
         }}
       >
         {step === 1 && (
@@ -83,17 +79,6 @@ const CreateRoomPage = ({ onDismiss }: { onDismiss: () => void }) => {
             goToNext={onSubmit}
             onClose={handleClose}
             isLoading={isLoading}
-          />
-        )}
-        {step === 2 && (
-          <Step2_MoreSettings goToNext={goToNext} goToPrev={goToPrev} />
-        )}
-        {step === 3 && (
-          <Step3_InvitePeople
-            goToPrev={goToPrev}
-            form={form}
-            setForm={setForm}
-            goToNext={goToNext}
           />
         )}
         {step === 4 && (
@@ -107,11 +92,11 @@ const CreateRoomPage = ({ onDismiss }: { onDismiss: () => void }) => {
         onDismiss={() => setConfirmCancel(false)}
       >
         <Dialog.Title>Cancel setup?</Dialog.Title>
-        <Dialog.Content style={{ padding: 12, paddingVertical: 0 }}>
+        <Dialog.Content style={{ padding: 12, marginBottom: 12 }}>
           <Text>Are you sure you want to cancel this group setup?</Text>
         </Dialog.Content>
         <Dialog.Actions style={{ padding: 12, paddingTop: 0 }}>
-          <Button onPress={() => setConfirmCancel(false)} mode="outlined">
+          <Button onPress={() => setConfirmCancel(false)} type="secondary">
             No
           </Button>
           <Button onPress={handleConfirmCancel}>Yes</Button>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Text, Button, ActivityIndicator, useTheme } from "react-native-paper";
-import { useJoinRoomMutation } from "@/domains/rooms/roomsApi";
+import { Text, useTheme } from "react-native-paper";
+import { Button } from "@/domains/shared/components/Button";
 import { storage } from "@/services/storage";
 import { PENDING_INVITE } from "@/constants";
 
@@ -22,7 +22,7 @@ export default function InviteConfirmPage() {
       <View style={styles.container}>
         <Text style={{ paddingVertical: 10 }}>Something went wrong</Text>
         <View style={styles.actions}>
-          <Button mode="contained" onPress={() => router.replace("/dashboard")}>
+          <Button type="textLink" onPress={() => router.replace("/dashboard")}>
             Return to Home
           </Button>
         </View>
@@ -37,14 +37,14 @@ export default function InviteConfirmPage() {
       </Text>
 
       <View style={styles.actions}>
-        <Button mode="contained" onPress={() => router.replace("/dashboard")}>
-          Go to Dashboard
-        </Button>
         <Button
-          mode="outlined"
+          type="primary"
           onPress={() => router.push(`/(main)/chat/${room}`)}
         >
           Open chat
+        </Button>
+        <Button type="textLink" onPress={() => router.replace("/dashboard")}>
+          Go to Dashboard
         </Button>
       </View>
     </View>

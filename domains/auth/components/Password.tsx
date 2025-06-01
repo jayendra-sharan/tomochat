@@ -58,10 +58,7 @@ export default function Password({ mode = "default", title }: Props) {
         <Text style={{ marginBottom: 40 }} variant="bodySmall">
           Password successfully changed.
         </Text>
-        <Button
-          mode="contained"
-          onPress={() => router.push("/(main)/dashboard")}
-        >
+        <Button type="primary" onPress={() => router.push("/(main)/dashboard")}>
           Go to all chats
         </Button>
       </View>
@@ -97,7 +94,7 @@ export default function Password({ mode = "default", title }: Props) {
         errorMessage={error.repeatNewPwd}
       />
       <Button
-        mode="contained"
+        type="primary"
         onPress={handlePasswordSubmit}
         disabled={password.newPwd !== password.repeatNewPwd}
         loading={isLoading}
@@ -107,7 +104,7 @@ export default function Password({ mode = "default", title }: Props) {
       {mode === "default" && (
         <Button
           style={{ marginTop: 20 }}
-          mode="text"
+          type="menuLink"
           onPress={() => router.navigate("/(main)/dashboard")}
         >
           Back
@@ -116,7 +113,7 @@ export default function Password({ mode = "default", title }: Props) {
       {mode === "recovery" && (
         <Button
           style={{ marginTop: 20 }}
-          mode="text"
+          type="textLink"
           onPress={() => router.navigate("/(auth)/login")}
         >
           Login

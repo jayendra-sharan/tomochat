@@ -11,8 +11,9 @@ import { NoChatsCreateOne } from "./NoChatsCreateOne";
 
 type RoomsProps = {
   enterChat: (room: Room) => void;
+  createRoom: () => void;
 };
-export default function Rooms({ enterChat }: RoomsProps) {
+export default function Rooms({ enterChat, createRoom }: RoomsProps) {
   const theme = useAppTheme();
   const { data: rooms, isLoading } = useGetRoomsQuery(undefined, {
     refetchOnMountOrArgChange: true,
@@ -23,7 +24,7 @@ export default function Rooms({ enterChat }: RoomsProps) {
   }
 
   if (!rooms?.length) {
-    return <NoChatsCreateOne />;
+    return <NoChatsCreateOne createRoom={createRoom} />;
   }
 
   const renderItem = ({ item }: { item: Room }) => {

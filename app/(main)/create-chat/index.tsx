@@ -1,3 +1,4 @@
+// @todo deprecate
 import React, { useState } from "react";
 import { TextInput, HelperText, Text } from "react-native-paper";
 import { useRouter } from "expo-router";
@@ -22,11 +23,12 @@ export default function CreateChatPage() {
   const onSubmit = async () => {
     if (!isRoomNameValid || !roomName.trim() || !language) return;
     try {
-      const { inviteLink } = await createRoom({
-        name: roomName.trim(),
-        language,
-        userDisplayName: user?.displayName ?? "",
-      }).unwrap();
+      // const { inviteLink } = await createRoom({
+      //   name: roomName.trim(),
+      //   language,
+      //   userDisplayName: user?.displayName ?? "",
+      // }).unwrap();
+      const inviteLink = "";
       router.push(`/(main)/create-chat/success?invite_id=${inviteLink}`);
     } catch (error) {
       console.log("Error in creating chat room");
@@ -52,7 +54,7 @@ export default function CreateChatPage() {
       <LanguagePicker language={language} setLanguage={setLanguage} />
 
       <Button
-        mode="contained"
+        type="primary"
         onPress={onSubmit}
         disabled={!isRoomNameValid || isLoading}
         style={{
@@ -66,12 +68,11 @@ export default function CreateChatPage() {
         <Text style={{ color: "#ffffff" }}>Create</Text>
       </Button>
       <Button
-        mode="text"
+        type="textLink"
         onPress={() => {
           router.replace("/(main)/dashboard");
         }}
         style={{ marginTop: 16 }}
-        textColor={theme.colors.onSurface}
       >
         Back to all chats
       </Button>

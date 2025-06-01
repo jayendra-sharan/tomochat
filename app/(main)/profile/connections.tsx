@@ -21,7 +21,7 @@ const ConnectionsScreen = () => {
   const connections = data.filter(
     (c) =>
       c.displayName.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase()),
+      c.email.toLowerCase().includes(search.toLowerCase())
   );
 
   const renderItem = ({ item }: { item: User }) => (
@@ -48,8 +48,9 @@ const ConnectionsScreen = () => {
     <View
       style={{
         flex: 1,
-        padding: 16,
         paddingTop: 24,
+        paddingBottom: 0,
+        paddingInline: 16,
       }}
     >
       <Text variant="headlineSmall" style={{ marginBottom: 8 }}>

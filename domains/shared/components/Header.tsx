@@ -14,7 +14,7 @@ export const Header = ({ title }: HeaderProps) => {
         height: 48,
         paddingHorizontal: 16,
         paddingVertical: 2,
-        backgroundColor: "#fafafa",
+        // backgroundColor: "#fafafa",
         borderBottomWidth: 1,
         borderBottomColor: "#E0E0E0",
       }}

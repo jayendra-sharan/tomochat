@@ -85,7 +85,7 @@ const CreateRoomSuccess = ({ inviteLink, onClose }: Props) => {
   };
 
   return (
-    <View style={{ paddingBottom: 24, paddingHorizontal: 12, paddingTop: 12 }}>
+    <View style={{ paddingBottom: 0, paddingHorizontal: 12, paddingTop: 12 }}>
       <Text variant="titleLarge" style={{ marginBottom: 12 }}>
         🎉 Group Created!
       </Text>
@@ -104,15 +104,16 @@ const CreateRoomSuccess = ({ inviteLink, onClose }: Props) => {
         }}
       >
         <Button
+          type="secondary"
           icon={copied ? "check" : "content-copy"}
           onPress={handleCopy}
           style={{ width: 150 }}
         >
-          {copied ? "Copied" : "Copy link"}
+          {copied ? "Copied" : "Copy"}
         </Button>
         <Button
           icon="share-variant"
-          mode="contained"
+          type="primary"
           onPress={handleShare}
           style={{ width: 150 }}
         >
@@ -136,11 +137,17 @@ const CreateRoomSuccess = ({ inviteLink, onClose }: Props) => {
       )}
 
       {!!selectedUserIds.length ? (
-        <Button onPress={onAddMembers} style={{ marginTop: 12 }}>
+        <Button type="primary" onPress={onAddMembers} style={{ marginTop: 12 }}>
           Add to chat
         </Button>
       ) : (
-        <Button mode="text" onPress={onClose} style={{ marginTop: 12 }}>
+        <Button
+          type="menuLink"
+          onPress={onClose}
+          style={{ marginTop: 12 }}
+          contentStyle={{ paddingVertical: 3, paddingHorizontal: 16 }}
+          // @todo 3 =  2 + 1 (border) primary button
+        >
           Done
         </Button>
       )}

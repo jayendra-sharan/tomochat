@@ -1,3 +1,4 @@
+import formValidator from "@/domains/shared/lib/formValidator";
 import { useState, useCallback, useEffect } from "react";
 
 type User = {
@@ -21,7 +22,10 @@ export function useLoginForm() {
     ) {
       newErrors.email = "Must be a valid email address";
     }
-    if (touched.password && user.password.length < 2) {
+    if (
+      touched.password &&
+      !formValidator.password(user.password.trim()).isValid
+    ) {
       newErrors.password = "Password must be at least 6 characters";
     }
     setErrors(newErrors);

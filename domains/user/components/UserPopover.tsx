@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Text, Divider, Button, Surface } from "react-native-paper";
+import { Text, Divider, Surface } from "react-native-paper";
 
 import { UserAvatar } from "./UserAvatar";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
@@ -10,6 +10,7 @@ import { resetStore } from "@/redux/store";
 import { storage } from "@/services/storage";
 import { router } from "expo-router";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { Button } from "@/domains/shared/components/Button";
 
 type Props = {
   onSettings?: () => void;
@@ -49,11 +50,10 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
     <Surface
       style={{
         padding: 16,
-        paddingBottom: 40,
         borderTopLeftRadius: 2,
+        paddingBottom: 36,
         borderTopRightRadius: 2,
         elevation: 2,
-        backgroundColor: "#fafafa",
       }}
     >
       <View
@@ -77,8 +77,7 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
 
       <Button
         onPress={redirectToHome}
-        mode="text"
-        textColor={theme.colors.onSurface}
+        type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
       >
         Home
@@ -86,8 +85,7 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
 
       <Button
         onPress={redirectToProfile}
-        mode="text"
-        textColor={theme.colors.onSurface}
+        type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
       >
         Change Password
@@ -95,8 +93,7 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
 
       <Button
         onPress={redirectToConnections}
-        mode="text"
-        textColor={theme.colors.onSurface}
+        type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
       >
         My connections
@@ -105,9 +102,8 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
       <Divider style={{ marginVertical: 8 }} />
 
       <Button
-        onPress={onSettings}
-        mode="text"
-        textColor={theme.colors.onSurface}
+        onPress={() => {}}
+        type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
       >
         Settings
@@ -117,9 +113,8 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
 
       <Button
         onPress={handleLogout}
-        mode="text"
+        type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
-        textColor={theme.colors.onSurface}
       >
         Logout
       </Button>

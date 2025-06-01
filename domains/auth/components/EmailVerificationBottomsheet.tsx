@@ -55,13 +55,13 @@ export default function EmailVerificationSheet({
           resetError();
           setCode("");
         }}
-        mode="text"
+        type="textLink"
       >
         Didn't receive the code? Click to resend.
       </Button>
 
       <Button
-        mode="contained"
+        type="primary"
         onPress={handleVerify}
         loading={isVerifying || isLoading}
         disabled={isVerifying || isLoading}

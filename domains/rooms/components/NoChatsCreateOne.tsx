@@ -1,9 +1,12 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { router } from "expo-router";
 import { View, Text } from "react-native";
-import { Button } from "react-native-paper";
+import { Button } from "@/domains/shared/components/Button";
 
-export function NoChatsCreateOne() {
+type Props = {
+  createRoom: () => void;
+};
+export function NoChatsCreateOne({ createRoom }: Props) {
   const theme = useAppTheme();
   return (
     <View
@@ -25,12 +28,9 @@ export function NoChatsCreateOne() {
         No chats yet?
       </Text>
       <Button
-        textColor={theme.colors.surface}
         style={{ backgroundColor: theme.colors.onSurface, borderRadius: 2 }}
-        mode="contained"
-        onPress={() => {
-          router.push("/(main)/create-chat");
-        }}
+        type="primary"
+        onPress={() => createRoom()}
       >
         Let's get started
       </Button>
