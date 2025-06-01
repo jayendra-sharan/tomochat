@@ -14,6 +14,7 @@ import { Text } from "react-native-paper";
 import { HEADER_HEIGHT } from "@/domains/shared/constants";
 import { TextInput as RNTextInput } from "react-native";
 import { Button } from "@/domains/shared/components/Button";
+import { BRAND_TAGLINE } from "@/utils/constants";
 
 type User = {
   email: string;
@@ -68,7 +69,7 @@ export function LoginForm({
             style={{ marginTop: 20, color: theme.colors.onSurface }}
             variant="titleMedium"
           >
-            Learn while you talk!
+            {BRAND_TAGLINE}
           </Text>
         </View>
 

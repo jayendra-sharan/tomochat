@@ -6,25 +6,29 @@ import { Text, Searchbar, List, Divider } from "react-native-paper";
 import { useGetUserConnectionsQuery } from "@/domains/user/userApi";
 import { User } from "@/domains/shared/types";
 import UserMenu from "@/domains/shared/components/UserMenu";
+import Error from "./error";
+import { getConnectionDuration } from "@/utils/formatters";
+import { Connection } from "@/domains/user/types";
 
 const ConnectionsScreen = () => {
   const [search, setSearch] = useState("");
 
-  const { data, isLoading } = useGetUserConnectionsQuery(undefined, {
+  const { data, isLoading, error } = useGetUserConnectionsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
 
+  if (error) {
+    return <Error errorText="Uh oh! Could not fetch connections." />;
+  }
   if (isLoading || !data) {
     return <LoadingScreen loadingText="Fetching your connections..." />;
   }
 
-  const connections = data.filter(
-    (c) =>
-      c.displayName.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase())
+  const connections = data.filter((c) =>
+    c.displayName.toLowerCase().includes(search.toLowerCase())
   );
 
-  const renderItem = ({ item }: { item: User }) => (
+  const renderItem = ({ item }: { item: Connection }) => (
     <>
       <List.Item
         title={item.displayName}
@@ -34,7 +38,7 @@ const ConnectionsScreen = () => {
             ellipsizeMode="middle"
             style={{ paddingVertical: 4 }}
           >
-            {`Connected since dd.mm.yyyy`}
+            {getConnectionDuration(item.createdAt)}
           </Text>
         )}
         left={() => <UserAvatar id={item.id} />}

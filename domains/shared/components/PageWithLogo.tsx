@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Text } from "react-native-paper";
 import { HEADER_HEIGHT } from "../constants";
+import { BRAND_TAGLINE } from "@/utils/constants";
 
 export function PageWithLogo({ children }: { children: React.ReactNode }) {
   return (
@@ -27,7 +28,7 @@ export function PageWithLogo({ children }: { children: React.ReactNode }) {
               source={require("@/assets/images/logo_vertical.png")}
             />
             <Text style={{ marginTop: 20 }} variant="titleMedium">
-              Learn while you talk!
+              {BRAND_TAGLINE}
             </Text>
           </View>
           {children}

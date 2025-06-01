@@ -16,6 +16,7 @@ import LoadingScreen from "@/domains/shared/components/LoadingScreen";
 import { HEADER_HEIGHT } from "@/domains/shared/constants";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Button } from "@/domains/shared/components/Button";
+import { BRAND_TAGLINE } from "@/utils/constants";
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -72,7 +73,7 @@ export default function RegisterScreen() {
               source={require("@/assets/images/logo_vertical.png")}
             />
             <Text style={{ marginTop: 20 }} variant="titleMedium">
-              Learn while you talk!
+              {BRAND_TAGLINE}
             </Text>
           </View>
           <TextInput
