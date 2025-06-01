@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React, { ReactNode } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Modal from "react-native-modal";
@@ -26,7 +27,16 @@ const ChatInfoBottomSheet: React.FC<Props> = ({
       useNativeDriverForBackdrop
       avoidKeyboard
     >
-      <View style={styles.container}>{children}</View>
+      <View style={styles.container}>
+        <LinearGradient
+          colors={["#ffffff", "#f1f5f9", "#e0f2fe"]}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+          style={{ flex: 1 }}
+        >
+          {children}
+        </LinearGradient>
+      </View>
     </Modal>
   );
 };
@@ -38,9 +48,8 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "white",
-    padding: 16,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 2,
     minHeight: height * 0.15,
   },
 });

@@ -60,10 +60,13 @@ export default function RegisterScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={80} // adjust as needed depending on header
+      keyboardVerticalOffset={10} // adjust as needed depending on header
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, padding: 16 }}
+        contentContainerStyle={{
+          padding: 24,
+          justifyContent: "center",
+        }}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.container}>
@@ -148,8 +151,8 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 24,
+    marginTop: HEADER_HEIGHT,
     justifyContent: "center",
     // backgroundColor: "#FAFAFA",
   },
