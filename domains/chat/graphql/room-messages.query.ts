@@ -16,6 +16,7 @@ export const ROOM_MESSAGES = `
           original
           fixedMessage
           fixLogic
+          translated
         }
         createdAt
       }

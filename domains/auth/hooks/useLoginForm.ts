@@ -22,11 +22,9 @@ export function useLoginForm() {
     ) {
       newErrors.email = "Must be a valid email address";
     }
-    if (
-      touched.password &&
-      !formValidator.password(user.password.trim()).isValid
-    ) {
-      newErrors.password = "Password must be at least 6 characters";
+    const { isValid, message } = formValidator.password(user.password.trim());
+    if (touched.password && !isValid) {
+      newErrors.password = message;
     }
     setErrors(newErrors);
   }, [user, touched]);

@@ -24,6 +24,7 @@ export type Suggestion = {
   original: string;
   fixedMessage?: string;
   fixLogic?: string;
+  translated?: string;
 };
 
 export type Message = {

@@ -38,6 +38,14 @@ export function ImprovementSuggestion({
           {suggestion.fixLogic}
         </Text>
       </View>
+      {!!suggestion.translated && (
+        <View style={styles.textWrapper}>
+          <Text>
+            <Text style={styles.label}>In English: </Text>
+            {suggestion.translated}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
