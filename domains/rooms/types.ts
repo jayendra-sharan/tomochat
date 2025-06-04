@@ -25,6 +25,7 @@ export type GetRoomDetailsInput = {
 
 export interface GetRoomDetailsResponse extends Room {
   messageCount: number;
+  createdAt: string;
 }
 
 export interface AddMembersToRoomInput {
@@ -33,3 +34,20 @@ export interface AddMembersToRoomInput {
 }
 
 export type AddMembersToRoomResponse = Room;
+
+export type DeleteMessagesInput = {
+  roomId: string;
+};
+
+export type LeaveRoomInput = {
+  roomId: string;
+};
+
+export type MakeUserAdminInput = {
+  roomId: string;
+  memberId: string;
+};
+
+export type DeleteRoomInput = {
+  roomId: string;
+};

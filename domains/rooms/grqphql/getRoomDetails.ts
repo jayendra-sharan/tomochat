@@ -8,6 +8,7 @@ export const GET_ROOM_DETAILS = `
       roomType
       inviteLink
       lastMessage
+      createdAt
       members {
         id
         role

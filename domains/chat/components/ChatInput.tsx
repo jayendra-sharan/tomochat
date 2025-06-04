@@ -12,6 +12,8 @@ import { useTypingIndicator } from "@/domains/chat/hooks/useTypingIndicator";
 import { SocketEvents } from "@/domains/socket/events";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { Platform } from "react-native";
+import { logger } from "@/services/logger";
+import { showToast } from "@/domains/notification/lib/showToast";
 
 type ChatInputProps = {
   roomId: string;
@@ -67,17 +69,23 @@ export default function ChatInput({
     try {
       if (!message.trim()) return;
       setIsLoading(true);
+      messageBackup.current = message;
+      setMessage("");
       await sendMessage({
         roomId,
         content: message,
         isPrivate: false,
         displayName,
       }).unwrap();
-      messageBackup.current = message;
-      setMessage("");
     } catch (err) {
+      // @todo handle all logging like this
       setMessage(messageBackup.current);
-      throw new Error("FE: error in sending message");
+      showToast("error", "Failed to send message", "Please try again.");
+      logger.error(err, {
+        message: "FE: error in sending message",
+        roomId,
+        userId,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -88,7 +96,6 @@ export default function ChatInput({
       style={[
         styles.container,
         {
-          // backgroundColor: "#fafafa",
           borderColor: theme.colors.outline,
         },
       ]}

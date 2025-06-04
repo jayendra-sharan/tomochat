@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Speech from "expo-speech";
-import { IconButton, Text } from "react-native-paper";
+import { Icon, IconButton, Text } from "react-native-paper";
 
 export function TTSToolbar({ text }: { text: string }) {
   const [rate, setRate] = useState(0.9); // default: normal
@@ -32,10 +32,25 @@ export function TTSToolbar({ text }: { text: string }) {
   return (
     <View style={styles.toolbar}>
       <IconButton icon="volume-high" onPress={handleSpeak} />
-      <Text style={styles.label}>
-        {speedIndex === 0 ? "🐢" : speedIndex === 2 ? "⚡" : "🚶"} Speed
-      </Text>
-      <IconButton icon="repeat" onPress={toggleSpeed} />
+      {/* <Text style={styles.label}>
+        {speedIndex === 0
+          ? "speedometer-slow"
+          : speedIndex === 2
+          ? "speedometer"
+          : "speedometer-medium"}
+        Speed
+      </Text> */}
+      <IconButton icon="play-speed" onPress={toggleSpeed} />
+      <Icon
+        size={24}
+        source={
+          speedIndex === 0
+            ? "speedometer-slow"
+            : speedIndex === 2
+            ? "speedometer"
+            : "speedometer-medium"
+        }
+      />
     </View>
   );
 }

@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useGetRoomsQuery } from "../roomsApi";
 import LoadingScreen from "@/domains/shared/components/LoadingScreen";
@@ -8,6 +9,7 @@ import { List } from "react-native-paper";
 import RoomAvatar from "@/domains/shared/components/RoomAvatar";
 import { UnreadIndicator } from "@/domains/shared/components/UnreadIndicator";
 import { NoChatsCreateOne } from "./NoChatsCreateOne";
+import { getTimeLabel } from "@/utils/formatters";
 
 type RoomsProps = {
   enterChat: (room: Room) => void;
@@ -41,7 +43,12 @@ export default function Rooms({ enterChat, createRoom }: RoomsProps) {
         descriptionStyle={{ maxWidth: 150, marginTop: 5 }}
         onPress={() => enterChat(item)}
         left={() => <RoomAvatar roomId={item.id} roomName={item.name} />}
-        right={() => (item.isUnread ? <UnreadIndicator /> : null)}
+        right={() => (
+          <View style={styles.metaData}>
+            {item.isUnread && <UnreadIndicator />}
+            <Text variant="labelSmall">{getTimeLabel(item.lastMessageAt)}</Text>
+          </View>
+        )}
       />
     );
   };
@@ -74,5 +81,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 2,
     elevation: 1, // Android
+  },
+  metaData: {
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: 12,
   },
 });

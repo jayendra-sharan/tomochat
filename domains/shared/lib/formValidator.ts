@@ -6,34 +6,16 @@ const formValidator = {
         message: "",
       };
     }
-    if (value.length < 6) {
+    if (value.length < 8) {
       return {
         isValid: false,
-        message: "Password must be 6 characters long.",
+        message: "Password must be 8 characters long.",
       };
     }
-    if (value.length > 16) {
+    if (value.length > 64) {
       return {
         isValid: false,
-        message: "Password must be less than 16 characters",
-      };
-    }
-    if (value === value.toLowerCase()) {
-      return {
-        isValid: false,
-        message: "Password must contain at least one uppercase character.",
-      };
-    }
-    if (!/\d/.test(value)) {
-      return {
-        isValid: false,
-        message: "Password must contain at least one number.",
-      };
-    }
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-      return {
-        isValid: false,
-        message: "Password must contain at least one special character.",
+        message: "Password must be less than 64 characters",
       };
     }
     if (repeatValue !== undefined && repeatValue !== value) {

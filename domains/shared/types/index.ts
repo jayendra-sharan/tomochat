@@ -5,6 +5,9 @@ export interface User {
 }
 
 export type Member = {
+  id: string;
+  joinedAt: string;
+  role: string;
   user: Pick<User, "displayName" | "id">;
 };
 
@@ -17,4 +20,5 @@ export type Room = {
   lastMessage: string;
   isUnread: boolean;
   description?: string;
+  lastMessageAt?: string;
 };

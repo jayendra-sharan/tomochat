@@ -1,6 +1,7 @@
 import Constants from "expo-constants";
 import { storage } from "@/services/storage";
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
+import { logger } from "./logger";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 const GRAPHQL_ENDPOINT = `${API_URL}/graphql`;
@@ -22,9 +23,8 @@ export async function gqlFetch(query: string, variables?: Record<string, any>) {
   const result = await res.json();
 
   if (result.errors?.length) {
-    return {
-      error: result.errors[0],
-    };
+    logger.error(result.errors[0]);
+    throw new Error(result.errors[0].message || "GraphQL error");
   }
 
   return {
@@ -46,14 +46,6 @@ export const gqlBaseQuery =
   async ({ document, variables }) => {
     try {
       const result = await gqlFetch(document, variables);
-      if (result.error) {
-        return {
-          error: {
-            name: result.error.name || "GraphQLError",
-            message: result.error.message || "Unknown GraphQL error",
-          } as APIError,
-        };
-      }
 
       return { data: result.data as ResultType };
     } catch (error: any) {

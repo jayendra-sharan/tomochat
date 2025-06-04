@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Link, useRouter } from "expo-router";
-import { IconButton, Menu, Switch, useTheme } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { setPrivateMode } from "../chatSlice";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useCopyToClipboard } from "../hoc/useCopyToClipboard";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
 import { Appbar, Text } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RoomAvatar from "@/domains/shared/components/RoomAvatar";
-import { current } from "@reduxjs/toolkit";
+import ChatContextMenu from "./ChatContextMenu";
 
 type ChatHeaderProps = {
   name?: string;
@@ -85,24 +83,12 @@ function ChatHeader({
           </View>
         )}
 
-        <Menu
+        <ChatContextMenu
+          inviteId={inviteId}
           visible={menuVisible}
           onDismiss={closeMenu}
-          anchor={
-            <IconButton icon="dots-vertical" size={20} onPress={openMenu} />
-          }
-        >
-          <Menu.Item
-            onPress={() => handleAction("copy")}
-            title="Copy Room Link"
-          />
-          <Menu.Item onPress={() => handleAction("mute")} title="Mute" />
-          <Menu.Item
-            onPress={() => handleAction("delete")}
-            title="Delete Chat"
-          />
-          <Menu.Item onPress={() => handleAction("leave")} title="Leave Chat" />
-        </Menu>
+          openMenu={openMenu}
+        />
       </View>
     </View>
   );
@@ -151,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default useCopyToClipboard(ChatHeader);
+export default ChatHeader;

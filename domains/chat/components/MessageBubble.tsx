@@ -37,9 +37,6 @@ export default function MessageBubble({
     return "flex-start";
   };
 
-  // const textColor = isSelf
-  //   ? theme.colors.surface || "#0D0D0D"
-  //   : theme.colors.onSurface || "#212121";
   const textColor = theme.colors.onSurface;
 
   const renderMessage = () => {
@@ -68,7 +65,7 @@ export default function MessageBubble({
     return (
       <View style={{ display: "flex", flexDirection: "column", flexShrink: 1 }}>
         <Text style={styles.sender}>{message.sender.displayName}</Text>
-        <Text style={[styles.content, { color: textColor, fontSize: 14 }]}>
+        <Text style={[styles.content, { color: textColor }]}>
           {message.content}
         </Text>
       </View>
@@ -130,7 +127,7 @@ const styles = StyleSheet.create({
     // shadowRadius: 2,
     // elevation: 2,
     // shadowColor: "#fbed17",
-    backgroundColor: "#fbed17",
+    backgroundColor: "#fff559",
   },
   othersBubble: {
     alignSelf: "flex-start",

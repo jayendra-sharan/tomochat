@@ -1,8 +1,9 @@
 import { View, StyleSheet } from "react-native";
-import { Text } from "react-native-paper";
+import { Icon, Text } from "react-native-paper";
 
 import { Suggestion } from "../types";
 import { TTSToolbar } from "./TTSToolbar";
+import { useFeatureFlag } from "@/redux/FeatureProvider";
 
 export function ImprovementSuggestion({
   suggestion,
@@ -11,6 +12,7 @@ export function ImprovementSuggestion({
   suggestion: Suggestion | undefined | null;
   content?: string;
 }) {
+  const { enableFeedback } = useFeatureFlag();
   // @todo remove this, and add check in parent, also the type above
   if (!suggestion) {
     return;
@@ -46,6 +48,13 @@ export function ImprovementSuggestion({
           </Text>
         </View>
       )}
+      {enableFeedback && (
+        <View style={[styles.textWrapper, styles.feedback]}>
+          <Icon source="thumb-up" size={16} />
+          <Icon source="thumb-down" size={16} />
+          <Icon source="bug" size={16} />
+        </View>
+      )}
     </View>
   );
 }
@@ -70,5 +79,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "normal",
     textAlign: "left",
+  },
+  feedback: {
+    justifyContent: "flex-end",
+    gap: 12,
   },
 });

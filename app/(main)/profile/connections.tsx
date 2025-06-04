@@ -7,7 +7,7 @@ import { useGetUserConnectionsQuery } from "@/domains/user/userApi";
 import { User } from "@/domains/shared/types";
 import UserMenu from "@/domains/shared/components/UserMenu";
 import Error from "./error";
-import { getConnectionDuration } from "@/utils/formatters";
+import { getDuration } from "@/utils/formatters";
 import { Connection } from "@/domains/user/types";
 
 const ConnectionsScreen = () => {
@@ -38,7 +38,7 @@ const ConnectionsScreen = () => {
             ellipsizeMode="middle"
             style={{ paddingVertical: 4 }}
           >
-            {getConnectionDuration(item.createdAt)}
+            {getDuration(item.createdAt, "Connected")}
           </Text>
         )}
         left={() => <UserAvatar id={item.id} />}

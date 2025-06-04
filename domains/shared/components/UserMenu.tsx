@@ -16,7 +16,6 @@ type UserMenuProps = {
   create?: boolean;
 };
 export default function UserMenu({ showBack, create }: UserMenuProps) {
-  // const theme = useAppTheme();
   const { userId } = useAuth();
   const [showUserPopover, setShowUserPopover] = useState(false);
   const [showCreateFlow, setShowCreateFlow] = useState(false);
