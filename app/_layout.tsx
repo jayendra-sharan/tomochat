@@ -12,24 +12,9 @@ import { SocketProvider } from "@/domains/socket/SocketProvider";
 import SafeAreaWrapper from "@/domains/shared/components/SafeAreaWrapper";
 import { toastConfig } from "@/services/toastConfig";
 import { LinearGradient } from "expo-linear-gradient";
-// import * as Sentry from "@sentry/react-native";
-
-// Sentry.init({
-//   dsn: "https://383d0fde015a73ad11028242e8bd8c15@o4509419995594752.ingest.de.sentry.io/4509419996905552",
-
-//   // Adds more context data to events (IP address, cookies, user, etc.)
-//   // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
-//   sendDefaultPii: true,
-//   integrations: [Sentry.feedbackIntegration()],
-//   enabled: process.env.NODE_ENV === "production",
-//   enableNative: true,
-//   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
-//   // spotlight: __DEV__,
-// });
-
-// export default Sentry.wrap(
-
-export default function Layout() {
+import * as Sentry from "@sentry/react-native";
+import { useRegisterPushToken } from "@/domains/notification/hooks/useRegisterPushToken";
+export default Sentry.wrap(function Layout() {
   return (
     <LinearGradient
       colors={["#ffffff", "#f1f5f9", "#e0f2fe"]}
@@ -38,22 +23,30 @@ export default function Layout() {
       style={{ flex: 1 }}
     >
       <Provider store={store}>
-        <FeatureProvider>
-          <PaperProvider theme={TomoTheme}>
-            <SocketProvider>
-              <WebWrapper>
-                <SafeAreaWrapper>
-                  <View style={styles.appWrapper}>
-                    <Slot />
-                  </View>
-                </SafeAreaWrapper>
-                <Toast config={toastConfig} />
-              </WebWrapper>
-            </SocketProvider>
-          </PaperProvider>
-        </FeatureProvider>
+        <InnerLayout />
       </Provider>
     </LinearGradient>
+  );
+});
+
+function InnerLayout() {
+  useRegisterPushToken();
+
+  return (
+    <FeatureProvider>
+      <PaperProvider theme={TomoTheme}>
+        <SocketProvider>
+          <WebWrapper>
+            <SafeAreaWrapper>
+              <View style={styles.appWrapper}>
+                <Slot />
+              </View>
+            </SafeAreaWrapper>
+            <Toast config={toastConfig} />
+          </WebWrapper>
+        </SocketProvider>
+      </PaperProvider>
+    </FeatureProvider>
   );
 }
 

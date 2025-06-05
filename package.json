@@ -20,6 +20,7 @@
     "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/native": "^7.1.6",
     "@reduxjs/toolkit": "^2.8.1",
+    "@sentry/react-native": "^6.15.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",

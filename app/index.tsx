@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { Image, View, Text } from "react-native";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
 import * as Notifications from "expo-notifications";
-import { useRegisterPushToken } from "@/domains/notification/hooks/useRegisterPushToken";
+import { initSentry } from "@/services/logger/sentry";
+
+initSentry();
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -20,7 +22,6 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { isEmailVerified } = user || {};
-  useRegisterPushToken();
   useEffect(() => {
     setMounted(true);
   }, []);

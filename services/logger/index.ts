@@ -1,4 +1,4 @@
-// import * as Sentry from "@sentry/react-native";
+import * as Sentry from "@sentry/react-native";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -15,12 +15,12 @@ export const logger = {
     console.error("[error]", error);
 
     // Capture exception with optional context
-    // if (isProd) {
-    //   if (error instanceof Error) {
-    //     Sentry.captureException(error, { extra: context });
-    //   } else {
-    //     Sentry.captureMessage(JSON.stringify(error), { extra: context });
-    //   }
-    // }
+    if (isProd) {
+      if (error instanceof Error) {
+        Sentry.captureException(error, { extra: context });
+      } else {
+        Sentry.captureMessage(JSON.stringify(error), { extra: context });
+      }
+    }
   },
 };
