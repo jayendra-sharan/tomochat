@@ -43,3 +43,6 @@ secrets.md
 .env
 sentry.properties
 *.apk
+# new
+tomochat-1514-firebase-adminsdk-fbsvc-2533bec79d.json
+google-services.json

@@ -14,6 +14,7 @@ import { toastConfig } from "@/services/toastConfig";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Sentry from "@sentry/react-native";
 import { useRegisterPushToken } from "@/domains/notification/hooks/useRegisterPushToken";
+
 export default Sentry.wrap(function Layout() {
   return (
     <LinearGradient

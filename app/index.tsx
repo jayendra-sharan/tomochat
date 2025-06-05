@@ -2,8 +2,8 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, View, Text } from "react-native";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
-import * as Notifications from "expo-notifications";
 import { initSentry } from "@/services/logger/sentry";
+import * as Notifications from "expo-notifications";
 
 initSentry();
 
@@ -11,7 +11,7 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: false,
-    shouldSetBadge: false,
+    shouldSetBadge: true,
     shouldShowBanner: true,
     shouldShowList: true,
   }),
