@@ -38,6 +38,7 @@ yarn-error.*
 tasks.md
 secrets.md
 
+.env*
 .env.local
 .env
 sentry.properties

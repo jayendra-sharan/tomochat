@@ -44,6 +44,9 @@ export default ({ config }) => {
     },
     extra: {
       ...config.extra,
+      SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+      SENTRY_ORG: process.env.SENTRY_ORG,
+      SENTRY_PROJECT: process.env.SENTRY_PROJECT,
       API_URL: process.env.API_URL,
       eas: {
         projectId: "502be1d7-6a97-45f8-9238-e0b7deda5968",

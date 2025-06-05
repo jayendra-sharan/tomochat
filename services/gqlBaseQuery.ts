@@ -6,6 +6,7 @@ import { useAuth } from "@/domains/auth/hooks/useAuth";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 const GRAPHQL_ENDPOINT = `${API_URL}/graphql`;
+console.log("DEBUG ---- API END POINT", API_URL);
 
 export async function gqlFetch(query: string, variables?: Record<string, any>) {
   const token = await storage.getItem("token");

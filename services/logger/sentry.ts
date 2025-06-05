@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react-native";
 
-const SENTRY_DSN = process.env.SENTRY_DSN || "your-default-dsn-if-needed";
+console.log("DEBUG ---- ENVIRONMENT", process.env.NODE_ENV);
 
 export const initSentry = () => {
   Sentry.init({
