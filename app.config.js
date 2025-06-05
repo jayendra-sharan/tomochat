@@ -23,6 +23,7 @@ export default ({ config }) => {
     },
     ios: {
       supportsTablet: true,
+      bundleIdentifier: "com.tomochat.tomochat",
     },
     android: {
       adaptiveIcon: {

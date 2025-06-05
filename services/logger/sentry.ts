@@ -10,6 +10,7 @@ export const initSentry = () => {
     enableAutoSessionTracking: true,
     sessionTrackingIntervalMillis: 10000,
     environment: process.env.NODE_ENV || "development",
+    enabled: process.env.NODE_ENV === "production",
   });
 };
 

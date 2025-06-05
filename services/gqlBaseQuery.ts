@@ -2,12 +2,16 @@ import Constants from "expo-constants";
 import { storage } from "@/services/storage";
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
 import { logger } from "./logger";
+import { useAuth } from "@/domains/auth/hooks/useAuth";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 const GRAPHQL_ENDPOINT = `${API_URL}/graphql`;
 
 export async function gqlFetch(query: string, variables?: Record<string, any>) {
   const token = await storage.getItem("token");
+  // @todo revert
+  console.log("AUTH TOKEN - ", token);
+  // @todo revert
   const res = await fetch(GRAPHQL_ENDPOINT, {
     method: "POST",
     headers: {
