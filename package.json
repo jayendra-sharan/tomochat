@@ -1,5 +1,5 @@
 {
-  "name": "cw-app",
+  "name": "tomochat",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -20,13 +20,13 @@
     "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/native": "^7.1.6",
     "@reduxjs/toolkit": "^2.8.1",
-    "@sentry/react-native": "^6.14.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
     "expo": "~53.0.9",
     "expo-clipboard": "^7.1.4",
     "expo-constants": "~17.1.6",
+    "expo-dev-client": "~5.2.0",
     "expo-device": "^7.1.4",
     "expo-font": "~13.3.1",
     "expo-linear-gradient": "^14.1.4",
@@ -41,15 +41,14 @@
     "expo-web-browser": "~14.1.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-native": "0.79.2",
-    "react-native-gesture-handler": "^2.25.0",
-    "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native": "0.79.3",
+    "react-native-gesture-handler": "~2.24.0",
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-paper": "^5.14.1",
     "react-native-paper-dropdown": "^2.3.1",
-    "react-native-reanimated": "^3.17.5",
-    "react-native-safe-area-context": "^5.4.0",
-    "react-native-screens": "~4.10.0",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
     "react-native-toast-message": "^2.3.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.20.0",
@@ -66,5 +65,12 @@
     "typescript": "~5.8.3"
   },
   "private": true,
-  "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538"
+  "packageManager": "yarn@1.22.22",
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
+  }
 }

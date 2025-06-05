@@ -12,21 +12,24 @@ import { SocketProvider } from "@/domains/socket/SocketProvider";
 import SafeAreaWrapper from "@/domains/shared/components/SafeAreaWrapper";
 import { toastConfig } from "@/services/toastConfig";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Sentry from "@sentry/react-native";
+// import * as Sentry from "@sentry/react-native";
 
-Sentry.init({
-  dsn: "https://383d0fde015a73ad11028242e8bd8c15@o4509419995594752.ingest.de.sentry.io/4509419996905552",
+// Sentry.init({
+//   dsn: "https://383d0fde015a73ad11028242e8bd8c15@o4509419995594752.ingest.de.sentry.io/4509419996905552",
 
-  // Adds more context data to events (IP address, cookies, user, etc.)
-  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
-  sendDefaultPii: true,
-  integrations: [Sentry.feedbackIntegration()],
-  enabled: process.env.NODE_ENV === "production",
-  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
-  // spotlight: __DEV__,
-});
+//   // Adds more context data to events (IP address, cookies, user, etc.)
+//   // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+//   sendDefaultPii: true,
+//   integrations: [Sentry.feedbackIntegration()],
+//   enabled: process.env.NODE_ENV === "production",
+//   enableNative: true,
+//   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+//   // spotlight: __DEV__,
+// });
 
-export default Sentry.wrap(function Layout() {
+// export default Sentry.wrap(
+
+export default function Layout() {
   return (
     <LinearGradient
       colors={["#ffffff", "#f1f5f9", "#e0f2fe"]}
@@ -52,7 +55,7 @@ export default Sentry.wrap(function Layout() {
       </Provider>
     </LinearGradient>
   );
-});
+}
 
 const styles = StyleSheet.create({
   appWrapper: {

@@ -3,25 +3,30 @@ import "dotenv/config";
 export default ({ config }) => {
   return {
     ...config,
-    name: "cw-app",
+    name: "TomoChat",
     slug: "cw-app",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "cwapp",
+    scheme: "tomochat",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
+    owner: "tomochat",
     splash: {
-      image: "./assets/images/logo.png",
+      image: "./assets/images/splash.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff",
+    },
+    notification: {
+      icon: "./assets/images/notification-icon.png",
+      color: "#000000",
     },
     ios: {
       supportsTablet: true,
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
+        foregroundImage: "./assets/images/icon.png",
         backgroundColor: "#ffffff",
       },
       edgeToEdgeEnabled: true,
@@ -30,20 +35,9 @@ export default ({ config }) => {
     web: {
       bundler: "metro",
       output: "static",
-      favicon: "./assets/images/favicon.png",
+      favicon: "./assets/images/logo.png",
     },
-    plugins: [
-      "expo-router",
-      "expo-secure-store",
-      [
-        "@sentry/react-native/expo",
-        {
-          url: "https://sentry.io/",
-          project: "react-native",
-          organization: "tomochat",
-        },
-      ],
-    ],
+    plugins: ["expo-router", "expo-secure-store", "expo-notifications"],
     experiments: {
       typedRoutes: true,
     },

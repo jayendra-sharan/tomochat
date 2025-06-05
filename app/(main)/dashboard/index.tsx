@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
-import { Button, Icon } from "react-native-paper";
-import { useRouter } from "expo-router";
 import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import Rooms from "@/domains/rooms/components/Rooms";
 import { Room } from "@/domains/shared/types";
-import { registerForPushNotificationsAsync } from "@/services/notifications";
-import { useRegisterPushTokenMutation } from "@/domains/notification/notificationApi";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
 import ChatFilters from "@/domains/chat/components/ChatFilters";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { SocketEvents } from "@/domains/socket/events";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
 import UserMenu from "@/domains/shared/components/UserMenu";
+import { useRegisterPushToken } from "@/domains/notification/hooks/useRegisterPushToken";
+import { useRouter } from "expo-router/build/hooks";
 
 function DashboardPage() {
   const router = useRouter();
@@ -23,19 +21,20 @@ function DashboardPage() {
 
   const { userId } = useAuth();
 
+  useRegisterPushToken();
   // @todo extract later
-  const [registerPushToken] = useRegisterPushTokenMutation();
+  // const [registerPushToken] = useRegisterPushTokenMutation();
 
-  useEffect(() => {
-    console.log("Asking for permission");
-    registerForPushNotificationsAsync().then((token) => {
-      console.log("Asking for permission, Next", token);
-      if (token) {
-        const platform = Platform.OS as string;
-        registerPushToken({ token, platform });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   console.log("Asking for permission");
+  //   registerForPushNotificationsAsync().then((token) => {
+  //     console.log("Asking for permission, Next", token);
+  //     if (token) {
+  //       const platform = Platform.OS as string;
+  //       registerPushToken({ token, platform });
+  //     }
+  //   });
+  // }, []);
 
   // @todo add invite link to room chat page to avoid url param.
   const enterChat = useCallback((room: Room) => {

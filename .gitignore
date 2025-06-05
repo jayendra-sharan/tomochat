@@ -40,3 +40,4 @@ secrets.md
 
 .env.local
 .env
+sentry.properties
