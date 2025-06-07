@@ -26,7 +26,11 @@ export async function gqlFetch(query: string, variables?: Record<string, any>) {
   const result = await res.json();
 
   if (result.errors?.length) {
-    logger.error(result.errors[0]);
+    // @todo use this format
+    const message = result.errors[0].message || "GraphQL Error";
+    const path = result.errors[0].path || "unknown";
+    const source = window.location.pathname;
+    logger.error("API Error", { message, path, source });
     throw new Error(result.errors[0].message || "GraphQL error");
   }
 

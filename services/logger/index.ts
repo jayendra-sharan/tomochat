@@ -13,7 +13,10 @@ export const logger = {
 
   error: (error: any, context?: Record<string, any>) => {
     console.error("[error]", error);
-
+    const { source = "", path = [] } = context || {};
+    if (path.includes("me") && source === "/login") {
+      return;
+    }
     // Capture exception with optional context
     if (isProd) {
       if (error instanceof Error) {
