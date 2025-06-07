@@ -49,6 +49,14 @@ export default ({ config }) => {
       SENTRY_ORG: process.env.SENTRY_ORG,
       SENTRY_PROJECT: process.env.SENTRY_PROJECT,
       API_URL: process.env.API_URL,
+      firebaseApiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+      firebaseAuthDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      firebaseProjectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+      firebaseStorageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      firebaseMessagingSenderId:
+        process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+      firebaseAppId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+      firebaseMeasurementId: process.env.EXPO_PUBLIC_MEASUREMENT_ID,
       eas: {
         projectId: "502be1d7-6a97-45f8-9238-e0b7deda5968",
       },

@@ -118,7 +118,7 @@ export const Button: React.FC<TomoButtonProps> = ({
       labelStyle={[styles.labelStyle, labelStyle]}
       loading={loading}
     >
-      {children}
+      {loading ? "Please wait..." : children}
     </PaperButton>
   );
 };

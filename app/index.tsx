@@ -21,19 +21,18 @@ export default function Home() {
   const { user, isLoggedIn } = useAuth();
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const { isEmailVerified } = user || {};
   useEffect(() => {
     setMounted(true);
   }, []);
   useEffect(() => {
     if (mounted) {
-      if (isLoggedIn && isEmailVerified) {
+      if (isLoggedIn) {
         router.push("/(main)/dashboard");
       } else {
         router.push("/(auth)/login");
       }
     }
-  }, [isEmailVerified, isLoggedIn, mounted]);
+  }, [isLoggedIn, mounted]);
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

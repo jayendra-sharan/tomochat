@@ -17,7 +17,7 @@ type Props = {
 };
 
 const UserPopover: React.FC<Props> = ({ onSettings }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
 
@@ -34,16 +34,8 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
     router.push("/(main)/profile/connections");
   };
 
-  const redirectToProfile = () => {
-    router.push("/(main)/profile");
-  };
-
-  const handleLogout = () => {
-    storage.removeItem(AUTH_TOKEN);
-    dispatch(resetStore());
-    setTimeout(() => {
-      router.push("/(auth)/login");
-    }, 500);
+  const redirectToPasswordChange = () => {
+    router.push("/(main)/account/change-password");
   };
 
   return (
@@ -84,7 +76,7 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
       </Button>
 
       <Button
-        onPress={redirectToProfile}
+        onPress={redirectToPasswordChange}
         type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
       >
@@ -112,7 +104,7 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
       <Divider style={{ marginVertical: 8 }} />
 
       <Button
-        onPress={handleLogout}
+        onPress={logout}
         type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
       >

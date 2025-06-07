@@ -2,7 +2,6 @@ export interface User {
   id: string;
   displayName: string;
   email: string;
-  isEmailVerified: string;
 }
 
 export interface AuthState {
@@ -22,10 +21,8 @@ export interface LoginResponse {
 }
 
 export interface RegisterUser {
+  idToken: string;
   displayName: string;
-  email: string;
-  password: string;
-  rePassword: string;
 }
 
 export type RegisterUserInput = Omit<RegisterUser, "rePassword">;
@@ -55,5 +52,4 @@ export interface RequestPasswordResetInput {
 }
 export interface RecoverPasswordInput {
   password: string;
-  token: string;
 }

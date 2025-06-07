@@ -1,8 +1,14 @@
+import formValidator from "@/domains/shared/lib/formValidator";
 import { useState, useCallback, useEffect } from "react";
-import { RegisterUser } from "../types";
 
+type RegisterUserState = {
+  email: string;
+  password: string;
+  rePassword: string;
+  displayName: string;
+};
 export function useRegisterForm() {
-  const [user, setUser] = useState<RegisterUser>({
+  const [user, setUser] = useState<RegisterUserState>({
     email: "",
     password: "",
     rePassword: "",
@@ -25,23 +31,21 @@ export function useRegisterForm() {
 
   const { email, password, rePassword, displayName } = user;
 
-  const updateUser = (field: keyof RegisterUser, value: string) => {
+  const updateUser = (field: keyof RegisterUserState, value: string) => {
     updateTouched(field);
     setUser((prev) => ({
       ...prev,
       [field]: value,
     }));
+    validate();
   };
 
-  const updateTouched = (field: keyof RegisterUser) => {
+  const updateTouched = (field: keyof RegisterUserState) => {
     setTouched((prev) => ({
       ...prev,
       [field]: true,
     }));
   };
-
-  const isValidPassword = (password: string) =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/.test(password);
 
   const validate = useCallback(() => {
     const newErrors = {
@@ -55,14 +59,15 @@ export function useRegisterForm() {
     }
     // @todo add password policy
 
-    if (touched.password && !isValidPassword(password)) {
-      newErrors.password = "Use 6+ chars with letter, number & symbol";
+    if (touched.password) {
+      const { message } = formValidator.password(password.trim());
+      newErrors.password = message;
     }
     if (touched.rePassword && rePassword !== password) {
       newErrors.rePassword = "Must match with password";
     }
-    if (touched.displayName && displayName.length < 3) {
-      newErrors.displayName = "Display name must be at least 3 characters";
+    if (touched.displayName && displayName.length < 2) {
+      newErrors.displayName = "Display name must be at least 2 characters";
     }
     setErrors(newErrors);
   }, [email, password, rePassword, displayName, touched]);

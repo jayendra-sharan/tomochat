@@ -1,23 +1,21 @@
 import Constants from "expo-constants";
-import { storage } from "@/services/storage";
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
 import { logger } from "./logger";
-import { useAuth } from "@/domains/auth/hooks/useAuth";
+import { getAuth } from "firebase/auth";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 const GRAPHQL_ENDPOINT = `${API_URL}/graphql`;
 console.log("DEBUG ---- API END POINT", API_URL);
 
 export async function gqlFetch(query: string, variables?: Record<string, any>) {
-  const token = await storage.getItem("token");
-  // @todo revert
-  console.log("AUTH TOKEN - ", token);
-  // @todo revert
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const idToken = user ? await user.getIdToken() : null;
   const res = await fetch(GRAPHQL_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
     },
     body: JSON.stringify({
       query,
