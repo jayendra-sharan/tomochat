@@ -10,7 +10,13 @@ import { Text } from "react-native-paper";
 import { HEADER_HEIGHT } from "../constants";
 import { BRAND_TAGLINE } from "@/utils/constants";
 
-export function PageWithLogo({ children }: { children: React.ReactNode }) {
+export function PageWithLogo({
+  children,
+  withTagline = false,
+}: {
+  children: React.ReactNode;
+  withTagline?: boolean;
+}) {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -27,9 +33,11 @@ export function PageWithLogo({ children }: { children: React.ReactNode }) {
               style={styles.logo}
               source={require("@/assets/images/logo_vertical.png")}
             />
-            <Text style={{ marginTop: 20 }} variant="titleMedium">
-              {BRAND_TAGLINE}
-            </Text>
+            {withTagline && (
+              <Text style={{ marginTop: 20 }} variant="titleMedium">
+                {BRAND_TAGLINE}
+              </Text>
+            )}
           </View>
           {children}
         </View>

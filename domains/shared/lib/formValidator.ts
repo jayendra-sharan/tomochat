@@ -1,11 +1,11 @@
 const formValidator = {
   password: (value: string, repeatValue?: string) => {
-    if (process.env.NODE_ENV === "development") {
-      return {
-        isValid: true,
-        message: "",
-      };
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   return {
+    //     isValid: true,
+    //     message: "",
+    //   };
+    // }
     if (value.length < 8) {
       return {
         isValid: false,

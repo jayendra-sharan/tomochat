@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopLeftRadius: 2,
     borderTopRightRadius: 2,
-    minHeight: height * 0.15,
+    minHeight: height * 0.35,
   },
 });
 

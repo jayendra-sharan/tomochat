@@ -2,24 +2,37 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, View, Text } from "react-native";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
+import { initSentry } from "@/services/logger/sentry";
+import * as Notifications from "expo-notifications";
+
+initSentry();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 export default function Home() {
   const { user, isLoggedIn } = useAuth();
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const { isEmailVerified } = user || {};
   useEffect(() => {
     setMounted(true);
   }, []);
   useEffect(() => {
     if (mounted) {
-      if (isLoggedIn && isEmailVerified) {
+      if (isLoggedIn) {
         router.push("/(main)/dashboard");
       } else {
         router.push("/(auth)/login");
       }
     }
-  }, [isEmailVerified, isLoggedIn, mounted]);
+  }, [isLoggedIn, mounted]);
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

@@ -11,12 +11,13 @@ import { SocketEvents } from "@/domains/socket/events";
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents> | undefined;
 const SOCKET_ENDPOINT = Constants.expoConfig?.extra?.API_URL;
+console.log("DEBUG ---- SOCKET END POINT", SOCKET_ENDPOINT);
 
 export async function initSocket(): Promise<typeof socket> {
   const token = await storage.getItem(AUTH_TOKEN);
   if (!token) {
     console.log(
-      "Token not found, cannot initialise socket for unauthorised users",
+      "Token not found, cannot initialise socket for unauthorised users"
     );
     return;
   }

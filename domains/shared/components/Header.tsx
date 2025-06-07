@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import React from "react";
 import { View, Image } from "react-native";
 
@@ -19,11 +20,13 @@ export const Header = ({ title }: HeaderProps) => {
         borderBottomColor: "#E0E0E0",
       }}
     >
-      <Image
-        source={require("@/assets/images/logo_full.png")}
-        style={{ width: 100 }}
-        resizeMode="contain"
-      />
+      <Link href="/">
+        <Image
+          source={require("@/assets/images/logo_full.png")}
+          style={{ width: 100 }}
+          resizeMode="contain"
+        />
+      </Link>
     </View>
   );
 };

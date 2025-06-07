@@ -1,10 +1,8 @@
 import formValidator from "@/domains/shared/lib/formValidator";
 import { useState } from "react";
-import {
-  useChangePasswordMutation,
-  useRecoverPasswordMutation,
-} from "../authApi";
+import { useRecoverPasswordMutation } from "../authApi";
 import { useLocalSearchParams } from "expo-router";
+import { useAuth } from "./useAuth";
 
 type State = {
   newPwd: string;
@@ -20,7 +18,7 @@ const initalState: State = {
   currentPwd: "",
 };
 export const usePasswordUpdate = () => {
-  const [changePassword] = useChangePasswordMutation();
+  const { changePassword } = useAuth();
   const [recoverPassword] = useRecoverPasswordMutation();
   const { token } = useLocalSearchParams<{ token: string }>();
   const [pwd, setPwd] = useState<State>(initalState);
@@ -32,16 +30,14 @@ export const usePasswordUpdate = () => {
   });
 
   const updatePassword = async (mode: "default" | "recovery") => {
-    if (mode === "recovery") {
-      return recoverPassword({
-        password: pwd.newPwd,
-        token: token || "",
-      });
-    }
-    return changePassword({
-      currentPassword: pwd.currentPwd,
-      newPassword: pwd.newPwd,
-    });
+    // if (mode === "recovery") {
+    //   return recoverPassword({
+    //     password: pwd.newPwd,
+    //     token: token || "",
+    //   });
+    // }
+    const { currentPwd, newPwd } = pwd;
+    return changePassword(currentPwd, newPwd);
   };
 
   const updatePasswordState = ({
