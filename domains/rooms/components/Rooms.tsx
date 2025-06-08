@@ -32,10 +32,7 @@ export default function Rooms({ enterChat, createRoom }: RoomsProps) {
   const renderItem = ({ item }: { item: Room }) => {
     return (
       <List.Item
-        style={[
-          styles.listItem,
-          { borderColor: theme.colors.onSurface, borderWidth: 1 },
-        ]}
+        style={[styles.listItem, { borderColor: "#ecdcdc", borderWidth: 1 }]}
         title={item.name}
         titleStyle={{ fontWeight: "bold" }}
         description={item.lastMessage || "no messages"}

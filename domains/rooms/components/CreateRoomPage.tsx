@@ -91,11 +91,24 @@ const CreateRoomPage = ({ onDismiss }: { onDismiss: () => void }) => {
         visible={confirmCancel}
         onDismiss={() => setConfirmCancel(false)}
       >
-        <Dialog.Title>Cancel setup?</Dialog.Title>
-        <Dialog.Content style={{ padding: 12, marginBottom: 12 }}>
+        <Dialog.Title
+          style={{
+            marginTop: 12,
+            marginHorizontal: 12,
+            fontSize: 24,
+            marginBottom: 12,
+          }}
+        >
+          Cancel setup?
+        </Dialog.Title>
+        <Dialog.Content
+          style={{ paddingHorizontal: 12, marginBottom: 12, paddingBottom: 6 }}
+        >
           <Text>Are you sure you want to cancel this group setup?</Text>
         </Dialog.Content>
-        <Dialog.Actions style={{ padding: 12, paddingTop: 0 }}>
+        <Dialog.Actions
+          style={{ padding: 12, paddingTop: 0, paddingBottom: 20 }}
+        >
           <Button onPress={() => setConfirmCancel(false)} type="secondary">
             No
           </Button>

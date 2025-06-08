@@ -69,14 +69,14 @@ export default function ChatInput({
     try {
       if (!message.trim()) return;
       setIsLoading(true);
-      messageBackup.current = message;
-      setMessage("");
       await sendMessage({
         roomId,
         content: message,
         isPrivate: false,
         displayName,
       }).unwrap();
+      messageBackup.current = message;
+      setMessage("");
     } catch (err) {
       // @todo handle all logging like this
       setMessage(messageBackup.current);

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingEnd: 20,
-    paddingVertical: 2,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#f4f5f6",
     // backgroundColor: "#fafafa",

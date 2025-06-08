@@ -3,7 +3,6 @@ import {
   Keyboard,
   Platform,
   StyleSheet,
-  TouchableWithoutFeedback,
   Pressable,
   View,
   KeyboardAvoidingView,
@@ -18,6 +17,9 @@ const styles = StyleSheet.create({
   centeredWeb: {
     maxWidth: 768,
     marginHorizontal: "auto",
+  },
+  sheetContainer: {
+    maxHeight: "80%",
   },
 });
 
@@ -51,26 +53,10 @@ const Popover: React.FC<Props> = ({
           style={[styles.overlay, Platform.OS === "web" && styles.centeredWeb]}
         >
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            keyboardVerticalOffset={120}
-            style={{
-              position: "absolute",
-              bottom: y,
-              left: x,
-              right: 0,
-              maxHeight: "80%",
-              width: "100%",
-            }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1, justifyContent: "flex-end" }}
           >
-            <Pressable
-              style={{
-                bottom: y,
-                left: x,
-                right: 0,
-                width: "100%",
-              }}
-              onPress={() => {}}
-            >
+            <Pressable style={styles.sheetContainer} onPress={() => {}}>
               {children}
             </Pressable>
           </KeyboardAvoidingView>

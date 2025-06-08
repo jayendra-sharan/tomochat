@@ -24,7 +24,7 @@ export default function MessageBubble({
 
   const isSystemMessage = message.sender.id === "SYSTEM";
   const isSelf = userId === message.sender.id;
-  const backgroundColor = isSelf ? theme.colors.onSurface : "#8B0000";
+  const backgroundColor = isSelf ? "#ecdcdc" : "#e0f2fe";
   // : theme.colors.chatBubbleOther;
 
   const bubblePosition = () => {

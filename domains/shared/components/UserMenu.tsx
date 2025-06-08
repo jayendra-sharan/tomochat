@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
 import CreateRoomPage from "@/domains/rooms/components/CreateRoomPage";
 
-const BOTTOM_BAR_HEIGHT = 60;
+const BOTTOM_BAR_HEIGHT = 50;
 
 type UserMenuProps = {
   showBack?: boolean;
@@ -70,5 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "#E0E0E0",
   },
 });

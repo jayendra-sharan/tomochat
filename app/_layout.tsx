@@ -56,6 +56,5 @@ function InnerLayout() {
 const styles = StyleSheet.create({
   appWrapper: {
     flex: 1,
-    // backgroundColor: "#fdfdfd",
   },
 });
