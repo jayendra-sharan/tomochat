@@ -133,7 +133,9 @@ const CreateRoomSuccess = ({ inviteLink, onClose }: Props) => {
           </View>
         </>
       ) : (
-        <Text style={{ marginBottom: 12 }}>No connections found yet.</Text>
+        <Text style={{ marginBottom: 12 }}>
+          New here? Start by inviting your friends.
+        </Text>
       )}
 
       {!!selectedUserIds.length ? (

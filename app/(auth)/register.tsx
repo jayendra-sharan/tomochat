@@ -20,7 +20,6 @@ import { BRAND_TAGLINE } from "@/utils/constants";
 
 export default function RegisterScreen() {
   const router = useRouter();
-  const theme = useAppTheme();
   const { invite_id: inviteId } = useLocalSearchParams<{ invite_id: string }>();
   const { user, errors, updateUser } = useRegisterForm();
   const [register, { isLoading }] = useRegisterMutation();
@@ -37,9 +36,10 @@ export default function RegisterScreen() {
         email,
         password,
         displayName,
+        inviteLink: inviteId,
       }).unwrap();
       if (id) {
-        router.replace(`/(auth)/login?invite_id=${inviteId}&id=${id}`);
+        router.replace(`/(auth)/login?id=${id}`);
       } else {
         throw new Error("Something went wrong!");
       }

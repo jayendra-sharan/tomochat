@@ -11,8 +11,13 @@ export const logger = {
     console.info("[info]", ...args);
   },
 
+  // @todo add type to context
   error: (error: any, context?: Record<string, any>) => {
-    console.error("[error]", error);
+    console.error("[error]", error, context);
+
+    const { pathname = "", gqlPath = [] } = context || {};
+
+    if (pathname === "/login" && gqlPath.includes("me")) return;
 
     // Capture exception with optional context
     if (isProd) {

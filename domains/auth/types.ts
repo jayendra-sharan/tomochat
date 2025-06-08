@@ -28,7 +28,9 @@ export interface RegisterUser {
   rePassword: string;
 }
 
-export type RegisterUserInput = Omit<RegisterUser, "rePassword">;
+export type RegisterUserInput = Omit<RegisterUser, "rePassword"> & {
+  inviteLink?: string;
+};
 
 export interface RegisterUserResponse {
   displayName: string;
