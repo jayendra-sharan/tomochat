@@ -13,7 +13,8 @@ import SafeAreaWrapper from "@/domains/shared/components/SafeAreaWrapper";
 import { toastConfig } from "@/services/toastConfig";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Sentry from "@sentry/react-native";
-import { useRegisterPushToken } from "@/domains/notification/hooks/useRegisterPushToken";
+import { usePushNotifications } from "@/domains/notification/hooks/usePushNotification";
+import { useNotificationResponse } from "@/domains/notification/hooks/useNotificationResponse";
 
 export default Sentry.wrap(function Layout() {
   return (
@@ -31,7 +32,8 @@ export default Sentry.wrap(function Layout() {
 });
 
 function InnerLayout() {
-  useRegisterPushToken();
+  usePushNotifications();
+  useNotificationResponse();
 
   return (
     <FeatureProvider>

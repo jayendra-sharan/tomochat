@@ -32,7 +32,7 @@ export default ({ config }) => {
       },
       edgeToEdgeEnabled: true,
       package: "com.tomochat.tomochat",
-      googleServicesFile: "./google-services.json",
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
     },
     web: {
       bundler: "metro",

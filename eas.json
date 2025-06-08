@@ -15,7 +15,7 @@
       "distribution": "internal",
       "env": {
         "BACKEND_URL": "https://tomochat-be.onrender.com",
-        "SENTRY_AUTH_TOKEN": "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",
+        "SENTRY_AUTH_TOKEN": "$SENTRY_AUTH_TOKEN",
         "SENTRY_ORG": "tomochat",
         "SENTRY_PROJECT": "tomochat",
         "EXPO_GRADLE_JVM_ARGS": "-Xmx4g",

@@ -3,18 +3,14 @@ import { useEffect, useState } from "react";
 import { Image, View, Text } from "react-native";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
 import { initSentry } from "@/services/logger/sentry";
-import * as Notifications from "expo-notifications";
+import { configureNotificationHandler } from "@/domains/notification/lib/setNotificationHandler";
 
 initSentry();
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
+configureNotificationHandler({
+  alertEnabled: true,
+  soundEnabled: true,
+  badgeEnabled: true,
 });
 
 export default function Home() {
