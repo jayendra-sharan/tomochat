@@ -1,8 +1,3 @@
-import { Socket } from "socket.io-client";
-import {
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from "../shared/types/socketEvents";
 import {
   createContext,
   useContext,
@@ -10,11 +5,16 @@ import {
   useState,
   useEffect,
 } from "react";
-import { initSocket } from "./lib/socketService";
+import { connectSocket, getSocket } from "./lib/socketService";
 import { useInAppNotification } from "../notification/hooks/useInAppNotification";
 import { useAuth } from "../auth/hooks/useAuth";
+import { Socket } from "socket.io-client";
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "../shared/types/socketEvents";
 
-export type SocketType =
+type SocketType =
   | Socket<ServerToClientEvents, ClientToServerEvents>
   | undefined;
 
@@ -26,13 +26,10 @@ export const SocketContext = createContext<SocketContextType | undefined>(
   undefined
 );
 
-const useSocketContext = () => {
+export const useSocketContext = () => {
   const context = useContext(SocketContext);
-
   if (!context) {
-    throw new Error(
-      "SocketContext must be used inside valid children component"
-    );
+    throw new Error("SocketContext must be used inside provider");
   }
   return context;
 };
@@ -42,11 +39,12 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    const connect = async () => {
-      const s = await initSocket();
+    const setup = async () => {
+      if (!isLoggedIn) return;
+      const s = await connectSocket();
       if (s) setSocket(s);
     };
-    connect();
+    setup();
   }, [isLoggedIn]);
 
   useInAppNotification(socket);
