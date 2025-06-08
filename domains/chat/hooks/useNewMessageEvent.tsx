@@ -4,16 +4,23 @@ import { Message } from "../types";
 import { chatApi } from "../chatApi";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
+import { useAuth } from "@/domains/auth/hooks/useAuth";
+import { logger } from "@/services/logger";
 
 export default function useNewMessageEvent(roomId: string) {
   const dispatch = useAppDispatch();
   const socket = useSocketContext();
+  const { userId } = useAuth();
 
   useEffect(() => {
     if (!roomId || !socket) return;
 
     const handleNewMessage = (message: Message) => {
-      console.log("New message received", message);
+      logger.debug("New message received", message);
+      if (message.sender.id === userId) {
+        logger.debug("Self message, skipping update");
+        return;
+      }
       // if current group === message group
       // update chat history
       //
