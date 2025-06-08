@@ -69,12 +69,19 @@ export default function ChatInput({
     try {
       if (!message.trim()) return;
       setIsLoading(true);
-      await sendMessage({
+      const response = await sendMessage({
         roomId,
         content: message,
         isPrivate: false,
         displayName,
       }).unwrap();
+      if (response) {
+        dispatch(
+          chatApi.util.updateQueryData("getRoomChats", { roomId }, (draft) => {
+            draft.messages.push(response);
+          })
+        );
+      }
       messageBackup.current = message;
       setMessage("");
     } catch (err) {
