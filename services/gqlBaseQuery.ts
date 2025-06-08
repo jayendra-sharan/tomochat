@@ -5,13 +5,9 @@ import { logger } from "./logger";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 const GRAPHQL_ENDPOINT = `${API_URL}/graphql`;
-console.log("DEBUG ---- API END POINT", API_URL);
 
 export async function gqlFetch(query: string, variables?: Record<string, any>) {
   const token = await storage.getItem("token");
-  // @todo revert
-  console.log("AUTH TOKEN - ", token);
-  // @todo revert
   const res = await fetch(GRAPHQL_ENDPOINT, {
     method: "POST",
     headers: {
@@ -27,17 +23,22 @@ export async function gqlFetch(query: string, variables?: Record<string, any>) {
   const result = await res.json();
 
   if (result.errors?.length) {
-    logger.error(result.errors[0], {
-      pathname: window.location.pathname,
-      message: result.errors[0].message,
-      gqlPath: result.errors[0].path,
-    });
-    throw new Error(result.errors[0].message || "GraphQL error");
-  }
+    const primary = result.errors[0];
 
-  return {
-    data: result.data,
-  };
+    logger.error(primary, {
+      gqlPath: primary.path,
+      code: primary.extensions?.code,
+    });
+
+    return {
+      data: result.data,
+      error: {
+        name: primary.extensions?.code || "GraphQLError",
+        message: primary.message,
+      },
+    };
+  }
+  return { data: result.data, error: null };
 }
 
 export type APIError = {
@@ -53,10 +54,13 @@ export const gqlBaseQuery =
   > =>
   async ({ document, variables }) => {
     try {
-      const result = await gqlFetch(document, variables);
-
-      return { data: result.data as ResultType };
+      const { data, error } = await gqlFetch(document, variables);
+      if (error) {
+        return { error };
+      }
+      return { data: data as ResultType };
     } catch (error: any) {
+      logger.error(error);
       return {
         error: {
           name: error?.name || "NetworkError",
