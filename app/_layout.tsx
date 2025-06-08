@@ -17,14 +17,7 @@ import { usePushNotifications } from "@/domains/notification/hooks/usePushNotifi
 import { useNotificationResponse } from "@/domains/notification/hooks/useNotificationResponse";
 import { initSentry } from "@/services/logger/sentry";
 import { configureNotificationHandler } from "@/domains/notification/lib/setNotificationHandler";
-
-initSentry();
-
-configureNotificationHandler({
-  alertEnabled: true,
-  soundEnabled: true,
-  badgeEnabled: true,
-});
+import { useEffect } from "react";
 
 export default Sentry.wrap(function Layout() {
   return (
@@ -42,6 +35,15 @@ export default Sentry.wrap(function Layout() {
 });
 
 function InnerLayout() {
+  useEffect(() => {
+    initSentry();
+    configureNotificationHandler({
+      alertEnabled: true,
+      soundEnabled: true,
+      badgeEnabled: true,
+    });
+  }, []);
+
   usePushNotifications();
   useNotificationResponse();
 
