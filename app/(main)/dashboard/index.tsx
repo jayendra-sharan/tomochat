@@ -9,7 +9,6 @@ import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { SocketEvents } from "@/domains/socket/events";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
 import UserMenu from "@/domains/shared/components/UserMenu";
-import { useRegisterPushToken } from "@/domains/notification/hooks/useRegisterPushToken";
 import { useRouter } from "expo-router/build/hooks";
 
 function DashboardPage() {
@@ -20,21 +19,6 @@ function DashboardPage() {
   const { showChatFilters } = useFeatureFlag();
 
   const { userId } = useAuth();
-
-  useRegisterPushToken();
-  // @todo extract later
-  // const [registerPushToken] = useRegisterPushTokenMutation();
-
-  // useEffect(() => {
-  //   console.log("Asking for permission");
-  //   registerForPushNotificationsAsync().then((token) => {
-  //     console.log("Asking for permission, Next", token);
-  //     if (token) {
-  //       const platform = Platform.OS as string;
-  //       registerPushToken({ token, platform });
-  //     }
-  //   });
-  // }, []);
 
   // @todo add invite link to room chat page to avoid url param.
   const enterChat = useCallback((room: Room) => {

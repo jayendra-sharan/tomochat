@@ -15,6 +15,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as Sentry from "@sentry/react-native";
 import { usePushNotifications } from "@/domains/notification/hooks/usePushNotification";
 import { useNotificationResponse } from "@/domains/notification/hooks/useNotificationResponse";
+import { initSentry } from "@/services/logger/sentry";
+import { configureNotificationHandler } from "@/domains/notification/lib/setNotificationHandler";
+
+initSentry();
+
+configureNotificationHandler({
+  alertEnabled: true,
+  soundEnabled: true,
+  badgeEnabled: true,
+});
 
 export default Sentry.wrap(function Layout() {
   return (
