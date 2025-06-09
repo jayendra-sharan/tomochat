@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 40,
-    marginTop: -1 * HEADER_HEIGHT,
   },
   logo: {
     resizeMode: "contain",

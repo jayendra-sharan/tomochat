@@ -102,16 +102,6 @@ const UserPopover: React.FC<Props> = ({ onSettings }) => {
       <Divider style={{ marginVertical: 8 }} />
 
       <Button
-        onPress={() => {}}
-        type="menuLink"
-        contentStyle={{ justifyContent: "flex-start" }}
-      >
-        Settings
-      </Button>
-
-      <Divider style={{ marginVertical: 8 }} />
-
-      <Button
         onPress={handleLogout}
         type="menuLink"
         contentStyle={{ justifyContent: "flex-start" }}
