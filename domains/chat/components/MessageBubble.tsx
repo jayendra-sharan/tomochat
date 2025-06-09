@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import { Text, Icon } from "react-native-paper";
 import { format } from "date-fns";
 import { Message } from "@/domains/chat/types";
@@ -76,7 +76,7 @@ export default function MessageBubble({
   return (
     <>
       <View style={[styles.container, { alignSelf: bubblePosition() }]}>
-        <TouchableWithoutFeedback onPress={() => handleMessageTap(message.id)}>
+        <Pressable onPress={() => handleMessageTap(message.id)}>
           <View
             style={[
               styles.bubble,
@@ -95,7 +95,7 @@ export default function MessageBubble({
               )}
             </View>
           </View>
-        </TouchableWithoutFeedback>
+        </Pressable>
       </View>
     </>
   );

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
 import CreateRoomPage from "@/domains/rooms/components/CreateRoomPage";
 
-const BOTTOM_BAR_HEIGHT = 50;
+const BOTTOM_BAR_HEIGHT = 60;
 
 type UserMenuProps = {
   showBack?: boolean;

@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { ChatState } from "@/domains/chat/chatSlice";
 import { useLocalSearchParams } from "expo-router";
 import { KeyboardAvoidingView, Platform } from "react-native";
+import { useCurrentRoom } from "@/domains/rooms/hooks/useCurrentRoom";
 
 type ChatScreenProps = {
   user: User;
@@ -30,10 +31,11 @@ function ChatScreen({ user }: ChatScreenProps) {
 
   const { messages, name } = data || {};
   useChatRoom({ userId: id, roomId: chatId });
+  useCurrentRoom(chatId);
   useNewMessageEvent(chatId);
 
   const privateMode = useSelector(
-    ({ chat }: { chat: ChatState }) => chat.isPrivate,
+    ({ chat }: { chat: ChatState }) => chat.isPrivate
   );
 
   return (

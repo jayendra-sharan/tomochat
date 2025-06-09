@@ -4,19 +4,17 @@ import { useRequireUser } from "@/domains/auth/hocs/useRequireUser";
 import Rooms from "@/domains/rooms/components/Rooms";
 import { Room } from "@/domains/shared/types";
 import { useAuth } from "@/domains/auth/hooks/useAuth";
-import ChatFilters from "@/domains/chat/components/ChatFilters";
 import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { SocketEvents } from "@/domains/socket/events";
 import { useFeatureFlag } from "@/redux/FeatureProvider";
 import UserMenu from "@/domains/shared/components/UserMenu";
 import { useRouter } from "expo-router/build/hooks";
+import { Text } from "react-native-paper";
 
 function DashboardPage() {
   const router = useRouter();
   const socket = useSocketContext();
   const [create, setCreate] = useState(false);
-
-  const { showChatFilters } = useFeatureFlag();
 
   const { userId } = useAuth();
 
@@ -26,7 +24,7 @@ function DashboardPage() {
 
     setTimeout(() => {
       socket?.emit(SocketEvents.READ_MESSAGE, { roomId: room.id, userId });
-    }, 1000);
+    }, 500);
   }, []);
 
   const createRoom = () => {
@@ -35,7 +33,12 @@ function DashboardPage() {
 
   return (
     <View style={styles.page}>
-      {showChatFilters && <ChatFilters />}
+      <Text
+        variant="headlineSmall"
+        style={{ fontWeight: "bold", paddingLeft: 16 }}
+      >
+        Chats
+      </Text>
       <View style={styles.scrollable}>
         <Rooms enterChat={enterChat} createRoom={createRoom} />
       </View>
@@ -44,13 +47,14 @@ function DashboardPage() {
   );
 }
 
+// @otod fix page style, make it consistent for all pages
 const styles = StyleSheet.create({
   page: {
     flex: 1,
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    paddingTop: 20,
+    paddingTop: 10,
   },
   scrollable: {
     flex: 1,

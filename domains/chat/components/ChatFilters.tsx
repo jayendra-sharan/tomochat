@@ -36,7 +36,8 @@ const ChatFilters = ({
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
+    paddingTop: 8,
   },
   chip: {
     marginRight: 8,

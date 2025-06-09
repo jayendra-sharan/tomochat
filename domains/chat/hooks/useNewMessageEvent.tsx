@@ -21,14 +21,6 @@ export default function useNewMessageEvent(roomId: string) {
         logger.debug("Self message, skipping update");
         return;
       }
-      // if current group === message group
-      // update chat history
-      //
-      // go to dashboard
-      // refresh dashboard
-      // - last message is updated
-      // - order is updated
-      // - show unread and unread count
       dispatch(
         chatApi.util.updateQueryData("getRoomChats", { roomId }, (draft) => {
           draft.messages.push(message);

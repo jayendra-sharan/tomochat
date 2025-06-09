@@ -1,5 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { Slot } from "expo-router";
+import Head from "expo-router/head";
 import { Provider as PaperProvider } from "react-native-paper";
 import { Provider } from "react-redux";
 import Toast from "react-native-toast-message";
@@ -21,16 +22,25 @@ import { useEffect } from "react";
 
 export default Sentry.wrap(function Layout() {
   return (
-    <LinearGradient
-      colors={["#ffffff", "#f1f5f9", "#e0f2fe"]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.5, y: 1 }}
-      style={{ flex: 1 }}
-    >
-      <Provider store={store}>
-        <InnerLayout />
-      </Provider>
-    </LinearGradient>
+    <>
+      <Head>
+        <title>TomoChat | Learn languages, powered by friends</title>
+        <meta
+          name="description"
+          content="Practice new languages through real chats with people you know"
+        />
+      </Head>
+      <LinearGradient
+        colors={["#ffffff", "#f1f5f9", "#e0f2fe"]}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+        style={{ flex: 1 }}
+      >
+        <Provider store={store}>
+          <InnerLayout />
+        </Provider>
+      </LinearGradient>
+    </>
   );
 });
 

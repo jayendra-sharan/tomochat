@@ -14,9 +14,12 @@ export function updateLastMessage({ roomId, lastMessage }: UpdateLastMessage) {
       const room = draft[index];
 
       room.lastMessage = lastMessage;
+      // @todo - add a condition if not in current room
+      room.isUnread = true;
+      room.lastMessageAt = Date.now().toString();
 
       draft.splice(index, 1);
       draft.unshift(room);
-    }),
+    })
   );
 }

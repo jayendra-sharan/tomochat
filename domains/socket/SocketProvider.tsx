@@ -14,7 +14,7 @@ import {
   ServerToClientEvents,
 } from "../shared/types/socketEvents";
 
-type SocketType =
+export type SocketType =
   | Socket<ServerToClientEvents, ClientToServerEvents>
   | undefined;
 

@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "@/domains/auth/authSlice";
 import chatReducer from "@/domains/chat/chatSlice";
+import roomReducer from "@/domains/rooms/roomsSlice";
 import { authApi } from "@/domains/auth/authApi";
 import { chatApi } from "@/domains/chat/chatApi";
 import { roomsApi } from "@/domains/rooms/roomsApi";
@@ -10,6 +11,7 @@ import { notificationApi } from "@/domains/notification/notificationApi";
 const appReducer = combineReducers({
   auth: authReducer,
   chat: chatReducer,
+  room: roomReducer,
   [authApi.reducerPath]: authApi.reducer,
   [chatApi.reducerPath]: chatApi.reducer,
   [roomsApi.reducerPath]: roomsApi.reducer,

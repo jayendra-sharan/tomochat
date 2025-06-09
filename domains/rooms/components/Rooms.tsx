@@ -1,6 +1,5 @@
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { useAppTheme } from "@/hooks/useAppTheme";
 import { useGetRoomsQuery } from "../roomsApi";
 import LoadingScreen from "@/domains/shared/components/LoadingScreen";
 import { FlatList } from "react-native";
@@ -16,7 +15,6 @@ type RoomsProps = {
   createRoom: () => void;
 };
 export default function Rooms({ enterChat, createRoom }: RoomsProps) {
-  const theme = useAppTheme();
   const { data: rooms, isLoading } = useGetRoomsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
@@ -51,12 +49,14 @@ export default function Rooms({ enterChat, createRoom }: RoomsProps) {
   };
 
   return (
-    <FlatList
-      data={rooms}
-      keyExtractor={(room) => room.id}
-      renderItem={renderItem}
-      contentContainerStyle={styles.listContent}
-    />
+    <>
+      <FlatList
+        data={rooms}
+        keyExtractor={(room) => room.id}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
+      />
+    </>
   );
 }
 

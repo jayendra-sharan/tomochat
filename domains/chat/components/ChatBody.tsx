@@ -7,6 +7,8 @@ import useTypingUsers from "@/domains/chat/hooks/useTypingUsers";
 import ChatInfoBottomSheet from "./ChatInfoBottomSheet";
 import { ImprovementSuggestion } from "./ImprovementSuggestion";
 import { KeyboardAwareScrollView } from "@/domains/shared/components/KeyboardAwareScrollView";
+import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
+import { SocketEvents } from "@/domains/socket/events";
 
 type ChatBodyProps = {
   messages: Message[];
@@ -22,6 +24,8 @@ export default function ChatBody({
   roomId,
 }: ChatBodyProps) {
   const scrollRef = useRef<ScrollView>(null);
+  const socket = useSocketContext();
+  const [hasScrolled, setHasScrolled] = useState(false);
   const nextMessageSenderId = useRef<string>("");
   const currentMessageSenderId = useRef<string>("");
   const [expandedBubbleId, setExpandedBubbleId] = useState<string>("");
@@ -45,7 +49,15 @@ export default function ChatBody({
   });
 
   useEffect(() => {
-    scrollRef.current?.scrollToEnd({ animated: true });
+    if (scrollRef.current) {
+      scrollRef.current.scrollToEnd({ animated: hasScrolled });
+    }
+
+    setTimeout(() => {
+      socket?.emit(SocketEvents.READ_MESSAGE, { roomId, userId });
+    }, 500);
+
+    if (!hasScrolled) setHasScrolled(true);
   }, [messages.length, showTypingIndicator]);
 
   return (
