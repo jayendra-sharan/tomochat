@@ -14,16 +14,27 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "BACKEND_URL": "https://tomochat-be.onrender.com",
+        "BACKEND_URL": "$API_URL",
         "SENTRY_AUTH_TOKEN": "$SENTRY_AUTH_TOKEN",
         "SENTRY_ORG": "tomochat",
         "SENTRY_PROJECT": "tomochat",
         "EXPO_GRADLE_JVM_ARGS": "-Xmx4g",
         "GOOGLE_SERVICES_JSON": "./google-services.json"
-      }
+      },
+      "ios": {
+        "simulator": true
+      },
+      "developmentClient": false
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "BACKEND_URL": "$API_URL",
+        "SENTRY_AUTH_TOKEN": "$SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG": "tomochat",
+        "SENTRY_PROJECT": "tomochat",
+        "EXPO_GRADLE_JVM_ARGS": "-Xmx4g"
+      }
     }
   },
   "submit": {

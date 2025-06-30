@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { RegisterUser } from "../types";
+import formValidator from "@/domains/shared/lib/formValidator";
 
 export function useRegisterForm() {
   const [user, setUser] = useState<RegisterUser>({
@@ -40,9 +41,6 @@ export function useRegisterForm() {
     }));
   };
 
-  const isValidPassword = (password: string) =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/.test(password);
-
   const validate = useCallback(() => {
     const newErrors = {
       email: "",
@@ -55,10 +53,11 @@ export function useRegisterForm() {
     }
     // @todo add password policy
 
-    if (touched.password && !isValidPassword(password)) {
-      newErrors.password = "Use 6+ chars with letter, number & symbol";
+    const { isValid, message } = formValidator.password(password.trim());
+    if (touched.password && !isValid) {
+      newErrors.password = message;
     }
-    if (touched.rePassword && rePassword !== password) {
+    if (touched.rePassword && rePassword !== password.trim()) {
       newErrors.rePassword = "Must match with password";
     }
     if (touched.displayName && displayName.length < 3) {

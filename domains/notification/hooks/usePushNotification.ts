@@ -63,8 +63,8 @@ export const usePushNotifications = () => {
 
           const askUser = await new Promise<boolean>((resolve) => {
             Alert.alert(
-              "Stay Updated",
-              "Allow notifications to receive important updates.",
+              "Don’t Miss a Message",
+              "Turn on notifications to know when someone sends you a message. Never miss an important chat!",
               [
                 {
                   text: "No thanks",

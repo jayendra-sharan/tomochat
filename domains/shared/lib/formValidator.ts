@@ -6,7 +6,7 @@ const formValidator = {
         message: "",
       };
     }
-    if (value.length < 6) {
+    if (value.length < 8) {
       return {
         isValid: false,
         message: "Password must be 8 characters long.",

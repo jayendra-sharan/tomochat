@@ -11,21 +11,17 @@ export const useRegisterPushToken = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      console.log("Not logged in - no notification, return.");
       return;
     }
     const setup = async () => {
       try {
         const { status } = await Notifications.requestPermissionsAsync();
-        console.log("Status", status);
         if (status !== "granted") return;
 
         const projectId = Constants.expoConfig?.extra?.eas?.projectId;
-        console.log("SENDING - ", projectId);
         const { data: token } = await Notifications.getExpoPushTokenAsync({
-          projectId: "502be1d7-6a97-45f8-9238-e0b7deda5968",
+          projectId,
         });
-        console.log("TEST Push token:", token);
         if (!token) return;
 
         await registerToken({ token, platform: "expo" });

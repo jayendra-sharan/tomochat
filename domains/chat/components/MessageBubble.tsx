@@ -25,7 +25,6 @@ export default function MessageBubble({
   const isSystemMessage = message.sender.id === "SYSTEM";
   const isSelf = userId === message.sender.id;
   const backgroundColor = isSelf ? "#ecdcdc" : "#e0f2fe";
-  // : theme.colors.chatBubbleOther;
 
   const bubblePosition = () => {
     if (isSystemMessage) {
@@ -36,6 +35,28 @@ export default function MessageBubble({
     }
     return "flex-start";
   };
+
+  const getStyles = () => {
+    if (isSystemMessage) {
+      return {};
+    }
+    if (isSelf) {
+      return {
+        backgroundColor,
+        borderRadius: 12,
+        paddingHorizontal: 12,
+        borderTopRightRadius: 0,
+      }
+    } else {
+      return {
+        backgroundColor,
+        borderRadius: 12,
+        paddingHorizontal: 12,
+        borderTopLeftRadius: 0,
+      }
+    }
+
+  }
 
   const textColor = theme.colors.onSurface;
 
@@ -75,14 +96,14 @@ export default function MessageBubble({
   const hasSuggestion = message.suggestion;
   return (
     <>
-      <View style={[styles.container, { alignSelf: bubblePosition() }]}>
+      <View style={[styles.container, { alignSelf: bubblePosition() }, {...getStyles()}]}>
         <Pressable onPress={() => handleMessageTap(message.id)}>
           <View
             style={[
               styles.bubble,
               {
-                borderColor: backgroundColor,
-                borderWidth: 1,
+                // borderColor: backgroundColor,
+                // borderWidth: 1,
               },
               expandedBubbleId === message.id && styles.selected,
             ]}

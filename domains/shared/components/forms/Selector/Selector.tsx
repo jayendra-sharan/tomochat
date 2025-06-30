@@ -48,7 +48,7 @@ const LanguageSelector = ({ language, onChange }: Props) => {
               mode="outlined"
               editable={false}
               ref={inputRef}
-              right={<TextInput.Icon icon="menu-down" />}
+              right={<TextInput.Icon onPress={openMenu} icon="menu-down" />}
               pointerEvents="none"
             />
           </Pressable>

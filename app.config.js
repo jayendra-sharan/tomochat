@@ -5,7 +5,7 @@ export default ({ config }) => {
     ...config,
     name: "TomoChat",
     slug: "cw-app",
-    version: "1.0.0",
+    version: "1.0.1",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "tomochat",
@@ -22,8 +22,12 @@ export default ({ config }) => {
       color: "#000000",
     },
     ios: {
+      bundleIdentifier: "xyz.tomochat.app",
+      buildNumber: "1.0.0",
       supportsTablet: true,
-      bundleIdentifier: "com.tomochat.tomochat",
+      infoPlist: {
+        ITSAppUsesNonExemptEncryption: false
+      }
     },
     android: {
       adaptiveIcon: {
@@ -39,7 +43,11 @@ export default ({ config }) => {
       output: "static",
       favicon: "./assets/images/logo.png",
     },
-    plugins: ["expo-router", "expo-secure-store", "expo-notifications"],
+    plugins: [
+      ["expo-router", { origin: "https://app.tomochat.xyz" }],
+      "expo-secure-store",
+      ["expo-notifications", { useNextNotificationsApi: true }]
+    ],
     experiments: {
       typedRoutes: true,
     },
