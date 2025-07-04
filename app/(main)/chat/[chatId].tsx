@@ -22,7 +22,10 @@ function ChatScreen({ user }: ChatScreenProps) {
   const chatId = useSingleQueryParam("chatId");
   // @todo invite_id move to constants
   const { invite_id } = useLocalSearchParams<{ invite_id: string }>();
-  const { data } = useGetRoomChatsQuery({ roomId: chatId as string });
+  const { data } = useGetRoomChatsQuery(
+    { roomId: chatId as string },
+    { refetchOnMountOrArgChange: true }
+  );
   const { id, displayName } = user;
 
   if (!chatId) {

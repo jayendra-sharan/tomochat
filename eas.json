@@ -8,7 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "BACKEND_URL": "https://tomochat-be.onrender.com"
+        "BACKEND_URL": "https://tomochat-be-995534968592.europe-west4.run.app"
       }
     },
     "preview": {
