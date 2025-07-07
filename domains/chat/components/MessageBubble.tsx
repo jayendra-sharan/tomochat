@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
   },
   bubble: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
+    gap: 4,
     alignItems: "center",
     paddingBottom: 4,
     paddingTop: 4,
