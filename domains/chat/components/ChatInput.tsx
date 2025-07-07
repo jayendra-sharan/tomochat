@@ -14,6 +14,7 @@ import { useSocketContext } from "@/domains/socket/hooks/useSocketContext";
 import { Platform } from "react-native";
 import { logger } from "@/services/logger";
 import { showToast } from "@/domains/notification/lib/showToast";
+import { getTempMessage } from "../lib/getTempMessage";
 
 type ChatInputProps = {
   roomId: string;
@@ -68,7 +69,16 @@ export default function ChatInput({
   const handleSend = async () => {
     try {
       if (!message.trim()) return;
+      messageBackup.current = message.trim();
       setIsLoading(true);
+      setMessage("");
+      const tempMessage = getTempMessage(message.trim(), userId, displayName);
+      const clientId = tempMessage.id;
+      dispatch(
+        chatApi.util.updateQueryData("getRoomChats", { roomId }, (draft) => {
+          draft.messages.push(tempMessage);
+        })
+      );
       const response = await sendMessage({
         roomId,
         content: message,
@@ -78,7 +88,10 @@ export default function ChatInput({
       if (response) {
         dispatch(
           chatApi.util.updateQueryData("getRoomChats", { roomId }, (draft) => {
-            draft.messages.push(response);
+            const index = draft.messages.findIndex((m) => m.id === clientId);
+            draft.messages = draft.messages.map((msg) =>
+              msg.id === clientId ? { ...response } : msg
+            );
           })
         );
       }

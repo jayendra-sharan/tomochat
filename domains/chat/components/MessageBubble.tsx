@@ -1,5 +1,5 @@
 import { View, StyleSheet, Pressable } from "react-native";
-import { Text, Icon } from "react-native-paper";
+import { Text, Icon, ActivityIndicator } from "react-native-paper";
 import { format } from "date-fns";
 import { Message } from "@/domains/chat/types";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -68,7 +68,6 @@ export default function MessageBubble({
             display: "flex",
             flexDirection: "column",
             flexShrink: 1,
-            // maxWidth: isSystemMessage ? undefined : "80%",
           }}
         >
           <Text
@@ -96,24 +95,22 @@ export default function MessageBubble({
   const hasSuggestion = message.suggestion;
   return (
     <>
-      <View style={[styles.container, { alignSelf: bubblePosition() }, {...getStyles()}]}>
+      <View style={[styles.container, { alignSelf: bubblePosition() }, { ...getStyles() }, expandedBubbleId === message.id && styles.selected]}>
         <Pressable onPress={() => handleMessageTap(message.id)}>
           <View
             style={[
               styles.bubble,
-              {
-                // borderColor: backgroundColor,
-                // borderWidth: 1,
-              },
-              expandedBubbleId === message.id && styles.selected,
             ]}
           >
             {renderMessage()}
             <View style={styles.messageFooter}>
               <Text style={[styles.time, { color: textColor }]}>{time}</Text>
-              {hasSuggestion && (
-                <Icon source="lightbulb" size={12} color="#c9c906" />
-              )}
+              <View>
+                {message.id.includes("temp-") && <ActivityIndicator size={14} color="#6200ee" />}
+                {hasSuggestion && (
+                  <Icon source="lightbulb" size={14} color="#c9c906" />
+                )}
+              </View>
             </View>
           </View>
         </Pressable>
@@ -136,18 +133,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     borderRadius: 2,
     marginBottom: 0,
-    // shadowOffset: { width: 0, height: 1 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 1,
-    // elevation: 1,
     justifyContent: "center",
   },
   selected: {
-    // shadowOffset: { width: 1, height: 2 },
-    // shadowOpacity: 1,
-    // shadowRadius: 2,
-    // elevation: 2,
-    // shadowColor: "#fbed17",
     backgroundColor: "#fff559",
   },
   othersBubble: {

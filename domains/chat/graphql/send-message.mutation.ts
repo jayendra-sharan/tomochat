@@ -9,6 +9,7 @@ mutation SendMessage($input: SendMessageInput!) {
       original
       fixedMessage
       fixLogic
+      translated
     }
     sender {
       id

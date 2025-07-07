@@ -34,6 +34,7 @@ export default function ChatBody({
 
   const handleMessageTap = useCallback(
     (messageId: string) => {
+      console.log("Message tapped:", messageId);
       const message = messages.find((message) => message.id === messageId);
       setContent(message?.content);
       if (message?.suggestion) {
@@ -41,7 +42,7 @@ export default function ChatBody({
         setExpandedBubbleId(messageId);
       }
     },
-    [messages.length]
+    [messages, setContent, setSuggestion, setExpandedBubbleId]
   );
   const { showTypingIndicator, senderNames } = useTypingUsers({
     roomId,

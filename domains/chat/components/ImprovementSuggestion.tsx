@@ -34,12 +34,6 @@ export function ImprovementSuggestion({
           {suggestion.original}
         </Text>
       </View>
-      <View style={styles.textWrapper}>
-        <Text>
-          <Text style={styles.label}>What's fixed: </Text>
-          {suggestion.fixLogic}
-        </Text>
-      </View>
       {!!suggestion.translated && (
         <View style={styles.textWrapper}>
           <Text>
@@ -48,6 +42,12 @@ export function ImprovementSuggestion({
           </Text>
         </View>
       )}
+      <View style={styles.textWrapper}>
+        <Text>
+          <Text style={styles.label}>What's fixed: </Text>
+          {suggestion.fixLogic}
+        </Text>
+      </View>
       {enableFeedback && (
         <View style={[styles.textWrapper, styles.feedback]}>
           <Icon source="thumb-up" size={16} />
